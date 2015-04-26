@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Room it{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="Room it" />
+
+    {% block css %}
+        <link rel="stylesheet" type="text/css" href="{{ static('styles/core.css') }}" />
+        {% block custom_styles %}{% endblock %}
+    {% endblock %}
+
+    {% block javascript %}
+        <script src="{{ static('scripts/jquery.min.js') }}"></script>
+        <script src="{{ static('scripts/utils.js') }}"></script>
+        <script>
+            var serverError = 'Server found itself in trouble. Please try again later. Sorry for inconvenience.';
+        </script>
+        {% block custom_javascript %}{% endblock %}
+    {% endblock %}
+</head>
+<body>
+  {% block content %}{% endblock %}
+</body>
+</html>
