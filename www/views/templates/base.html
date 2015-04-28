@@ -49,10 +49,10 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a href="#services">Sign up</a>
+                        <a href="signup.html" data-toggle="modal" data-target="#myModal">Sign up</a>
                     </li>
                     <li>
-                        <a href="#">Login</a>
+                        <a href="login.html" data-toggle="modal" data-target="#loginModal">Login</a>
                     </li>
                     <li>
                         <a href="#services" class="btn btn-l">Create Room</a>
@@ -63,7 +63,11 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-    {% endblock %} {% block header %}
+    {% endblock %}
+    {% include 'login.html' %}
+    {% include 'signup.html' %}
+    {% block header %}
+
     <!-- Header -->
     <header>
         <div class="container-fluid" style="padding-right:0px;padding-left:0px;">
