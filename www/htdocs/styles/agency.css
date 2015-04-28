@@ -117,7 +117,7 @@ fieldset[disabled] .btn-primary.active {
     background-color: #fff;
 }
 
-.btn-xl {
+.btn-xl, .btn-l {
     padding: 20px 40px;
     border-color: #C94A29;
     border-radius: 3px;
