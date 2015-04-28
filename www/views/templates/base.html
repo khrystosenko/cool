@@ -5,15 +5,15 @@
     <title>{% block title %}Room it{% endblock %}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-    <meta name="description" content="Room it" /> 
-    {% block css %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="">
+    <meta name="description" content="Room it" /> {% block css %}
     <link rel="stylesheet" type="text/css" href="{{ static('styles/core.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ static('styles/bootstrap.min.css') }}" /> 
-    {% block custom_styles %}
-    <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" />
-    {% endblock %}
-    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{{ static('styles/bootstrap.min.css') }}" />
 
+    <link rel="stylesheet" type="text/css" href="{{ static('styles/font-awesome/css/font-awesome.min.css) }}" />
+     {% block custom_styles %}
+    <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" /> {% endblock %} {% endblock %}
     {% block javascript %}
     <script src="{{ static('scripts/jquery.js') }}"></script>
     <script src="{{ static('scripts/utils.js') }}"></script>
@@ -26,23 +26,22 @@
     </script>
     {% block custom_javascript %}
     <script src="{{ static('scripts/agency.js') }}"></script>
-    {% endblock %}
-    {% endblock %}
+    {% endblock %} {% endblock %}
 </head>
 
 <body id="page-top" class="index">
     {% block menu %}
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default" style="position: absolute;width:100%;">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
+            <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">Start roomit</a>
+                <a class="navbar-brand" href="#page-top">Start roomit</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -51,10 +50,10 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#services">Services</a>
+                        <a href="#services">Sign up</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#about">About</a>
+                        <a href="#">Login</a>
                     </li>
                 </ul>
             </div>
@@ -62,20 +61,33 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-    {% endblock %} 
-    {% block header %}
+    {% endblock %} {% block header %}
     <!-- Header -->
     <header>
-        <div class="container">
+        <div class="container-fluid" style="padding-right:0px;padding-left:0px;">
             <div class="intro-text">
                 <div class="intro-lead-in">Welcome To Our Studio!</div>
                 <div class="intro-heading">It's Nice To Meet You</div>
-                <a href="#services" class="page-scroll btn btn-xl">Tell Me More</a>
+                <a href="#services" class="btn btn-xl">Tell Me More</a>
             </div>
+            <div class="hidden-sm hidden-xs search-form">
+                    <div class="col-md-12">
+                        <form class="form-inline" role="form">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Enter game">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">
+                                        Go!
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
         </div>
     </header>
-    {% endblock %}
-    {% block content %} 
+    {% endblock %} {% block content %}
     <section id="services">
         <div class="container">
             <div class="row">
@@ -112,87 +124,7 @@
             </div>
         </div>
     </section>
-    <section id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">About</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="timeline">
-                        <!-- <li>
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/1.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>2009-2011</h4>
-                                    <h4 class="subheading">Our Humble Beginnings</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                                </div>
-                            </div>
-                        </li> -->
-                        <!-- <li class="timeline-inverted">
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/2.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>March 2011</h4>
-                                    <h4 class="subheading">An Agency is Born</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                                </div>
-                            </div>
-                        </li> -->
-                        <li>
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/3.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>December 2012</h4>
-                                    <h4 class="subheading">Transition to Full Service</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="timeline-inverted">
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/4.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>July 2014</h4>
-                                    <h4 class="subheading">Phase Two Expansion</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="timeline-inverted">
-                            <div class="timeline-image">
-                                <h4>Be Part
-                                    <br>Of Our
-                                    <br>Story!</h4>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-    {% endblock %} 
-    {% block footer %}
+    {% endblock %} {% block footer %}
     <footer>
         <div class="container">
             <div class="row">
@@ -211,7 +143,7 @@
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline quicklinks">
-                        <li><a class="page-scroll" href="#page-top">Scroll to the top</a>
+                        <li><a class="page" href="#page-top">Scroll to the top</a>
                         </li>
                         <!-- <li><a href="#">Terms of Use</a>
                             </li> -->
