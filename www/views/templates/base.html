@@ -11,7 +11,17 @@
     {% block css %}
     <link rel="stylesheet" type="text/css" href="{{ static('styles/bootstrap.min.css') }}" />
     {% block custom_styles %}
-    <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" /> {% endblock %} {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" /> {% endblock %}
+
+
+    <!-- Custom Fonts -->
+    <link href="{{ static('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+    {% endblock %}
     {% block javascript %}
     <script src="{{ static('scripts/jquery.js') }}"></script>
     <script src="{{ static('scripts/bootstrap.min.js') }}"></script>
