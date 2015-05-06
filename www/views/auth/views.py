@@ -1,10 +1,10 @@
-from ..utils.views import JSONResponse
+from django.template.response import TemplateResponse
 
 def signup(request):
-	return JSONResponse({'status': 'ok'})
+    return TemplateResponse(request, 'signup.html')
 
 def login(request):
-	return JSONResponse({'status': 'ok'})
+    return TemplateResponse(request, 'login.html')
 
-def logout(request):
-	return JSONResponse({'status': 'ok'})
+# def logout(request):
+    # return TemplateResponse(request, 'logout.html')
