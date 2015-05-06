@@ -1,4 +1,4 @@
-from sds_dashboard import utils
+from roomit import utils
 
 def get(req, name, default=''):
     """ Get a param from Django request dictionary as byte str.

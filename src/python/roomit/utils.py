@@ -1,5 +1,8 @@
 import os
 import re
+import hashlib
+
+from django.conf import settings
 
 
 def validation_error(parameter, value=None):
@@ -8,6 +11,9 @@ def validation_error(parameter, value=None):
         msg += '("%s")' % (value,)
 
     return {'error': msg, 'error_code': 406}
+
+def validate_regexp(key, value):
+    return re.match(settings.REGEXP[key], value)
 
 
 _script_pattern = re.compile(
@@ -19,3 +25,6 @@ def remove_script(input_str):
         return _script_pattern.sub('[filtered]', input_str)
     else:
         return input_str
+
+def generate_password(text):
+    return hashlib.md5(text + settings.SECRET_KEY).hexdigest()
