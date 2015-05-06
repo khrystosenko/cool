@@ -8,3 +8,6 @@ def login(request):
 
 def logout(request):
     return TemplateResponse(request, 'index.html')
+
+def profile(request):
+    return TemplateResponse(request, 'profile.html')
