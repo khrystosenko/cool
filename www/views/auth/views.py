@@ -6,5 +6,5 @@ def signup(request):
 def login(request):
     return TemplateResponse(request, 'login.html')
 
-# def logout(request):
-    # return TemplateResponse(request, 'logout.html')
+def logout(request):
+    return TemplateResponse(request, 'index.html')
