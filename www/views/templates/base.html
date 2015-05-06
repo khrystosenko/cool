@@ -9,17 +9,22 @@
     <meta name="author" content="">
     <meta name="description" content="Room it" /> 
     {% block css %}
-    <link rel="stylesheet" type="text/css" href="{{ static('styles/core.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ static('styles/bootstrap.min.css') }}" />
     {% block custom_styles %}
-    <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" /> {% endblock %} {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" /> {% endblock %}
+
+
+    <!-- Custom Fonts -->
+    <link href="{{ static('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+    {% endblock %}
     {% block javascript %}
     <script src="{{ static('scripts/jquery.js') }}"></script>
-    <script src="{{ static('scripts/utils.js') }}"></script>
     <script src="{{ static('scripts/bootstrap.min.js') }}"></script>
-    <script src="{{ static('scripts/jquery.easing.min.js') }}"></script>
-    <script src="{{ static('scripts/classie.js') }}"></script>
-    <script src="{{ static('scripts/cbpAnimatedHeader.js') }}"></script>
     <script>
     var serverError = 'Server found itself in trouble. Please try again later. Sorry for inconvenience.';
     </script>
@@ -30,7 +35,7 @@
 
 <body id="page-top" class="index">
     {% block menu %}
-    <nav class="navbar navbar-default" style="position: absolute;width:100%;">
+    <nav class="navbar navbar-default" style="position: relative;width:100%;margin-bottom:0px;">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -40,7 +45,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">Start roomit</a>
+                <a class="navbar-brand" href="/">Start roomit</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -49,13 +54,19 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a data-toggle="modal" data-target="#myModal">Sign up</a>
+                        <a href="/auth/logout/" style="color: #C94A29;">Logout</a>
                     </li>
                     <li>
-                        <a data-toggle="modal" data-target="#loginModal">Login</a>
+                        <a href="/auth/profile/" style="color: #C94A29;">Profile</a>
                     </li>
                     <li>
-                        <a href="#services" class="btn btn-l">Create Room</a>
+                        <a href="/auth/signup/" style="color: #C94A29;">Sign up</a>
+                    </li>
+                    <li>
+                        <a href="/auth/login/" style="color: #C94A29;">Login</a>
+                    </li>
+                    <li>
+                        <a href="/" class="btn btn-l">Create Room</a>
                     </li>
                 </ul>
             </div>
@@ -64,74 +75,11 @@
         <!-- /.container-fluid -->
     </nav>
     {% endblock %}
-    {% include 'login.html' %}
-    {% include 'signup.html' %}
-    {% block header %}
 
-    <!-- Header -->
-    <header>
-        <div class="container-fluid" style="padding-right:0px;padding-left:0px;">
-            <div class="intro-text">
-                <div class="intro-lead-in">Welcome To Our Studio!</div>
-                <div class="intro-heading">It's Nice To Meet You</div>
-                <a href="#services" class="btn btn-xl">Tell Me More</a>
-            </div>
-            <div class="hidden-sm hidden-xs search-form">
-                    <div class="col-md-12">
-                        <form class="form-inline" role="form">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter game">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
-                                        Go!
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-        </div>
-    </header>
-    {% endblock %} {% block content %}
-    <section id="services">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Services</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-                </div>
-            </div>
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">E-Commerce</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">Responsive Design</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">Web Security</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    {% endblock %} {% block footer %}
-    <footer>
+    {% block main %} {% endblock %}
+    
+    {% block footer %}
+    <footer class="site-footer" style="background-color: white;">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">

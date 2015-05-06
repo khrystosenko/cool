@@ -9,6 +9,12 @@ body {
     font-family: "Roboto Slab","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+div.login-box {
+  float: none;
+  margin: 0 auto;
+  clear: both;
+}
+
 .text-muted {
     color: #777;
 }
@@ -116,6 +122,14 @@ fieldset[disabled] .btn-primary.active {
     color: #C94A29;
     background-color: #fff;
 }
+.input-l {
+  width: auto !important;
+  height: 67px;
+  padding: 20px 40px;
+  font-size: 18px;
+  line-height: 1.3333333;
+  border-radius: 6px;
+}
 
 .btn-xl, .btn-l {
     padding: 20px 40px;
@@ -128,6 +142,7 @@ fieldset[disabled] .btn-primary.active {
     color: #fff;
     background-color: #C94A29;
 }
+
 
 .btn-xl:hover,
 .btn-xl:focus,
@@ -232,7 +247,7 @@ fieldset[disabled] .btn-xl.active {
 
 @media(min-width:768px) {
     .navbar-default {
-        padding: 25px 0;
+        padding: 10px 0;
         border: 0;
         background-color: transparent;
         -webkit-transition: padding .3s;
@@ -314,7 +329,7 @@ header .intro-text .intro-heading {
         margin-bottom: 50px;
         text-transform: uppercase;
         font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
-        font-size: 75px;
+        font-size: 55px;
         font-weight: 700;
         line-height: 75px;
     }
@@ -874,4 +889,20 @@ body {
   right: 0;
   padding-top: 30px;
   padding-bottom: 30px;
+}
+html, body {
+  height: 100%;
+}
+
+.page-wrap {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -102px; 
+}
+.page-wrap:after {
+  content: "";
+  display: block;
+}
+.site-footer, .page-wrap:after {
+  height: 102px; 
 }

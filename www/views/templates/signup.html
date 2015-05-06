@@ -1,19 +1,75 @@
-{% block LoginModal %}
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Sign up</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+{% extends 'base.html' %}
+{% block main %}
+<section style="background-color: #EEEEEE;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 page-content">
+                <div class="inner-box category-content">
+                    <h2 class="title-2">Create your account, Its free </h2><br>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="form-group required">
+                                        <label class="col-md-4 control-label">Name <sup>*</sup></label>
+                                        <div class="col-md-6">
+                                            <input name="" placeholder="First Name" class="form-control input-md" required="" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group required">
+                                        <label for="inputEmail3" class="col-md-4 control-label">Email <sup>*</sup></label>
+                                        <div class="col-md-6">
+                                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group required">
+                                        <label for="inputPassword3" class="col-md-4 control-label">Password </label>
+                                        <div class="col-md-6">
+                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                                            <p class="help-block">At least 5 characters </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label"></label>
+                                        <div class="col-md-8">
+                                            <div style="clear:both"></div>
+                                            <a class="btn btn-primary" href="account-home.html">Register</a> </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 reg-sidebar">
+                <div class="reg-sidebar-inner text-center">
+                    <div class="promo-text-box">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+                    </span>
+                        <h3><strong>users}}</strong></h3>
+                        <p>users-help}}</p>
+                    </div>
+                    <div class="promo-text-box">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-cloud fa-stack-1x fa-inverse"></i>
+                    </span>
+                        <h3><strong>Create and Manage Items</strong></h3>
+                        <p> Nam sit amet dui vel orci venenatis ullamcorper eget in lacus. Praesent tristique elit pharetra magna efficitur laoreet.</p>
+                    </div>
+                    <div class="promo-text-box">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-play-circle-o fa-stack-1x fa-inverse"></i>
+                    </span>
+                        <h3><strong>Create your Favorite ads list.</strong></h3>
+                        <p> PostNullam quis orci ut ipsum mollis malesuada varius eget metus. Nulla aliquet dui sed quam iaculis, ut finibus massa tincidunt.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+</section>
 {% endblock %}
