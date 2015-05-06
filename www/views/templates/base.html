@@ -9,17 +9,12 @@
     <meta name="author" content="">
     <meta name="description" content="Room it" /> 
     {% block css %}
-    <link rel="stylesheet" type="text/css" href="{{ static('styles/core.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ static('styles/bootstrap.min.css') }}" />
     {% block custom_styles %}
     <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" /> {% endblock %} {% endblock %}
     {% block javascript %}
     <script src="{{ static('scripts/jquery.js') }}"></script>
-    <script src="{{ static('scripts/utils.js') }}"></script>
     <script src="{{ static('scripts/bootstrap.min.js') }}"></script>
-    <script src="{{ static('scripts/jquery.easing.min.js') }}"></script>
-    <script src="{{ static('scripts/classie.js') }}"></script>
-    <script src="{{ static('scripts/cbpAnimatedHeader.js') }}"></script>
     <script>
     var serverError = 'Server found itself in trouble. Please try again later. Sorry for inconvenience.';
     </script>
@@ -30,7 +25,7 @@
 
 <body id="page-top" class="index">
     {% block menu %}
-    <nav class="navbar navbar-default" style="position: relative;width:100%;">
+    <nav class="navbar navbar-default" style="position: relative;width:100%;margin-bottom:0px;">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -52,7 +47,7 @@
                         <a href="/auth/signup/" style="color: #C94A29;">Sign up</a>
                     </li>
                     <li>
-                        <a data-toggle="modal" style="color: #C94A29;" data-target="#loginModal">Login</a>
+                        <a href="/auth/login/" style="color: #C94A29;">Login</a>
                     </li>
                     <li>
                         <a href="#services" class="btn btn-l">Create Room</a>
@@ -66,8 +61,6 @@
     {% endblock %}
 
     {% block main %} {% endblock %}
-
-    {% include 'login.html' %}
     
     {% block footer %}
     <footer>

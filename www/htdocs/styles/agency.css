@@ -9,6 +9,12 @@ body {
     font-family: "Roboto Slab","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+div.login-box {
+  float: none;
+  margin: 0 auto;
+  clear: both;
+}
+
 .text-muted {
     color: #777;
 }
@@ -116,6 +122,14 @@ fieldset[disabled] .btn-primary.active {
     color: #C94A29;
     background-color: #fff;
 }
+.input-l {
+  width: auto !important;
+  height: 67px;
+  padding: 20px 40px;
+  font-size: 18px;
+  line-height: 1.3333333;
+  border-radius: 6px;
+}
 
 .btn-xl, .btn-l {
     padding: 20px 40px;
@@ -128,6 +142,7 @@ fieldset[disabled] .btn-primary.active {
     color: #fff;
     background-color: #C94A29;
 }
+
 
 .btn-xl:hover,
 .btn-xl:focus,
