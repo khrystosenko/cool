@@ -35,7 +35,14 @@ $(function() {
 
         e.preventDefault();
 
-        API.Signup().done(function(success) {
+        var data = {
+                username: $('#inputName').val(),
+                password: $('#inputPassword').val(),
+                repassword: $('#inputRePassword').val(),
+                email: $('#inputEmail').val()
+        };
+
+        API.Signup(data).done(function(success) {
         
             console.log("success");
 

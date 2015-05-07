@@ -13,27 +13,33 @@
                                     <div class="form-group required">
                                         <label class="col-md-4 control-label">Name <sup>*</sup></label>
                                         <div class="col-md-6">
-                                            <input name="" placeholder="First Name" class="form-control input-md" required="" type="text">
+                                            <input name="" placeholder="First Name" class="form-control input-md" id="inputName" required="" type="text">
                                         </div>
                                     </div>
                                     <div class="form-group required">
                                         <label for="inputEmail3" class="col-md-4 control-label">Email <sup>*</sup></label>
                                         <div class="col-md-6">
-                                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                                            <input type="email" class="form-control" required="" id="inputEmail" placeholder="Email">
                                         </div>
                                     </div>
                                     <div class="form-group required">
-                                        <label for="inputPassword3" class="col-md-4 control-label">Password </label>
+                                        <label for="inputPassword3" class="col-md-4 control-label">Password <sup>*</sup></label>
                                         <div class="col-md-6">
-                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                                            <input type="password" class="form-control" required="" id="inputPassword" placeholder="Password">
                                             <p class="help-block">At least 5 characters </p>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group required">
+                                        <label for="inputPassword3" class="col-md-4 control-label">Repeat Password <sup>*</sup></label>
+                                        <div class="col-md-6">
+                                            <input type="password" class="form-control" required="" id="inputRePassword" placeholder="Password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group required">
                                         <label class="col-md-4 control-label"></label>
                                         <div class="col-md-8">
                                             <div style="clear:both"></div>
-                                            <input type="submit" class="btn btn-info" value="Submit Button"> </div>
+                                           <button class="btn btn-primary" type="submit">Register</button></div>
                                     </div>
                                 </fieldset>
                             </form>
