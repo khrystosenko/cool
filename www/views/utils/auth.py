@@ -16,7 +16,7 @@ def signup(params):
     if not password:
         return utils.validation_error('password')
 
-    if len(password) < 6 or len(password) > 50:
+    if len(password) < 5 or len(password) > 50:
         return utils.validation_error('password')
 
     repassword = params.get('repassword', '')
