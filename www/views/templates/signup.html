@@ -8,7 +8,7 @@
                     <h2 class="title-2">Create your account, Its free </h2><br>
                     <div class="row">
                         <div class="col-sm-12">
-                            <form class="form-horizontal">
+                            <form class="form-horizontal" onsubmit="return APP.Signup.signup(event)">
                                 <fieldset>
                                     <div class="form-group required">
                                         <label class="col-md-4 control-label">Name <sup>*</sup></label>
@@ -33,7 +33,7 @@
                                         <label class="col-md-4 control-label"></label>
                                         <div class="col-md-8">
                                             <div style="clear:both"></div>
-                                            <a class="btn btn-primary" href="account-home.html">Register</a> </div>
+                                            <input type="submit" class="btn btn-info" value="Submit Button"> </div>
                                     </div>
                                 </fieldset>
                             </form>
