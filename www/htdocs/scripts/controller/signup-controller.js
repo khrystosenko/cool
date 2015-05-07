@@ -38,7 +38,7 @@ $(function() {
         var data = {
                 username: $('#inputName').val(),
                 password: $('#inputPassword').val(),
-                repassword: $('#inputRePassword').val(),
+                repassword: $('#inputPassword').val(),
                 email: $('#inputEmail').val()
         };
 
@@ -47,9 +47,7 @@ $(function() {
             console.log("success");
 
         }).fail(function(errors) {
-
-            $scope.errors = errors;
-
+            
             console.log(errors);
 
         });
