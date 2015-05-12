@@ -5,4 +5,5 @@ urlpatterns = patterns('views.auth.views',
     url(r'^login/$', 'login', name='login'),
     url(r'^logout/$', 'logout', name='logout'),
     url(r'^profile/$', 'profile', name='profile'),
+    url(r'^createroom/$', 'createroom', name='createroom'),
 )

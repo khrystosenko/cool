@@ -23,3 +23,6 @@ def logout(request):
 
 def profile(request):
     return TemplateResponse(request, 'profile.html')
+    
+def createroom(request):
+    return TemplateResponse(request, 'createroom.html')
