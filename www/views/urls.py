@@ -8,6 +8,7 @@ basepatterns = patterns('views.views',
 
 urlpatterns = basepatterns + patterns('',
     url(r'^auth/', include('views.auth.urls', 'auth')),
+    url(r'^room/', include('views.room.urls', 'room')),
 )
 
 if getattr(settings, 'DJANGO_DEV_SERVER', False):

@@ -10,7 +10,7 @@ def signup(req):
         data = auth.signup(request.get_params(req))
         return JSONResponse(data, status=data.get('error_code', 200))
 
-    return TemplateResponse(request, 'signup.html')
+    return TemplateResponse(request, 'auth/signup.html')
 
 def login(req):
     if auth.is_logged(req):
@@ -26,13 +26,10 @@ def login(req):
 
         return resp
         
-    return TemplateResponse(request, 'login.html')
+    return TemplateResponse(request, 'auth/login.html')
 
 def logout(request):
     return TemplateResponse(request, 'index.html')
 
 def profile(request):
-    return TemplateResponse(request, 'profile.html')
-    
-def createroom(request):
-    return TemplateResponse(request, 'createroom.html')
+    return TemplateResponse(request, 'auth/profile.html')
