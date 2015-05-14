@@ -1,0 +1,108 @@
+{% extends 'base.html' %} {% block main %}
+<div class="page-wrap" style="background-color: #EEEEEE;">
+    <div class="panel" style="border-top: 1px solid rgba(0, 0, 0, 0.19); border-radius: 0px;">
+        <div class="panel-light panel-body">
+            <div></div>
+            <div class="row row-space-top-6 row-space-6">
+                <div class="col-7 col-center text-center">
+                    <h1 class="h2">Create room</h1>
+                    <p class="text-lead">
+                        You can watch stream together with your friends with roomit.tv
+                    </p>
+                </div>
+            </div>
+            <div></div>
+        </div>
+    </div>
+    <div class="container">
+        <form role="form" onsubmit="return APP.Login.login(event)">
+            <!-- <div class="form-group">
+                <label for="sender-email" class="control-label col-sm-3">Email:</label>
+                <div class="input-icon col-sm-9">
+                    <input id="sender-email" type="text" placeholder="Email" class="form-control email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sender-email" class="control-label col-sm-3">Email:</label>
+                <div class="input-icon col-sm-9">
+                    <input id="sender-email" type="text" placeholder="Email" class="form-control email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sender-email" class="control-label col-sm-3">Email:</label>
+                <div class="input-icon col-sm-9">
+                    <input id="sender-email" type="text" placeholder="Email" class="form-control email">
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" type="submit">Submit</button>
+            </div> -->
+            <div class="row" style="padding: 15px;">
+                <div class="col-md-3 text-right col-middle">
+                    <div class="h4 text-light">Name</div>
+                </div>
+                <div class="col-md-9 fieldset fieldset_city col-middle">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="panel-light panel-border location-panel-body clearfix">
+                                <input id="sender-name" type="text" placeholder="Name" class="form-control name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="clearfix"></div>
+            <div class="row" style="padding: 15px;">
+                <div class="col-md-3 text-right col-middle">
+                    <div class="h4 text-light">Link</div>
+                </div>
+                <div class="col-md-9 fieldset fieldset_city col-middle">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="panel-light panel-border location-panel-body clearfix">
+                                <input id="sender-link" type="text" placeholder="Link" class="form-control link">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="clearfix"></div>
+            <div class="row" style="padding: 15px;">
+                <div class="col-md-3 text-right col-middle">
+                    <div class="h4 text-light">Game</div>
+                </div>
+                <div class="col-md-9 fieldset fieldset_city col-middle">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="panel-light panel-border location-panel-body clearfix">
+                                <input id="sender-game" type="text" placeholder="Game" class="form-control game">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="clearfix"></div>
+            <div class="row" style="padding: 15px;">
+                <div class="col-md-3 text-right col-middle">
+                    <div class="h4 text-light">Language</div>
+                </div>
+                <div class="col-md-9 fieldset fieldset_city col-middle">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="panel-light panel-border location-panel-body clearfix">
+                                <input id="sender-language" type="text" placeholder="Language" class="form-control language">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-9 col-md-offset-3" id="js-submit-button">
+                    <div class="pull-left">
+                        <button type="submit" class="btn btn-primary btn-xl submit">
+                            Create
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
