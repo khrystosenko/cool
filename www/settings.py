@@ -43,6 +43,8 @@ USE_L10N = False
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'a9sd86f^*dga88^(*g(egeg86*^*)^faesg^==sf68hf$&d7aj'
 
+SESSION_EXP_TIME = 60 * 60 * 24 * 365
+
 STATIC_URL = '/'
 
 STATIC_ROOT = rel('htdocs')

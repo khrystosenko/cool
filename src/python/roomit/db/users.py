@@ -11,5 +11,5 @@ def get_user(cursor, username, email):
 	""" % ('`, `'.join(fields),)
 
 	cursor.execute(query, [username, email])
-	data = dbcp.tuple2dict(cursor.fetchall(), fields)
+	data = dbcp.tuple2dict(cursor.fetchone(), fields)
 	return data

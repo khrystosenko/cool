@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
-from ..utils import auth, request
+from ..utils import auth, request, response
 from ..utils.views import JSONResponse
 
 
@@ -13,8 +13,18 @@ def signup(req):
     return TemplateResponse(request, 'signup.html')
 
 def login(req):
-    # if auth.is_logged(req):
-    #     return redirect('home')
+    if auth.is_logged(req):
+        return redirect('index')
+
+    if req.method == 'POST':
+        username = req.POST.get('username', '')
+        password = req.POST.get('password', '')
+        data = auth.login(username, password)
+        resp = JSONResponse(data, status=data.get('error_code', 200))
+        if not data['error']:
+            response.set_cookie(resp, 'session_id', data['id'])
+
+        return resp
         
     return TemplateResponse(request, 'login.html')
 
