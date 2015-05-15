@@ -9,8 +9,8 @@ $(function() {
         e.preventDefault();
 
         var data = {
-                password: $('#inputPassword').val(),
-                email: $('#inputEmail').val()
+                username: $('#sender-name').val(),
+                password: $('#user-pass').val()
         };
 
         API.Login(data).done(function(success) {
