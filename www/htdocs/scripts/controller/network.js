@@ -1,5 +1,7 @@
 (function() {
 
+    window.Sockets = {};
+
     var transport;
     var network = {
         send: send
@@ -20,15 +22,19 @@
     var host = HOST.split(':')[0] + ':' + HOST.split(':')[1];
     var port = 8888;
 
-    transport = io.connect(host + ':' + port);
+    Sockets.connectSocket = function() {
 
-    transport.on('connect', function() {
+        transport = io.connect(host + ':' + port);
 
-        console.log('socket connected');
+        transport.on('connect', function() {
 
-    });
+            console.log('socket connected');
 
-     function send(type, data, fn) {
+        });
+
+    }
+
+    function send(type, data, fn) {
 
         transport.emit(type, data, fn);
 
