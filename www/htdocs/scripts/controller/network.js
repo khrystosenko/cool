@@ -32,6 +32,10 @@
 
         });
 
+        transport.on('chat message', function(msg) {
+            $('#messages').append($('<li>').text(msg));
+        });
+
     }
 
     function send(type, data, fn) {

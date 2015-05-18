@@ -22,7 +22,7 @@
     $(document).on('appRouteChange', function(){
         console.log(Nav.getParam());
         // startChat();
-        // Sockets.connectSocket();
+        Sockets.connectSocket();
 
     })
 
