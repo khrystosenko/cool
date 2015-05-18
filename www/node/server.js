@@ -1,4 +1,5 @@
 var express = require('express');
+var io = require('socket.io').listen(8888);
 var bodyParser = require('body-parser');
 var fs = require('fs');
 
@@ -22,5 +23,9 @@ app.post('/chat', function (req, res) {
 
 var port = 9999,  
     ip = "127.0.0.1";
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
 
 server.listen(port, ip, function() {console.log('Server is running.')});

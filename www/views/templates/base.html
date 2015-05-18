@@ -25,11 +25,13 @@
     {% block javascript %}
     <script src="{{ static('scripts/lib/jquery-2.1.4.js') }}"></script>
     <script src="{{ static('scripts/lib/bootstrap.js') }}"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script>
     var serverError = 'Server found itself in trouble. Please try again later. Sorry for inconvenience.';
     </script>
     {% block custom_javascript %}
     <script src="{{ static('scripts/core.js') }}"></script>
+    <script src="{{ static('scripts/controller/network.js') }}"></script>
     <script src="{{ static('scripts/controller/signup-controller.js') }}"></script>
     <script src="{{ static('scripts/controller/create-room-controller.js') }}"></script>
     <script src="{{ static('scripts/service/signup-service.js') }}"></script>

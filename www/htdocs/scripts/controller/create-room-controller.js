@@ -4,7 +4,6 @@
 
     var CreateRoom = APP.CreateRoom;
 
-
     var startChat = function() {
         $.ajax({
             type: "POST",
@@ -23,6 +22,7 @@
     $(document).on('appRouteChange', function(){
         // console.log(Nav.getParam());
         startChat();
+
     })
 
     CreateRoom.createRoom = function(e) {
