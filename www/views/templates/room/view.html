@@ -1,4 +1,8 @@
 {% extends 'base.html' %} {% block main %}
+<script src="http://127.0.0.1:7000/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://127.0.0.1:7000');
+</script>
 <div class="page-wrap" style="background-color: #EEEEEE;">
     <div class="panel" style="border-top: 1px solid rgba(0, 0, 0, 0.19); border-radius: 0px;">
         <div class="panel-light panel-body">
