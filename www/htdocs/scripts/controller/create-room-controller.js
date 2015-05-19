@@ -31,10 +31,10 @@
         e.preventDefault();
 
         var data = {
-            username: $('#sender-name').val(),
-            username: $('#sender-link').val(),
-            username: $('#sender-game').val(),
-            username: $('#sender-language').val()
+            // username: $('#sender-name').val(),
+            username: $('#sender-link').val()
+            // username: $('#sender-game').val(),
+            // username: $('#sender-language').val()
         };
 
         API.CreateRoom(data).done(function(success) {
