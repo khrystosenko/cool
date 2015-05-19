@@ -36,9 +36,7 @@
     Object.defineProperty(network, 'transport', {
 
         get: function() {
-
             return transport;
-
         }
 
     });
@@ -51,42 +49,20 @@
         transport = io.connect(host + ':' + port);
 
         transport.on('connect', function() {
-
             console.log('socket connected');
-
         });
 
-        // transport.on('chat message', function(msg) {
-        //     $('#messages').append($('<li>').text(msg));
-        // });
-
-        // Whenever the server emits 'login', log the login message
         transport.on('login', function(data) {
             connected = true;
-            // Display the welcome message
-            var message = "Welcome to Socket.IO Chat – ";
-            log(message, {
-                prepend: true
-            });
-            addParticipantsMessage(data);
         });
 
-        // Whenever the server emits 'new message', update the chat body
-        transport.on('new message', function(data) {
+        transport.on('updatechat', function(data) {
             addChatMessage(data);
         });
 
-        // Whenever the server emits 'user joined', log it in the chat body
-        transport.on('user joined', function(data) {
+        transport.on('userjoined', function(data) {
             log(data.username + ' joined');
             addParticipantsMessage(data);
-        });
-
-        // Whenever the server emits 'user left', log it in the chat body
-        transport.on('user left', function(data) {
-            log(data.username + ' left');
-            addParticipantsMessage(data);
-            removeChatTyping(data);
         });
 
         // Whenever the server emits 'typing', show the typing message
@@ -95,7 +71,7 @@
         });
 
         // Whenever the server emits 'stop typing', kill the typing message
-        transport.on('stop typing', function(data) {
+        transport.on('stoptyping', function(data) {
             removeChatTyping(data);
         });
 
@@ -146,7 +122,7 @@
             $currentInput = $('.inputMessage').focus();
 
             // Tell the server your username
-            transport.emit('add user', username);
+            transport.emit('adduser', username, ROOM_UUID);
         }
     }
 
@@ -164,12 +140,7 @@
         // if there is a non-empty message and a socket connection
         if (message && connected) {
             $('.inputMessage').val('');
-            addChatMessage({
-                username: username,
-                message: message
-            });
-            // tell server to execute 'new message' and send along one parameter
-            transport.emit('new message', message);
+            transport.emit('sendchat', message);
         }
     }
 

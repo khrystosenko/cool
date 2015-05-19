@@ -18,67 +18,52 @@ var io = require('socket.io').listen(8888);
 // Chatroom
 
 // usernames which are currently connected to the chat
-var usernames = {};
+var rooms = {};
 var numUsers = 0;
 
 io.sockets.on('connection', function (socket) {
+  console.log('Socket connected.')
   var addedUser = false;
 
-  // when the client emits 'new message', this listens and executes
-  socket.on('new message', function (data) {
-    // we tell the client to execute 'new message'
-    console.log(socket.username, data)
-    socket.broadcast.emit('new message', {
-      username: socket.username,
-      message: data
-    });
+  socket.on('sendchat', function (data) {
+    io.sockets.in(socket.room).emit('updatechat', {username: socket.username, message: data});
   });
 
-  // when the client emits 'add user', this listens and executes
-  socket.on('add user', function (username) {
-    console.log(username);
-    // we store the username in the socket session for this client
+  socket.on('adduser', function (username, room_uuid) {
+    console.log('User ' + username + ' is added.');
     socket.username = username;
-    // add the client's username to the global list
-    usernames[username] = username;
-    ++numUsers;
-    addedUser = true;
-    socket.emit('login', {
-      numUsers: numUsers
-    });
-    // echo globally (all clients) that a person has connected
-    socket.broadcast.emit('user joined', {
-      username: socket.username,
-      numUsers: numUsers
-    });
+    socket.room = room_uuid;
+
+    if (rooms[socket.room]) {
+        rooms[socket.room] += 1;
+    } else {
+        rooms[socket.room] = 1;
+    }
+
+    socket.emit('login');
+    socket.emit('userjoined', {username: socket.username, numUsers: rooms[socket.room]});
+    socket.join(socket.room);
+    socket.emit('updatechat', {username: 'SERVER', message: 'you have connected to ' + socket.room});
+    socket.broadcast.to(socket.room).emit('updatechat', {username: 'SERVER', message: username + ' has connected to this room.'});
   });
 
   // when the client emits 'typing', we broadcast it to others
   socket.on('typing', function () {
-    socket.broadcast.emit('typing', {
+    socket.broadcast.to(socket.room).emit('typing', {
       username: socket.username
     });
   });
 
   // when the client emits 'stop typing', we broadcast it to others
-  socket.on('stop typing', function () {
-    socket.broadcast.emit('stop typing', {
+  socket.on('stoptyping', function () {
+    socket.broadcast.to(socket.room).emit('stoptyping', {
       username: socket.username
     });
   });
 
   // when the user disconnects.. perform this
   socket.on('disconnect', function () {
-    // remove the username from global usernames list
-    if (addedUser) {
-      delete usernames[socket.username];
-      --numUsers;
-
-      // echo globally that this client has left
-      socket.broadcast.emit('user left', {
-        username: socket.username,
-        numUsers: numUsers
-      });
-    }
+    socket.broadcast.emit('updatechat', {username: 'SERVER', message: socket.username + ' has disconnected'});
+    socket.leave(socket.room);
   });
 });
