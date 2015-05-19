@@ -1,3 +1,4 @@
+
 (function() {
 
     window.Sockets = {};
@@ -54,6 +55,14 @@
 
         transport.on('login', function(data) {
             connected = true;
+            $('.inputMessage').on('input', function() {
+                updateTyping(transport);
+            });
+
+        });
+
+        transport.on('userleft', function(data) {
+            addParticipantsMessage(data);
         });
 
         transport.on('updatechat', function(data) {
@@ -65,12 +74,10 @@
             addParticipantsMessage(data);
         });
 
-        // Whenever the server emits 'typing', show the typing message
         transport.on('typing', function(data) {
             addChatTyping(data);
         });
 
-        // Whenever the server emits 'stop typing', kill the typing message
         transport.on('stoptyping', function(data) {
             removeChatTyping(data);
         });
@@ -121,7 +128,6 @@
             $('.login.page').off('click');
             $currentInput = $('.inputMessage').focus();
 
-            // Tell the server your username
             transport.emit('adduser', username, ROOM_UUID);
         }
     }
@@ -240,7 +246,7 @@
     }
 
     // Updates the typing event
-    function updateTyping() {
+    function updateTyping(socket) {
         if (connected) {
             if (!typing) {
                 typing = true;
@@ -252,18 +258,12 @@
                 var typingTimer = (new Date()).getTime();
                 var timeDiff = typingTimer - lastTypingTime;
                 if (timeDiff >= TYPING_TIMER_LENGTH && typing) {
-                    socket.emit('stop typing');
+                    socket.emit('stoptyping');
                     typing = false;
                 }
             }, TYPING_TIMER_LENGTH);
         }
     }
-
-
-
-    $('.inputMessage').on('input', function() {
-        updateTyping();
-    });
 
     window.network = network;
 

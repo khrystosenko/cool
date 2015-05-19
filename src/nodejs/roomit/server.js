@@ -47,14 +47,12 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.to(socket.room).emit('updatechat', {username: 'SERVER', message: username + ' has connected to this room.'});
   });
 
-  // when the client emits 'typing', we broadcast it to others
   socket.on('typing', function () {
     socket.broadcast.to(socket.room).emit('typing', {
       username: socket.username
     });
   });
 
-  // when the client emits 'stop typing', we broadcast it to others
   socket.on('stoptyping', function () {
     socket.broadcast.to(socket.room).emit('stoptyping', {
       username: socket.username
@@ -63,7 +61,9 @@ io.sockets.on('connection', function (socket) {
 
   // when the user disconnects.. perform this
   socket.on('disconnect', function () {
-    socket.broadcast.emit('updatechat', {username: 'SERVER', message: socket.username + ' has disconnected'});
+    rooms[socket.room] -= 1;
+    socket.broadcast.to(socket.room).emit('updatechat', {username: 'SERVER', message: socket.username + ' left.'});
+    socket.broadcast.to(socket.room).emit('userleft', {username: socket.username, numUsers: rooms[socket.room]});
     socket.leave(socket.room);
   });
 });
