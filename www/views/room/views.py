@@ -1,11 +1,16 @@
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
+from django.http import HttpResponseRedirect
 
-def create(request):
-	if request.method == 'POST':
-		return redirect('room-view')
+from ..utils import room, request
 
-	return TemplateResponse(request, 'room/create.html')
 
-def view(request):
-	return TemplateResponse(request, 'room/view.html')
+def create(req):
+    if req.method == 'POST':
+        room_uuid = room.generate_room(request.get_params(req))
+        return HttpResponseRedirect('/room/')
+
+    return TemplateResponse(req, 'room/create.html')
+
+def view(req):
+    return TemplateResponse(req, 'room/view.html')

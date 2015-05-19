@@ -44,6 +44,7 @@ USE_L10N = False
 SECRET_KEY = 'a9sd86f^*dga88^(*g(egeg86*^*)^faesg^==sf68hf$&d7aj'
 
 SESSION_EXP_TIME = 60 * 60 * 24 * 365
+ROOM_EXP_TIME = 60 * 60 * 24 * 2
 
 STATIC_URL = '/'
 
