@@ -4,24 +4,8 @@
 
     var CreateRoom = APP.CreateRoom;
 
-    var startChat = function() {
-        $.ajax({
-            type: "POST",
-            url: 'http://localhost:9999/chat',
-            data: JSON.stringify({}),
-            cache: false,
-            success: function() {
-
-            },
-            error: function() {
-
-            },
-        });
-    };
-
     $(document).on('appRouteChange', function(){
         console.log(Nav.getParam());
-        // startChat();
         Sockets.connectSocket();
 
     })
