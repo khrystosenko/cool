@@ -1,5 +1,6 @@
 var io = require('socket.io').listen(8888);
 
+io.sockets.on('connection', function(socket){
 
   console.log('a user connected');
 
