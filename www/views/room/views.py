@@ -3,12 +3,13 @@ from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 
 from ..utils import room, request
+from ..utils.views import JSONResponse
 
 
 def create(req):
     if req.method == 'POST':
         room_uuid = room.generate_room(request.get_params(req))
-        return HttpResponseRedirect('/room/?uuid=%s' % (room_uuid,))
+        return JSONResponse({'room_uuid': room_uuid})
 
     return TemplateResponse(req, 'room/create.html')
 
