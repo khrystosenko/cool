@@ -16,7 +16,7 @@
 
         var data = {
             // username: $('#sender-name').val(),
-            username: $('#sender-link').val()
+            link: $('#sender-link').val()
             // username: $('#sender-game').val(),
             // username: $('#sender-language').val()
         };
@@ -24,6 +24,7 @@
         API.CreateRoom(data).done(function(success) {
 
             console.log("success");
+            window.location.href = '/room/?uuid='+success.room_uuid;
 
         }).fail(function(errors) {
 
