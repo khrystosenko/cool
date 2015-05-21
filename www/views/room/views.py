@@ -18,4 +18,8 @@ def view(req):
     if not room_uuid:
         return HttpResponseRedirect('/room/create/')
 
-    return TemplateResponse(req, 'room/view.html', {'room_uuid': room_uuid})
+    data = room.get_room(room_uuid)
+    if not data:
+        return HttpResponseRedirect('/room/create/')
+
+    return TemplateResponse(req, 'room/view.html', data)

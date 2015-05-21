@@ -7,3 +7,7 @@ def generate_room(link):
     room.store_room(link, room_uuid)
 
     return room_uuid
+
+def get_room(room_uuid):
+    data = room.get_room(room_uuid)
+    return data
