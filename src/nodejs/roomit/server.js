@@ -1,69 +1,105 @@
-var io = require('socket.io').listen(8888);
+(function() {
+  var ROOMIT = this.ROOMIT || {};
 
-// io.sockets.on('connection', function(socket){
+  function loadLocalConfig() {
+    var fs = require('fs');
+    ROOMIT.config = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf-8'));
+  }
 
-//   console.log('a user connected');
+  function setUpServer() {
+    var rooms = {},
+        sockets = {};
+    var io = require('socket.io').listen(ROOMIT.config.port);
+    console.log('Server is running...');
 
-//   socket.on('disconnect', function(){
-//     console.log('user disconnected');
-//   });
+    io.sockets.on('connection', function(socket) {
+      console.log('Socket ' + socket.id + ' is connected.');
 
-//   socket.on('chat message', function(msg){
-//     console.log('message: ' + msg);
-//     socket.broadcast.emit(msg);
-//     io.emit('chat message', msg);
-//   });
+      socket.on('initialize', function(username, room_uuid) {
+        console.log('User ' + username + ' is added.');
+        socket.username = username;
+        socket.room_uuid = room_uuid;
+        rooms[room_uuid] = rooms[room_uuid] || [];
 
-// });
-// Chatroom
+        if (rooms[room_uuid].indexOf(socket.id) != -1) {
+          console.log('[' + socket.id + '] ERROR: already joined.');
+          return;
+        }
 
-// usernames which are currently connected to the chat
-var rooms = {};
-var numUsers = 0;
+        rooms[room_uuid].push(socket.id);
+        sockets[socket.id] = socket;
 
-io.sockets.on('connection', function (socket) {
-  console.log('Socket connected.')
-  var addedUser = false;
+        socket.join(socket.room_uuid);
+        socket.emit('login');
+        socket.emit('user-joined', {username: username, numUsers: rooms[socket.room_uuid].length});
+        socket.broadcast.to(socket.room_uuid).emit('chat-update', {username: 'SERVER', message: username + ' has connected to this room.'});
 
-  socket.on('sendchat', function (data) {
-    io.sockets.in(socket.room).emit('updatechat', {username: socket.username, message: data});
-  });
+        for (var i in rooms[room_uuid]) {
+          socket_id = rooms[room_uuid][i];
+          sockets[socket_id].emit('peer-add', {socket_id: socket.id, create_offer: false});
+          socket.emit('peer-add', {socket_id: socket_id, create_offer: true});
+        }
 
-  socket.on('adduser', function (username, room_uuid) {
-    console.log('User ' + username + ' is added.');
-    socket.username = username;
-    socket.room = room_uuid;
+      });
 
-    if (rooms[socket.room]) {
-        rooms[socket.room] += 1;
-    } else {
-        rooms[socket.room] = 1;
-    }
+      socket.on('chat-send', function (data) {
+        io.sockets.in(socket.room_uuid).emit('chat-update', {username: socket.username, message: data});
+      });
 
-    socket.emit('login');
-    socket.emit('userjoined', {username: socket.username, numUsers: rooms[socket.room]});
-    socket.join(socket.room);
-    socket.emit('updatechat', {username: 'SERVER', message: 'you have connected to ' + socket.room});
-    socket.broadcast.to(socket.room).emit('updatechat', {username: 'SERVER', message: username + ' has connected to this room.'});
-  });
+      socket.on('typing', function () {
+        socket.broadcast.to(socket.room_uuid).emit('typing', {username: socket.username});
+      });
 
-  socket.on('typing', function () {
-    socket.broadcast.to(socket.room).emit('typing', {
-      username: socket.username
+      socket.on('typing-stop', function () {
+       socket.broadcast.to(socket.room_uuid).emit('typing-stop', {username: socket.username});
+      });
+
+      socket.on('ice_candidate-relay', function(data) {
+        var socket_id = data.socket_id;
+        var ice_candidate = data.ice_candidate;
+        console.log('[' + socket.id + '] relaying ICE candidate to [' + socket_id + '] ', ice_candidate);
+
+        if (socket_id in sockets) {
+            sockets[socket_id].emit('ice_candidate', {'socket_id': socket.id, 'ice_candidate': ice_candidate});
+        }
+      });
+
+      socket.on('session_description-relay', function(data) {
+          var socket_id = data.socket_id;
+          var session_description = data.session_description;
+          console.log('[' + socket.id + '] relaying session description to [' + socket_id + '] ', session_description);
+
+          if (socket_id in sockets) {
+              sockets[socket_id].emit('session_description', {'socket_id': socket.id, 'session_description': session_description});
+          }
+      });
+
+      socket.on('disconnect', function () {
+        console.log('Socket ' + socket.id + ' is disconnected.');
+        socket.leave(socket.room_uuid);
+
+        if (rooms[socket.room_uuid] === undefined) {
+          return;
+        }
+
+        var index = rooms[socket.room_uuid].indexOf(socket.id);
+        rooms[socket.room_uuid] = rooms[socket.room_uuid].slice(0, index).concat(rooms[socket.room_uuid].slice(index + 1));
+
+        socket.broadcast.to(socket.room_uuid).emit('chat-update', {username: 'SERVER', message: socket.username + ' left.'});
+        socket.broadcast.to(socket.room_uuid).emit('user-left', {username: socket.username, numUsers: rooms[socket.room_uuid].length});
+
+        for (var i in rooms[socket.room_uuid]) {
+          socket_id = rooms[socket.room_uuid][i];
+          sockets[socket_id].emit('peer-remove', {socket_id: socket.id});
+          socket.emit('peer-remove', {socket_id: socket_id});
+        }
+
+        delete sockets[socket.id];
+      });
+
     });
-  });
+  }
 
-  socket.on('stoptyping', function () {
-    socket.broadcast.to(socket.room).emit('stoptyping', {
-      username: socket.username
-    });
-  });
-
-  // when the user disconnects.. perform this
-  socket.on('disconnect', function () {
-    rooms[socket.room] -= 1;
-    socket.broadcast.to(socket.room).emit('updatechat', {username: 'SERVER', message: socket.username + ' left.'});
-    socket.broadcast.to(socket.room).emit('userleft', {username: socket.username, numUsers: rooms[socket.room]});
-    socket.leave(socket.room);
-  });
-});
+  loadLocalConfig();
+  setUpServer();
+})(this);
