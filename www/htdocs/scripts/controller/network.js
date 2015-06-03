@@ -172,7 +172,7 @@
 
                 var remote_media = $('<audio>');
                 remote_media.attr('autoplay', 'autoplay');
-                remote_media.attr('muted', 'true');
+                remote_media.attr('muted', 'false');
                 remote_media.attr('controls', '');
                 peerMediaElemenets[socket_id] = remote_media;
                 $('#' + audioChatID).append(remote_media);
@@ -241,7 +241,7 @@
             console.log('Description Object: ', desc);
         });
 
-        transport.on('ice-candidate', function(data) {
+        transport.on('ice_candidate', function(data) {
             var peer = peers[data.socket_id];
             var ice_candidate = data.ice_candidate;
             peer.addIceCandidate(new RTCIceCandidate(ice_candidate));
