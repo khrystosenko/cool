@@ -18,35 +18,58 @@ var ROOM_UUID = '{{ room_uuid }}',
             <div></div>
         </div>
     </div>
-        <!--<div class="col-sm-10">
-            <object style="float: left; display: inline-block;" type="application/x-shockwave-flash" height="500" width="900" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{ ROOM_LINK }}" bgcolor="#000000">
-                <param name="allowFullScreen" value="true" />
-                <param name="allowScriptAccess" value="always" />
-                <param name="allowNetworking" value="all" />
-                <param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" />
-                <param name="flashvars" value="hostname=www.twitch.tv&channel={{ link }}&auto_play=true&start_volume=25" />
-            </object>
-                <iframe style="float: right; display: inline-block;" frameborder="0" scrolling="no" src="http://twitch.tv/{{ link }}/chat?popout=" height="500" width="350"></iframe>
-            
-        </div>-->
-        <div class="col-sm-12" style="height: 600px; margin-bottom: 20px; padding: 0;">
-        <ul class="pages">
-            <li class="chat page" style="width: 100%;">
-
-                <div class="col-sm-12" id="audio_chat" style="float: right; background-color: gray; width: 60%; height: 100%;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-lg-9">
+                <div style="height:600px;width:100%;">
+                    <object style="float: left; display: inline-block;" type="application/x-shockwave-flash" height="100%" width="100%" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{ ROOM_LINK }}" bgcolor="#000000">
+                        <param name="allowFullScreen" value="true" />
+                        <param name="allowScriptAccess" value="always" />
+                        <param name="allowNetworking" value="all" />
+                        <param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" />
+                        <param name="flashvars" value="hostname=www.twitch.tv&channel={{ link }}&auto_play=true&start_volume=25" />
+                    </object>
                 </div>
-                <div class="chatArea">
-                    <ul class="messages"></ul>
+            </div>
+            <div class="col-sm-3 col-lg-3" style="height: 600px; margin-bottom: 20px; padding: 0;">
+                <ul class="pages">
+                    <li class="chat page" style="width: 100%;">
+                        <div class="chatArea">
+                            <ul class="messages"></ul>
+                        </div>
+                        <input class="inputMessage" placeholder="Type here..." />
+                    </li>
+                    <li class="login page">
+                        <div class="form">
+                            <h3 class="title">What's your nickname?</h3>
+                            <input class="usernameInput" type="text" maxlength="14" />
+                        </div>
+                    </li>
+                </ul>
+                <!-- <iframe style="float: right; display: inline-block;" frameborder="0" scrolling="no" src="http://twitch.tv/{{ link }}/chat?popout=" height="500" width="300"></iframe> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12" style="height: 200px; margin-bottom: 20px; padding: 0;">
+                <div class="col-sm-12" id="audio_chat" style="float: right;width: 100%;">
                 </div>
-                <input class="inputMessage" placeholder="Type here..." />
-
-        </li>
-            <li class="login page">
-                <div class="form">
-                    <h3 class="title">What's your nickname?</h3>
-                    <input class="usernameInput" type="text" maxlength="14" />
-                </div>
-            </li>
-        </ul></div>
-
+                <!-- <ul class="pages">
+                        <li class="chat page" style="width: 100%;">
+                            <div class="col-sm-12" id="audio_chat" style="float: right; background-color: gray; width: 60%; height: 100%;">
+                            </div>
+                            <div class="chatArea">
+                                <ul class="messages"></ul>
+                            </div>
+                            <input class="inputMessage" placeholder="Type here..." />
+                        </li>
+                        <li class="login page">
+                            <div class="form">
+                                <h3 class="title">What's your nickname?</h3>
+                                <input class="usernameInput" type="text" maxlength="14" />
+                            </div>
+                        </li>
+                    </ul> -->
+            </div>
+        </div>
+    </div>
     {% endblock %}

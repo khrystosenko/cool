@@ -958,7 +958,7 @@ ul {
 /* Login Page */
 
 .login.page {
-  background-color: #000;
+  background-color: #96321C;
 }
 
 .login.page .form {
@@ -978,7 +978,7 @@ ul {
   outline: none;
   padding-bottom: 15px;
   text-align: center;
-  width: 400px;
+  width: 200px;
 }
 
 .login.page .title {
@@ -1004,7 +1004,7 @@ ul {
 /* Font */
 
 .messages {
-  font-size: 150%;
+  font-size: 110%;
 }
 
 .inputMessage {
