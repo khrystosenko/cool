@@ -299,8 +299,7 @@
             },
             function() { /* user denied access to a/v */
                 console.log("Access denied for audio/video");
-                alert("You chose not to provide access to the camera/microphone, demo will not work.");
-                if (errorback) errorback();
+                if (callback) callback();
             });
     }
 
