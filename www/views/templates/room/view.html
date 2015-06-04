@@ -20,7 +20,7 @@ var ROOM_UUID = '{{ room_uuid }}',
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-sm-9 col-lg-9">
+            <div class="col-sm-9 col-lg-9" style="margin-bottom: 20px; padding: 0;">
                 <div style="height:600px;width:100%;">
                     <object style="float: left; display: inline-block;" type="application/x-shockwave-flash" height="100%" width="100%" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{ ROOM_LINK }}" bgcolor="#000000">
                         <param name="allowFullScreen" value="true" />
@@ -41,6 +41,7 @@ var ROOM_UUID = '{{ room_uuid }}',
                     </li>
                     <li class="login page">
                         <div class="form">
+                            <h4 style="color: #fff;">Please log into chat</h4>
                             <h3 class="title">What's your nickname?</h3>
                             <input class="usernameInput" type="text" maxlength="14" />
                         </div>
@@ -51,7 +52,7 @@ var ROOM_UUID = '{{ room_uuid }}',
         </div>
         <div class="row">
             <div class="col-sm-12" style="height: 200px; margin-bottom: 20px; padding: 0;">
-                <div class="col-sm-12" id="audio_chat" style="float: right;width: 100%;">
+                <div id="audio_chat" style="float: right;width: 100%;">
                 </div>
                 <!-- <ul class="pages">
                         <li class="chat page" style="width: 100%;">
