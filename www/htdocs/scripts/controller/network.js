@@ -179,7 +179,9 @@
                 navigator.attachMediaStream(remote_media[0], event.stream);
             }
 
-            peer_connection.addStream(localMediaStream);
+            if (localMediaStream) {
+                peer_connection.addStream(localMediaStream);
+            }
 
             if (data.create_offer) {
                 console.log('Creating RTC offer to ', socket_id);
@@ -289,7 +291,7 @@
             function(stream) { /* user accepted access to a/v */
                 console.log("Access granted to audio/video");
                 localMediaStream = stream;
-                var local_media = $("<audio>");
+                var local_media = $('<audio>');
                 local_media.attr('autoplay', 'autoplay');
                 local_media.attr('muted', 'true'); /* always mute ourselves by default */
                 local_media.attr('controls', '');
