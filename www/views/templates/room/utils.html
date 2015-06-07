@@ -16,5 +16,8 @@
 {% if service == 'azubu' %}
 <iframe src="http://video.azubu.tv/services/player/bcpid3594868184001?bckey=AQ~~,AAADDsF76gk~,aeB-sfIIuRjHKAq2udBzl5xOFsHqSFjw&@videoPlayer=ref:video36209CH{{ channel }}&width=100%25&height=100%25&bgcolor=#000000&htmlFallback=htmlFallback&includeAPI=true&quality=high&dynamicStreaming=true&isUI=true&isVid=true" width="100%" height="100%"></iframe>
 {% endif %}
+{% if service == 'dailymotion' %}
+<iframe frameborder="0" width="100%" height="600" src="http://www.dailymotion.com/embed/video/{{ channel }}" allowfullscreen ></iframe>
+{% endif %}
 </div>
 {%- endmacro %}

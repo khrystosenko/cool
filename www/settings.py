@@ -108,5 +108,9 @@ REGEXP = {
           'service': 'azubu', 
           'pattern': r'^http?:\/\/www\.azubu\.tv\/([^\/]+)\/?$'
         },
+        {
+          'service': 'dailymotion', 
+          'pattern': r'^http?:\/\/games\.dailymotion\.com\/live\/([^\/]+)\/?$'
+        },
     ]
 }
