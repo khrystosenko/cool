@@ -201,6 +201,12 @@
                     },
                     function (error) {
                         console.log('Error sending offer: ', error);
+                    }, 
+                    {
+                        'optional': [],
+                        'mandatory': {
+                            'OfferToReceiveAudio': data.access_granted
+                        }
                     });
             }
         });
@@ -210,7 +216,7 @@
             var socket_id = data.socket_id;
             var peer = peers[socket_id];
             var remote_description = data.session_description;
-            console.log(data.session_description);
+            console.log(remote_description);
 
             var desc = new RTCSessionDescription(remote_description);
             var stuff = peer.setRemoteDescription(desc, 
@@ -233,6 +239,12 @@
                             function(error) {
                                 console.log('Error creating answer: ', error);
                                 console.log(peer);
+                            },
+                            {
+                                'optional': [],
+                                'mandatory': {
+                                    'OfferToReceiveAudio': data.access_granted
+                                }
                             });
                     }
                 },
@@ -293,15 +305,15 @@
                 localMediaStream = stream;
                 var local_media = $('<audio>');
                 local_media.attr('autoplay', 'autoplay');
-                local_media.attr('muted', 'true'); /* always mute ourselves by default */
+                local_media.attr('muted', true); /* always mute ourselves by default */
                 local_media.attr('controls', '');
                 $('#' + audioChatID).append(local_media);
                 navigator.attachMediaStream(local_media[0], stream);
-                if (callback) callback();
+                if (callback) callback(true);
             },
             function() { /* user denied access to a/v */
                 console.log("Access denied for audio/video");
-                if (callback) callback();
+                if (callback) callback(false);
             });
     }
 
@@ -330,8 +342,8 @@
             $('.login.page').off('click');
             $currentInput = $('.inputMessage').focus();
 
-            setup_local_media(function() {
-                transport.emit('initialize', username, ROOM_UUID);
+            setup_local_media(function(access_granted) {
+                transport.emit('initialize', username, ROOM_UUID, access_granted);
             });
         }
     }

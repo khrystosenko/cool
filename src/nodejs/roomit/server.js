@@ -15,10 +15,11 @@
     io.sockets.on('connection', function(socket) {
       console.log('Socket ' + socket.id + ' is connected.');
 
-      socket.on('initialize', function(username, room_uuid) {
+      socket.on('initialize', function(username, room_uuid, access_granted) {
         console.log('User ' + username + ' is added.');
         socket.username = username;
         socket.room_uuid = room_uuid;
+        socket.access_granted = access_granted;
         rooms[room_uuid] = rooms[room_uuid] || [];
 
         if (rooms[room_uuid].indexOf(socket.id) != -1) {
@@ -34,7 +35,7 @@
         for (var i in rooms[room_uuid]) {
           socket_id = rooms[room_uuid][i];
           sockets[socket_id].emit('peer-add', {socket_id: socket.id, create_offer: false});
-          socket.emit('peer-add', {socket_id: socket_id, create_offer: true});
+          socket.emit('peer-add', {socket_id: socket_id, create_offer: true, access_granted: sockets[socket_id].access_granted});
         }
 
         rooms[room_uuid].push(socket.id);
@@ -71,7 +72,8 @@
           console.log('[' + socket.id + '] relaying session description to [' + socket_id + '] ', session_description);
 
           if (socket_id in sockets) {
-              sockets[socket_id].emit('session_description', {'socket_id': socket.id, 'session_description': session_description});
+              sockets[socket_id].emit('session_description', {'socket_id': socket.id, 'session_description': session_description, 
+                                                      'access_granted': socket.access_granted});
           }
       });
 
