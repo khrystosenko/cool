@@ -10,5 +10,11 @@
 	    <param name="flashvars" value="hostname=www.twitch.tv&channel={{ channel }}&auto_play=true&start_volume=25" />
 	</object>
 {% endif %}
+{% if service == 'hitbox' %}
+<iframe width="100%" height="600" src="http://www.hitbox.tv/embed/{{ channel }}" frameborder="0" allowfullscreen></iframe>
+{% endif %}
+{% if service == 'azubu' %}
+<iframe src="http://video.azubu.tv/services/player/bcpid3594868184001?bckey=AQ~~,AAADDsF76gk~,aeB-sfIIuRjHKAq2udBzl5xOFsHqSFjw&@videoPlayer=ref:video36209CH{{ channel }}&width=100%25&height=100%25&bgcolor=#000000&htmlFallback=htmlFallback&includeAPI=true&quality=high&dynamicStreaming=true&isUI=true&isVid=true" width="100%" height="100%"></iframe>
+{% endif %}
 </div>
 {%- endmacro %}

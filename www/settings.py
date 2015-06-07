@@ -100,5 +100,13 @@ REGEXP = {
           'service': 'twitch', 
           'pattern': r'^https?:\/\/www\.twitch\.tv\/([^\/]+)\/?$'
         },
+        {
+          'service': 'hitbox', 
+          'pattern': r'^http?:\/\/www\.hitbox\.tv\/([^\/]+)\/?$'
+        },
+        {
+          'service': 'azubu', 
+          'pattern': r'^http?:\/\/www\.azubu\.tv\/([^\/]+)\/?$'
+        },
     ]
 }
