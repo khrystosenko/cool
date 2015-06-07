@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block main %}
+{% from "room/utils.html" import get_service_frame %}
 <script>
-var ROOM_UUID = '{{ room_uuid }}',
-    ROOM_LINK = '{{ link }}';
+var ROOM_UUID = '{{ room_uuid }}';
 </script>
 <div class="page-wrap" style="background-color: #EEEEEE;">
     <div class="panel" style="border-top: 1px solid rgba(0, 0, 0, 0.19); border-radius: 0px;">
@@ -21,15 +21,7 @@ var ROOM_UUID = '{{ room_uuid }}',
     <div class="container">
         <div class="row">
             <div class="col-sm-9 col-lg-9" style="margin-bottom: 20px; padding: 0;">
-                <div style="height:600px;width:100%;">
-                    <object style="float: left; display: inline-block;" type="application/x-shockwave-flash" height="100%" width="100%" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{ link }}" bgcolor="#000000">
-                        <param name="allowFullScreen" value="true" />
-                        <param name="allowScriptAccess" value="always" />
-                        <param name="allowNetworking" value="all" />
-                        <param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" />
-                        <param name="flashvars" value="hostname=www.twitch.tv&channel={{ link }}&auto_play=true&start_volume=25" />
-                    </object>
-                </div>
+                {{ get_service_frame(service, channel) }}
             </div>
             <div class="col-sm-3 col-lg-3" style="height: 600px; margin-bottom: 20px; padding: 0;">
                 <ul class="pages">

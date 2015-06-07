@@ -8,8 +8,8 @@ from ..utils.views import JSONResponse
 
 def create(req):
     if req.method == 'POST':
-        room_uuid = room.generate_room(request.get_params(req))
-        return JSONResponse({'room_uuid': room_uuid})
+        resp = room.generate_room(request.get_params(req))
+        return JSONResponse(resp)
 
     return TemplateResponse(req, 'room/create.html')
 

@@ -6,16 +6,17 @@ from roomit.db import dbcp
 
 
 @dbcp.roomit
-def store_room(cursor, link, room_uuid):
+def store_room(cursor, service, channel, room_uuid):
     query = """ INSERT INTO `rooms`
-                    (`room_uuid`, `link`, `exp_time`)
-                VALUES (%s, %s, %s)
+                    (`room_uuid`, `service`, `channel`, `exp_time`)
+                VALUES (%s, %s, %s, %s)
             """
-    cursor.execute(query, [room_uuid, link, time.time() + settings.ROOM_EXP_TIME])
+    cursor.execute(query, [room_uuid, service, channel, 
+                           time.time() + settings.ROOM_EXP_TIME])
 
 @dbcp.roomit
 def get_room(cursor, room_uuid):
-    fields = ('room_uuid', 'link')
+    fields = ('room_uuid', 'service', 'channel')
     query = """ SELECT `%s`
                 FROM `rooms`
                 WHERE `exp_time` >= %%s

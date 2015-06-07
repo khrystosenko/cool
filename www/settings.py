@@ -94,5 +94,11 @@ except ImportError:
 
 REGEXP = {
     'username': '^\w+$',
-    'email': '([^@|\s]+@[^@]+\.[^@|\s]+)'
+    'email': '([^@|\s]+@[^@]+\.[^@|\s]+)',
+    'link': [
+        {
+          'service': 'twitch', 
+          'pattern': r'^https?:\/\/www\.twitch\.tv\/([^\/]+)\/?$'
+        },
+    ]
 }
