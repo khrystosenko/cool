@@ -72,8 +72,7 @@
           console.log('[' + socket.id + '] relaying session description to [' + socket_id + '] ', session_description);
 
           if (socket_id in sockets) {
-              sockets[socket_id].emit('session_description', {'socket_id': socket.id, 'session_description': session_description, 
-                                                      'access_granted': socket.access_granted});
+              sockets[socket_id].emit('session_description', {'socket_id': socket.id, 'session_description': session_description});
           }
       });
 

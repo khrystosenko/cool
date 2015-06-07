@@ -239,12 +239,6 @@
                             function(error) {
                                 console.log('Error creating answer: ', error);
                                 console.log(peer);
-                            },
-                            {
-                                'optional': [],
-                                'mandatory': {
-                                    'OfferToReceiveAudio': data.access_granted
-                                }
                             });
                     }
                 },
