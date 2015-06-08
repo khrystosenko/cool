@@ -179,7 +179,6 @@
 
                 var remote_media = $('<audio>');
                 remote_media.attr('autoplay', 'autoplay');
-                remote_media.attr('muted', 'false');
                 remote_media.attr('controls', '');
                 peerMediaElemenets[socket_id] = remote_media;
                 $('#' + audioChatID).append(remote_media);
@@ -307,7 +306,6 @@
                 var local_media = $('<audio>');
                 local_media.attr('autoplay', 'autoplay');
                 local_media.attr('muted', true); /* always mute ourselves by default */
-                local_media.attr('controls', '');
                 $('#' + audioChatID).append(local_media);
                 navigator.attachMediaStream(local_media[0], stream);
                 if (callback) callback(true);
