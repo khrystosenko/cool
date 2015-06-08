@@ -15,11 +15,18 @@
         '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
         '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
     ];
+    var username = 'test',
+        password = '1234';
 
     var ICE_SERVERS = [
         {
-            url: 'stun:stun.l.google.com:19302'
-        }
+          'url': 'stun:stun.l.google.com:19302'
+        },
+        {
+          'url': 'turn:185.65.245.105:3478',
+          'username': username,
+          'credential': password
+        },
     ];
 
     if (navigator.mozGetUserMedia) {
