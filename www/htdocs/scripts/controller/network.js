@@ -15,8 +15,8 @@
         '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
         '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
     ];
-    var username = 'test',
-        password = '1234';
+    var turn_username = 'test',
+        turn_password = '1234';
 
     var ICE_SERVERS = [
         {
@@ -24,8 +24,8 @@
         },
         {
           'url': 'turn:185.65.245.105:3478',
-          'username': username,
-          'credential': password
+          'username': turn_username,
+          'credential': turn_password
         },
     ];
 
