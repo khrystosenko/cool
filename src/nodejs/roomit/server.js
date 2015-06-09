@@ -76,6 +76,10 @@
           }
       });
 
+      socket.on('mic-volume-update', function(data) {
+          socket.broadcast.to(socket.room_uuid).emit('mic-volume-update', {username: socket.username});
+      });
+
       socket.on('disconnect', function () {
         console.log('Socket ' + socket.id + ' is disconnected.');
         socket.leave(socket.room_uuid);

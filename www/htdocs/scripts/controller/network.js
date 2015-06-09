@@ -8,6 +8,8 @@
         send: send
     };
 
+    var MIC_THRESHOLD = 30;
+    var MIC_FADE = 150;
     var FADE_TIME = 150; // ms
     var TYPING_TIMER_LENGTH = 400; // ms
     var COLORS = [
@@ -145,6 +147,10 @@
 
         transport.on('typing-stop', function(data) {
             removeChatTyping(data);
+        });
+
+        transport.on('mic-volume-update', function(data) {
+            addUserMicVolume(data);
         });
 
         transport.on('peer-add', function(data) {
@@ -333,7 +339,9 @@
                     }
 
                     var average = values / length;
-                    console.log(average);
+                    if (average > MIC_THRESHOLD) {
+                        audio_level_callback(average);
+                    }
                 }
 
 
@@ -372,6 +380,8 @@
 
             setup_local_media(function(access_granted) {
                 transport.emit('initialize', username, ROOM_UUID, access_granted);
+            }, function(volume) {
+                transport.emit('mic-volume-update');
             });
         }
     }
@@ -494,6 +504,10 @@
                 }
             }, TYPING_TIMER_LENGTH);
         }
+    }
+
+    function addUserMicVolume(data) {
+        console.log(data);
     }
 
     window.network = network;
