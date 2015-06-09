@@ -29,7 +29,7 @@
     <script>
     var serverError = 'Server found itself in trouble. Please try again later. Sorry for inconvenience.';
     </script>
-    {% block custom_javascript %}
+
     <script src="{{ static('scripts/core.js') }}"></script>
     <script src="{{ static('scripts/controller/network.js') }}"></script>
     <script src="{{ static('scripts/controller/text-chat-controller.js') }}"></script>
@@ -40,7 +40,10 @@
     <script src="{{ static('scripts/controller/login-controller.js') }}"></script>
     <script src="{{ static('scripts/service/login-service.js') }}"></script>
     <script src="{{ static('scripts/navigation.js') }}"></script>
-    {% endblock %} {% endblock %}
+    {% endblock %}
+
+    {% block custom_javascript %}
+    {% endblock %}
 </head>
 
 <body id="page-top" class="index">
