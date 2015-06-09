@@ -76,7 +76,7 @@
           }
       });
 
-      socket.on('mic-volume-update', function(data) {
+      socket.on('mic-volume-update', function() {
           socket.broadcast.to(socket.room_uuid).emit('mic-volume-update', {username: socket.username});
       });
 
