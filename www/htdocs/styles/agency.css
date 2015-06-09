@@ -1057,3 +1057,9 @@ ul {
   right: 0;
   width: 100%;
 }
+.createError {
+    display: none;
+    line-height: 2.75;
+    color: red;
+    font-weight: 600;
+}
