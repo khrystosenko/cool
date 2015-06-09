@@ -1070,6 +1070,12 @@ ul {
   height: 0;
   overflow: hidden;
 }
+.insideFrameChat {
+  position: relative;
+  padding-bottom: 179%;
+  height: 0;
+  overflow: hidden;
+}
 .frame {
     position: absolute;
   top: 0;

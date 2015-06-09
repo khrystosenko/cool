@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% block main %}
-{% from "room/utils.html" import get_service_frame %}
+{% extends 'base.html' %} {% block main %} {% from "room/utils.html" import get_service_frame %}
 <script>
 var ROOM_UUID = '{{ room_uuid }}';
 </script>
@@ -23,22 +22,24 @@ var ROOM_UUID = '{{ room_uuid }}';
             <div class="col-sm-12 col-md-9 col-lg-9" style="margin-bottom: 20px; padding: 0;">
                 {{ get_service_frame(service, channel) }}
             </div>
-            <div class="col-sm-12 col-md-3 col-lg-3" style="height: 600px; margin-bottom: 20px; padding: 0;">
-                <ul class="pages">
-                    <li class="chat page" style="width: 100%;">
-                        <div class="chatArea">
-                            <ul class="messages"></ul>
-                        </div>
-                        <input class="inputMessage" placeholder="Type here..." />
-                    </li>
-                    <li class="login page">
-                        <div class="form">
-                            <h4 style="color: #fff;">Please log into chat</h4>
-                            <h3 class="title">What's your nickname?</h3>
-                            <input class="usernameInput" type="text" maxlength="14" />
-                        </div>
-                    </li>
-                </ul>
+            <div class="col-sm-12 col-md-3 col-lg-3" style="margin-bottom: 20px; padding: 0;">
+                <div class="insideFrameChat">
+                    <ul class="pages">
+                        <li class="chat page" style="width: 100%;">
+                            <div class="chatArea">
+                                <ul class="messages"></ul>
+                            </div>
+                            <input class="inputMessage" placeholder="Type here..." />
+                        </li>
+                        <li class="login page">
+                            <div class="form">
+                                <h4 style="color: #fff;">Please log into chat</h4>
+                                <h3 class="title">What's your nickname?</h3>
+                                <input class="usernameInput" type="text" maxlength="14" />
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 <!-- <iframe style="float: right; display: inline-block;" frameborder="0" scrolling="no" src="http://twitch.tv/{{ link }}/chat?popout=" height="500" width="300"></iframe> -->
             </div>
         </div>
