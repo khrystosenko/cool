@@ -102,7 +102,7 @@ REGEXP = {
         },
         {
           'service': 'hitbox', 
-          'pattern': r'^http?:\/\/www\.hitbox\.tv\/([^\/]+)\/?$'
+          'pattern': r'(((https?:\/\/)?(www\.)?)?hitbox\.tv\/)?([^\/]+)\/?'
         },
         {
           'service': 'azubu', 
