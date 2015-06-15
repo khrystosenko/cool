@@ -98,7 +98,7 @@ REGEXP = {
     'link': [
         {
           'service': 'twitch', 
-          'pattern': r'^https?:\/\/www\.twitch\.tv\/([^\/]+)\/?$'
+          'pattern': r'(((https?:\/\/)?(www\.)?)?twitch\.tv\/)?([^\/]+)\/?'
         },
         {
           'service': 'hitbox', 
