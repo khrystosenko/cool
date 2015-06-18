@@ -14,10 +14,13 @@
 <iframe class="frame" src="http://www.hitbox.tv/embed/{{ channel }}" frameborder="0" allowfullscreen></iframe>
 {% endif %}
 {% if service == 'azubu' %}
-<iframe class="frame" src="http://video.azubu.tv/services/player/bcpid3594868184001?bckey=AQ~~,AAADDsF76gk~,aeB-sfIIuRjHKAq2udBzl5xOFsHqSFjw&@videoPlayer=ref:video36209CH{{ channel }}&width=100%25&height=100%25&bgcolor=#000000&htmlFallback=htmlFallback&includeAPI=true&quality=high&dynamicStreaming=true&isUI=true&isVid=true" width="100%" height="100%"></iframe>
+<iframe src="http://www.azubu.tv/azubulink/embed={{ channel }}" class="frame" frameborder="0" allowfullscreen></iframe>
 {% endif %}
 {% if service == 'dailymotion' %}
 <iframe frameborder="0" class="frame" src="http://www.dailymotion.com/embed/video/{{ channel }}" allowfullscreen ></iframe>
+{% endif %}
+{% if service == 'douyutv' %}
+<embed class="frame" allownetworking="all" allowscriptaccess="always" src="http://staticlive.douyutv.com/common/share/play.swf?room_id={{ channel }}" quality="high" bgcolor="#000" wmode="window" allowfullscreen="true" allowFullScreenInteractive="true" type="application/x-shockwave-flash">
 {% endif %}
 </div>
 {%- endmacro %}

@@ -98,11 +98,11 @@ REGEXP = {
     'link': [
         {
           'service': 'twitch', 
-          'pattern': r'(((https?:\/\/)?(www\.)?)?twitch\.tv\/)?([^\/]+)\/?'
+          'pattern': r'^http?:\/\/www\.twitch\.tv\/([^\/]+)\/?$'
         },
         {
           'service': 'hitbox', 
-          'pattern': r'(((https?:\/\/)?(www\.)?)?hitbox\.tv\/)?([^\/]+)\/?'
+          'pattern': r'^http?:\/\/www\.hitbox\.tv\/([^\/]+)\/?$'
         },
         {
           'service': 'azubu', 
@@ -111,6 +111,10 @@ REGEXP = {
         {
           'service': 'dailymotion', 
           'pattern': r'^http?:\/\/games\.dailymotion\.com\/live\/([^\/]+)\/?$'
+        },
+        {
+          'service': 'douyutv', 
+          'pattern': r'^http?:\/\/www\.douyutv\.com\/([^\/]+)\/?$'
         },
     ]
 }
