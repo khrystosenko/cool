@@ -21,6 +21,8 @@
             // username: $('#sender-language').val()
         };
 
+        $('.createError').hide();
+         
         API.CreateRoom(data).done(function(success) {
 
             console.log("success");
