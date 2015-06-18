@@ -116,5 +116,9 @@ REGEXP = {
           'service': 'douyutv', 
           'pattern': r'^http?:\/\/www\.douyutv\.com\/([^\/]+)\/?$'
         },
+        {
+          'service': 'huomaotv', 
+          'pattern': r'^http?:\/\/www\.huomaotv\.com\/live\/([^\/]+)\/?$'
+        },
     ]
 }

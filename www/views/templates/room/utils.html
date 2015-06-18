@@ -22,5 +22,8 @@
 {% if service == 'douyutv' %}
 <embed class="frame" allownetworking="all" allowscriptaccess="always" src="http://staticlive.douyutv.com/common/share/play.swf?room_id={{ channel }}" quality="high" bgcolor="#000" wmode="window" allowfullscreen="true" allowFullScreenInteractive="true" type="application/x-shockwave-flash">
 {% endif %}
+{% if service == 'huomaotv' %}
+<iframe class="frame" src='http://www.huomaotv.com/index.php?c=outplayer&live_id={{ channel }}' frameborder=0 allowfullscreen></iframe>
+{% endif %}
 </div>
 {%- endmacro %}
