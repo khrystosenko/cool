@@ -17,7 +17,7 @@ def generate_room(params):
     	match = re.match(item['pattern'], link)
     	if match:
     		service = item['service']
-    		channel = match.group(1)
+    		channel = match.group(5)
 
     if not service:
     	return {'error': 'Unknown service.'}

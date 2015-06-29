@@ -98,27 +98,27 @@ REGEXP = {
     'link': [
         {
           'service': 'twitch', 
-          'pattern': r'^http?:\/\/www\.twitch\.tv\/([^\/]+)\/?$'
+          'pattern': r'^(((https?:\/\/)?(www\.)?)?twitch\.tv\/([^\/]+)\/?)?$'
         },
         {
           'service': 'hitbox', 
-          'pattern': r'^http?:\/\/www\.hitbox\.tv\/([^\/]+)\/?$'
+          'pattern': r'^(((https?:\/\/)?(www\.)?)?hitbox\.tv\/([^\/]+)\/?)?$'
         },
         {
           'service': 'azubu', 
-          'pattern': r'^http?:\/\/www\.azubu\.tv\/([^\/]+)\/?$'
+          'pattern': r'^(((https?:\/\/)?(www\.)?)?azubu\.tv\/([^\/]+)\/?)?$'
         },
         {
           'service': 'dailymotion', 
-          'pattern': r'^http?:\/\/games\.dailymotion\.com\/live\/([^\/]+)\/?$'
+          'pattern': r'^(((https?:\/\/)?games\.)?dailymotion\.com\/(live\/)?([^\/]+)\/?)?$'
         },
         {
           'service': 'douyutv', 
-          'pattern': r'^http?:\/\/www\.douyutv\.com\/([^\/]+)\/?$'
+          'pattern': r'^(((https?:\/\/)?(www\.)?)?douyutv\.com\/([^\/]+)\/?)?$'
         },
         {
           'service': 'huomaotv', 
-          'pattern': r'^http?:\/\/www\.huomaotv\.com\/live\/([^\/]+)\/?$'
+          'pattern': r'^(((https?:\/\/)?(www\.)?)?huomaotv\.com\/live\/([^\/]+)\/?)?$'
         },
     ]
 }
