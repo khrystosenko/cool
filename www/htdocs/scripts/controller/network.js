@@ -76,9 +76,36 @@
 			var server = MCU.host + ':' + MCU.port + MCU.slug;
 			$(document).ready(function() {
 				$('#toggle_video').on('click', function() {
-					if (local.stream.getVideoTracks()[0])
+					if (local.stream.getVideoTracks()[0]){
 						local.stream.getVideoTracks()[0].enabled = !local.stream.getVideoTracks()[0].enabled;
+					}
+					if (local.stream.getVideoTracks()[0].enabled) {
+						$('.myvideo').removeClass('hideVideo');
+						$('.videoImg').hide();
+						$('.novideoImg').show();
+					}
+					else {
+						$('.myvideo').addClass('hideVideo');
+						$('.videoImg').show();
+						$('.novideoImg').hide();
+					}
 				});
+				$('#toggle_audio').on('click', function() {
+					if (local.stream.getAudioTracks()[0]){
+						local.stream.getAudioTracks()[0].enabled = !local.stream.getAudioTracks()[0].enabled;
+					}
+					if (local.stream.getAudioTracks()[0].enabled) {
+						$('.myvideo').removeClass('hideAudio');
+						$('.audioImg').hide();
+						$('.noaudioImg').show();
+					}
+					else {
+						$('.myvideo').addClass('hideAudio');
+						$('.audioImg').show();
+						$('.noaudioImg').hide();
+					}
+				});
+				
 			});
 
 			$window.keydown(function(event) {
@@ -232,11 +259,11 @@
     function janusLocalStreamCallback(stream) {
     	local.stream = stream;
     	if ($('#media_' + local.id).length === 0) {
-    		var media_tag = $('<video class="videostyle" width="120" height="120">');
+    		var media_tag = $('<video class="videostyle myvideo" width="120" height="120">');
     		media_tag.attr('autoplay', 'autoplay');
     		media_tag.attr('id', 'media_' + local.id);
     		media_tag.attr('muted', true);
-    		$('#audio_chat').append(media_tag);
+    		$('#myvideoLook').append(media_tag);
     	} else {
     		var media_tag = $('#media_' + local.id);
     	}

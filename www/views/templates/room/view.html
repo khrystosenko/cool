@@ -1,13 +1,9 @@
-{% extends 'base.html' %} 
-{% block main %}
-{% from "room/utils.html" import get_service_frame %}
-{% block custom_javascript %}
-    <script>
-        var ROOM_UUID = '{{ room_uuid }}';
-        var ROOM_ID = parseInt('{{ id }}');
-    </script>
+{% extends 'base.html' %} {% block main %} {% from "room/utils.html" import get_service_frame %} {% block custom_javascript %}
+<script>
+var ROOM_UUID = '{{ room_uuid }}';
+var ROOM_ID = parseInt('{{ id }}');
+</script>
 {% endblock %}
-
 <div class="" style="background-color: #f5f5f5;">
     <div class="panel" style="border-top: 1px solid rgba(0, 0, 0, 0.19); border-radius: 0px;">
         <div class="panel-light panel-body">
@@ -35,12 +31,7 @@
                             <div class="chatArea" style="padding-bottom: 0; height: 80%;">
                                 <ul class="messages"></ul>
                             </div>
-                            <input id="inputMessage" class="inputMessage" placeholder="Type here..." style="position: static;"/>
-                            <button id="toggle_video"style="
-                                border: 5px solid black;
-                                border-top: none;
-                                width: 100%;
-                                height: 45px;">Toggle video</button>
+                            <input id="inputMessage" class="inputMessage" placeholder="Type here..." style="position: static;" />
                         </li>
                         <li class="login page">
                             <div class="form">
@@ -56,9 +47,17 @@
         </div>
         <div class="row">
             <div class="col-sm-12" style="height: auto; margin-bottom: 20px; padding: 0;">
-                <div id="audio_chat" style="float: right;width: 100%;">
-                </div>
-                <!-- <ul class="pages">
+                <div id="audio_chat_me" style="float: left;">
+                    <div id="myvideoLook">
+                    </div>
+                    <div id="stuff"  style="position: absolute;top: 0;">
+                        <button id="toggle_video"><img class="videoImg" style="display:none;" src="../img/video.png" width="20px"><img class="novideoImg" src="../img/novideo.jpg" width="20px"></button>
+                        <button id="toggle_audio"><img class="audioImg" style="display:none;" src="../img/audio.png" width="20px"><img class="noaudioImg" src="../img/noaudio.png" width="20px"></button>
+                    </div>
+                    </div>
+                    <div id="audio_chat" style="">
+                    </div>
+                    <!-- <ul class="pages">
                         <li class="chat page" style="width: 100%;">
                             <div class="col-sm-12" id="audio_chat" style="float: right; background-color: gray; width: 60%; height: 100%;">
                             </div>
@@ -74,7 +73,7 @@
                             </div>
                         </li>
                     </ul> -->
+                
             </div>
         </div>
-    </div>
-    {% endblock %}
+        {% endblock %}
