@@ -399,7 +399,8 @@
 		    		var volume = $('<input>');
 		    		volume.attr('type', 'range');
 		    		volume.css({
-		    			width: '120px'
+		    			width: '120px',
+		    			float: 'left'
 		    		});
 
 		    		volume.on('change', function() { 
