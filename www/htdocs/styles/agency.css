@@ -1199,7 +1199,11 @@ input[type=range]:focus::-ms-fill-upper {
   box-shadow: 0px 1px 10px black;
 }
 #stuff {
-    display: none;
+  display: none;
+  margin: 0 auto;
+  position: relative;
+  top: -12px;
+  width: 50%;
 }
 #audio_chat_me:hover #stuff {
     display: flex;
