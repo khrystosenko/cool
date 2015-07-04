@@ -1085,3 +1085,9 @@ ul {
     height: 44px;
     font-size: 18px;
 }
+.videostyle {
+      border-radius: 50%;
+  object-fit: cover;
+  overflow: hidden;
+  transform: scaleX(-1);
+}

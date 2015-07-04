@@ -231,7 +231,7 @@
     function janusLocalStreamCallback(stream) {
     	local.stream = stream;
     	if ($('#media_' + local.id).length === 0) {
-    		var media_tag = $('<video>');
+    		var media_tag = $('<video class="videostyle">');
     		media_tag.attr('autoplay', 'autoplay');
     		media_tag.attr('controls', '');
     		media_tag.attr('id', 'media_' + local.id);
@@ -348,7 +348,7 @@
     		},
     		onremotestream: function(stream) {
 		    	if ($('#media_' + remoteFeed.rfid).length === 0) {
-		    		var media_tag = $('<video>');
+		    		var media_tag = $('<video class="videostyle">');
 		    		media_tag.attr('autoplay', 'autoplay');
 		    		media_tag.attr('controls', '');
 		    		media_tag.attr('id', 'media_' + remoteFeed.rfid);
