@@ -1,6 +1,6 @@
 (function() {
 
-	var DEBUG = true;
+	var DEBUG = false;
 	var DEFAULT = {
 		MEDIA: {
 			audio: true,

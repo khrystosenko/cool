@@ -1093,3 +1093,16 @@ ul {
   min-width: 120px;
   min-height: 120px;
 }
+
+#feedback-success, #feedback-error {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+#feedback-success {
+  background-color: #cfc;
+}
+
+#feedback-error {
+  background-color: #fcc;
+}

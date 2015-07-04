@@ -35,8 +35,10 @@
     <script src="{{ static('scripts/controller/text-chat-controller.js') }}"></script>
     <script src="{{ static('scripts/controller/signup-controller.js') }}"></script>
     <script src="{{ static('scripts/controller/create-room-controller.js') }}"></script>
+    <script src="{{ static('scripts/controller/feedback-controller.js') }}"></script>
     <script src="{{ static('scripts/service/signup-service.js') }}"></script>
     <script src="{{ static('scripts/service/create-room-service.js') }}"></script>
+    <script src="{{ static('scripts/service/feedback-service.js') }}"></script>
     <script src="{{ static('scripts/controller/login-controller.js') }}"></script>
     <script src="{{ static('scripts/service/login-service.js') }}"></script>
     <script src="{{ static('scripts/navigation.js') }}"></script>
@@ -100,31 +102,28 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <form name="sentMessage" id="contactForm" method="post" action="/sendMail" novalidate>
+                    <form name="sendMessage" id="contactForm" onsubmit="return APP.Feedback.send(event)">
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="name}}" id="name" required data-validation-required-message="Please enter your name.">
+                                    <input type="text" class="form-control" placeholder="Name" id="feedback-name" required data-validation-required-message="Please enter your name." maxlength="64" minlength="1">
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="email}}" id="email" required data-validation-required-message="Please enter your email address.">
+                                    <input type="email" class="form-control" placeholder="example@example.com" id="feedback-email" required data-validation-required-message="Please enter your email address." maxlength="128">
                                     <p class="help-block text-danger"></p>
                                 </div>
-                                <!--<div class="form-group">
-                                    <input type="tel" class="form-control" placeholder="{{phone}}" id="phone" required data-validation-required-message="Please enter your phone number.">
-                                    <p class="help-block text-danger"></p>
-                                </div>-->
                             </div>
                             <div class="col-md-8 col-md-offset-2">
                                 <div class="form-group">
-                                    <textarea class="form-control" placeholder="message}}" id="message" required data-validation-required-message="Please enter a message."></textarea>
+                                    <textarea class="form-control" placeholder="Your feedback..." id="feedback-text" required data-validation-required-message="Please enter a message." maxlength="500"></textarea>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
                             <div class="col-lg-12 text-center">
-                                <div id="success"></div>
+                                <div id="feedback-success" style="display: none;">Your feedback has been sent.</div>
+                                <div id="feedback-error" style="display: none;"></div>
                                 <button type="submit" class="btn btn-xl">send</button>
                             </div>
                         </div>
