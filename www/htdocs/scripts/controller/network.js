@@ -134,7 +134,8 @@
     					message: {
     						request: 'create',
     						room: ROOM_ID,
-    						participants: DEFAULT.ROOM.LIMIT
+    						participants: DEFAULT.ROOM.LIMIT,
+    						publishers: DEFAULT.ROOM.LIMIT
     					},
     					success: function(data) {
     						joinRoomCallback();
