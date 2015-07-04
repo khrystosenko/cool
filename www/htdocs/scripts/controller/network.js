@@ -16,7 +16,8 @@
 
 	var MEDIA = {
 		AUDIO: {
-			THRESHOLD: 30
+			THRESHOLD: 30,
+			VOLUME: 30
 		},
 		VIDEO: {
 			RESOLUTION: 'lowres'
@@ -233,7 +234,6 @@
     	if ($('#media_' + local.id).length === 0) {
     		var media_tag = $('<video class="videostyle" width="120" height="120">');
     		media_tag.attr('autoplay', 'autoplay');
-    		media_tag.attr('controls', '');
     		media_tag.attr('id', 'media_' + local.id);
     		media_tag.attr('muted', true);
     		$('#audio_chat').append(media_tag);
@@ -348,14 +348,34 @@
     		},
     		onremotestream: function(stream) {
 		    	if ($('#media_' + remoteFeed.rfid).length === 0) {
+		    		var wrapper = $('<div>');
+		    		wrapper.attr('id', 'media_' + remoteFeed.rfid);
+		    		$('#audio_chat').append(wrapper);
+
 		    		var media_tag = $('<video class="videostyle" width="120" height="120">');
 		    		media_tag.attr('autoplay', 'autoplay');
-		    		media_tag.attr('controls', '');
-		    		media_tag.attr('id', 'media_' + remoteFeed.rfid);
-		    		media_tag.attr('muted', true);
-		    		$('#audio_chat').append(media_tag);
+		    		wrapper.append(media_tag);
+
+		    		var controller = $('<div>');
+		    		wrapper.append(controller);
+
+		    		var volume = $('<input>');
+		    		volume.attr('type', 'range');
+		    		volume.css({
+		    			width: '120px'
+		    		});
+
+		    		volume.on('change', function() { 
+		    			console.log(this.value / 100.0);
+		    			media_tag[0].volume = this.value / 100.0;
+		    		});
+
+		    		volume[0].value = MEDIA.AUDIO.VOLUME;
+
+		    		controller.append(volume);
+
 		    	} else {
-		    		var media_tag = $('#media_' + remoteFeed.rfid);
+		    		var media_tag = $('#media_' + remoteFeed.rfid + ' video');
 		    	}
 		    	attachMediaStream(media_tag[0], stream);
     		},
