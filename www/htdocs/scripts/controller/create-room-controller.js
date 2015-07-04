@@ -31,7 +31,7 @@
             }
             else {
                 $('.createError').hide();
-                window.location.href = '/room/?uuid='+success.room_uuid;
+                window.location.href = '/room/?id='+success.id;
             }
 
         }).fail(function(errors) {

@@ -7,15 +7,23 @@
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes">
     <meta name="author" content="">
-    <meta name="description" content="Room it" /> {% block css %}
-    <link rel="stylesheet" type="text/css" href="{{ static('styles/bootstrap.css') }}" /> {% block custom_styles %}
-    <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" /> {% endblock %}
+    <meta name="description" content="Room it" /> 
+    {% block css %}
+    {% block custom_styles %}
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{{ static('styles/bootstrap.css') }}" /> 
+    <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" /> 
     <!-- Custom Fonts -->
     <link href="{{ static('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'> {% endblock %} {% block javascript %}
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    {% endblock %}
+
+    {% block javascript %}
+
+    <script src="{{ static('scripts/lib/janus.js') }}" ></script>
     <script src="{{ static('scripts/lib/jquery-2.1.4.js') }}"></script>
     <script src="{{ static('scripts/lib/bootstrap.js') }}"></script>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
@@ -32,7 +40,8 @@
     <script src="{{ static('scripts/controller/login-controller.js') }}"></script>
     <script src="{{ static('scripts/service/login-service.js') }}"></script>
     <script src="{{ static('scripts/navigation.js') }}"></script>
-    {% endblock %} {% block custom_javascript %} {% endblock %}
+    {% endblock %} 
+    {% block custom_javascript %} {% endblock %}
 </head>
 
 <body id="page-top" class="index">

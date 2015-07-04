@@ -6,23 +6,24 @@ from roomit.db import dbcp
 
 
 @dbcp.roomit
-def store_room(cursor, service, channel, room_uuid):
+def store_room(cursor, service, channel):
     query = """ INSERT INTO `rooms`
-                    (`room_uuid`, `service`, `channel`, `exp_time`)
-                VALUES (%s, %s, %s, %s)
+                    (`service`, `channel`, `exp_time`)
+                VALUES (%s, %s, %s)
             """
-    cursor.execute(query, [room_uuid, service, channel, 
+    cursor.execute(query, [service, channel, 
                            time.time() + settings.ROOM_EXP_TIME])
+    return {'id': cursor.lastrowid}
 
 @dbcp.roomit
-def get_room(cursor, room_uuid):
-    fields = ('room_uuid', 'service', 'channel')
+def get_room(cursor, room_id):
+    fields = ('id', 'service', 'channel')
     query = """ SELECT `%s`
                 FROM `rooms`
                 WHERE `exp_time` >= %%s
-                  AND `room_uuid` = %%s
+                  AND `id` = %%s
 
             """ % ('`, `'.join(fields),)
-    cursor.execute(query, [time.time(), room_uuid])
+    cursor.execute(query, [time.time(), room_id])
     data = dbcp.tuple2dict(cursor.fetchone(), fields)
     return data

@@ -1,393 +1,370 @@
-
 (function() {
 
-    window.Sockets = {};
+	var DEBUG = true;
+	var DEFAULT = {
+		MEDIA: {
+			audio: true,
+			video: true
+		},
+		ROOM: {
+			LIMIT: 10
+		},
+		SERVER: {
+			USERNAME: 'SERVER'
+		}
+	};
 
-    var transport;
-    var network = {
-        send: send
-    };
+	var MEDIA = {
+		AUDIO: {
+			THRESHOLD: 30
+		},
+		VIDEO: {
+			RESOLUTION: 'lowres'
+		}
+	};
 
-    var MIC_THRESHOLD = 30;
-    var MIC_FADE = 150;
-    var FADE_TIME = 150; // ms
-    var TYPING_TIMER_LENGTH = 400; // ms
-    var COLORS = [
-        '#e21400', '#91580f', '#f8a700', '#f78b00',
-        '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
-        '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
-    ];
-    var turn_username = 'test',
-        turn_password = '1234';
+	var CHAT = {
+		TYPING: {
+			FADE_TIME: 150,
+			TIMER_TIME: 400
+		},
+		COLORS: [
+			'#e21400', '#91580f', '#f8a700', '#f78b00',
+	        '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
+	        '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
+	    ]
+	};
 
-    var ICE_SERVERS = [
-        {
-          'url': 'stun:stun.l.google.com:19302'
-        },
-        {
-          'url': 'turn:185.65.245.105:3478',
-          'username': turn_username,
-          'credential': turn_password
-        },
-    ];
+	var HOST = 'http://185.65.245.105'; //window.location.origin;
+	var SECURE = window.location.protocol == 'https:'
 
-    if (navigator.mozGetUserMedia) {
-      navigator.RTCPeerConnection = mozRTCPeerConnection;
-      navigator.getUserMedia = navigator.mozGetUserMedia.bind(navigator);
-      navigator.attachMediaStream = function(element, stream) {
-        console.log("Attaching media stream");
-        element.mozSrcObject = stream;
-        element.play();
-      };
-    } else if (navigator.webkitGetUserMedia) {
-      navigator.RTCPeerConnection = webkitRTCPeerConnection;
-      navigator.getUserMedia = navigator.webkitGetUserMedia.bind(navigator);
-      navigator.attachMediaStream = function(element, stream) {
-        element.src = webkitURL.createObjectURL(stream);
-      };
 
-      // The representation of tracks in a stream is changed in M26.
-      // Unify them for earlier Chrome versions in the coexisting period.
-      if (!webkitMediaStream.prototype.getVideoTracks) {
-          webkitMediaStream.prototype.getVideoTracks = function() {
-          return this.videoTracks;
-        } 
-      } 
-      
-      if (!webkitMediaStream.prototype.getAudioTracks) {
-          webkitMediaStream.prototype.getAudioTracks = function() {
-          return this.audioTracks;
-        }
-      } 
-    } else {
-      console.log("Browser does not appear to be WebRTC-capable");
+	var MCU = {
+		host: HOST.split(':')[0] + ':' + HOST.split(':')[1],
+		port: SECURE ? 8089 : 8088,
+		slug: '/janus'
+	};
+
+	var ICE = {
+		SERVERS: [
+			{
+	          'url': 'stun:stun.l.google.com:19302'
+	        },
+	        {
+	          'url': 'turn:185.65.245.105:3478',
+	          'username': 'test',
+	          'credential': '1234'
+	        }
+	    ]
+	}
+
+	window.Sockets = {};
+
+	var $window = $(window),
+		$usernameInput = $('.usernameInput'),
+		$currentInput = $usernameInput.focus();
+
+	var local = {};
+	var feeds = [];
+	var janus;
+
+
+	Sockets.connectSocket = function() {
+
+		Janus.init({debug: DEBUG, callback: function() {
+			var server = MCU.host + ':' + MCU.port + MCU.slug;
+			$(document).ready(function() {
+				$('#toggle_video').on('click', function() {
+					if (local.stream.getVideoTracks()[0])
+						local.stream.getVideoTracks()[0].enabled = !local.stream.getVideoTracks()[0].enabled;
+				});
+			});
+
+			$window.keydown(function(event) {
+	            if (!(event.ctrlKey || event.metaKey || event.altKey)) {
+	                $currentInput.focus();
+	            }
+	            
+	            if (event.which === 13) {
+	                if (local.username) {
+	                	sendMessage();
+	                } else {
+	                    setUsername(function() {
+	                    	if (!Janus.isWebrtcSupported()) {
+	                    		console.log('WebRTC is not supported.');
+	                    		return;
+	                    	}
+
+	                    	janus = new Janus({
+	                    		server: server,
+	                    		iceServers: ICE.SERVERS,
+	                    		success: function() {
+	                    			janus.attach({
+	                    				plugin: 'janus.plugin.videoroom',
+	                    				success: janusSuccessCallback,
+	                    				error: janusErrorCallback,
+	                    				onmessage: janusMessageCallback,
+	                    				onlocalstream: janusLocalStreamCallback,
+	                    				ondataopen: janusOnDataOpenCallback,
+	                    				ondata: janusOnDataCallback,
+	                    			});
+	                    		},
+	                    		error: function(error) {console.log(error)},
+	                    		destroyed: function() {}
+	                    	});
+	                    });
+	                }
+	            }
+	        });
+		}});      
     }
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
+    /* Janus callbacks - start */
 
-    // Initialize varibles
-    var localMediaStream = null;
-    var peers = {};
-    var peerMediaElemenets = {};
-    var audioChatID = 'audio_chat';
+    function janusSuccessCallback(pluginHandle) {
+    	local.handle = pluginHandle;
+    	local.handle.send({
+    		message: {
+    			request: 'exists',
+    			room: ROOM_ID
+    		},
+    		success: function(data) {
+    			if (data.exists == 'false') {
+    				local.handle.send({
+    					message: {
+    						request: 'create',
+    						room: ROOM_ID,
+    						participants: DEFAULT.ROOM.LIMIT
+    					},
+    					success: function(data) {
+    						joinRoomCallback();
+    					}
+    				});
+    			} else {
+    				joinRoomCallback();
+    			}
+    		}
+    	});
+    }
 
-    var $window = $(window);
-    var $usernameInput = $('.usernameInput'); // Input for username
-    var $messages = $('.messages'); // Messages area
-    var $inputMessage = $('.inputMessage'); // Input message input box
-
-    var $loginPage = $('.login.page'); // The login page
-    var $chatPage = $('.chat.page'); // The chatroom page
-
-    var username;
-    var connected = false;
-    var typing = false;
-    var lastTypingTime;
-    var $currentInput = $usernameInput.focus();
-
-    var HOST = window.location.origin;
-
-    Object.defineProperty(network, 'transport', {
-        get: function() {
-            return transport;
-        }
-    });
-
-    var host = HOST.split(':')[0] + ':' + HOST.split(':')[1];
-    var port = 8888;
-
-    Sockets.connectSocket = function() {
-
-        transport = io.connect(host + ':' + port);
-
-        transport.on('connect', function() {
-            console.log('Socket connected.');
-        });
-
-        transport.on('disconnect', function() {
-            console.log('Socket disconnected.');
-
-            for (socket_id in peerMediaElemenets) {
-                peerMediaElemenets[socket_id].remove();
-            }
-
-            for (socket_id in peers) {
-                peers[socket_id].close();
-            }
-
-            peers = {};
-            peerMediaElemenets = {};
-        });
-
-        transport.on('login', function(data) {
-            connected = true;
-
-            $('.inputMessage').on('input', function() {
-                updateTyping(transport);
-            });
-
-        });
-
-        transport.on('user-joined', function(data) {
-            log(data.username + ' joined');
-            addParticipantsMessage(data);
-        });
-
-        transport.on('user-left', function(data) {
-            addParticipantsMessage(data);
-        });
-
-        transport.on('chat-update', function(data) {
-            addChatMessage(data);
-        });
-
-        transport.on('typing', function(data) {
-            addChatTyping(data);
-        });
-
-        transport.on('typing-stop', function(data) {
-            removeChatTyping(data);
-        });
-
-        transport.on('mic-volume-update', function(data) {
-            addUserMicVolume(data);
-        });
-
-        transport.on('peer-add', function(data) {
-            console.log('Signaling server said to add peer:', data);
-
-            var socket_id = data.socket_id;
-            if (socket_id in peers) {
-                console.log('Already connected to peer ', socket_id);
-                return;
-            }
-
-            var peer_connection = new navigator.RTCPeerConnection(
-                {iceServers: ICE_SERVERS},
-                {optional: [{DtlsSrtpKeyAgreement: true}]}
-            );
-
-            peers[socket_id] = peer_connection;
-
-            peer_connection.onicecandidate = function(event) {
-                if (event.candidate) {
-                    transport.emit('ice_candidate-relay', {
-                        'socket_id': socket_id, 
-                        'ice_candidate': {
-                            'sdpMLineIndex': event.candidate.sdpMLineIndex,
-                            'candidate': event.candidate.candidate
-                        }
-                    });
-                }
-            }
-
-            peer_connection.onaddstream = function(event) {
-                console.log('onAddStream', event);
-
-                var remote_media = $('<audio>');
-                remote_media.attr('autoplay', 'autoplay');
-                remote_media.attr('controls', '');
-                peerMediaElemenets[socket_id] = remote_media;
-                $('#' + audioChatID).append(remote_media);
-                navigator.attachMediaStream(remote_media[0], event.stream);
-            }
-
-            if (localMediaStream) {
-                peer_connection.addStream(localMediaStream);
-            }
-
-            if (data.create_offer) {
-                console.log('Creating RTC offer to ', socket_id);
-
-                peer_connection.createOffer(
-                    function (local_description) { 
-                        console.log('Local offer description is: ', local_description);
-                        peer_connection.setLocalDescription(local_description,
-                            function() { 
-                                transport.emit('session_description-relay', 
-                                    {'socket_id': socket_id, 'session_description': local_description});
-
-                                console.log('Offer setLocalDescription succeeded'); 
-                            },
-                            function() { alert('Offer setLocalDescription failed!'); }
-                        );
-                    },
-                    function (error) {
-                        console.log('Error sending offer: ', error);
-                    }, 
-                    {
-                        'optional': [],
-                        'mandatory': {
-                            'OfferToReceiveAudio': data.access_granted
-                        }
-                    });
-            }
-        });
-
-        transport.on('session_description', function(data) {
-            console.log('Remote description received: ', data);
-            var socket_id = data.socket_id;
-            var peer = peers[socket_id];
-            var remote_description = data.session_description;
-            console.log(remote_description);
-
-            var desc = new RTCSessionDescription(remote_description);
-            var stuff = peer.setRemoteDescription(desc, 
-                function() {
-                    console.log('setRemoteDescription succeeded');
-                    if (remote_description.type == "offer") {
-                        console.log("Creating answer");
-                        peer.createAnswer(
-                            function(local_description) {
-                                console.log('Answer description is: ', local_description);
-                                peer.setLocalDescription(local_description,
-                                    function() { 
-                                        transport.emit('session_description-relay', 
-                                            {'socket_id': socket_id, 'session_description': local_description});
-                                        console.log('Answer setLocalDescription succeeded');
-                                    },
-                                    function() { alert('Answer setLocalDescription failed!'); }
-                                );
-                            },
-                            function(error) {
-                                console.log('Error creating answer: ', error);
-                                console.log(peer);
-                            });
-                    }
-                },
-                function(error) {
-                    console.log('setRemoteDescription error: ', error);
-                }
-            );
-            console.log('Description Object: ', desc);
-        });
-
-        transport.on('ice_candidate', function(data) {
-            var peer = peers[data.socket_id];
-            var ice_candidate = data.ice_candidate;
-            peer.addIceCandidate(new RTCIceCandidate(ice_candidate));
-        });
-
-        transport.on('peer-remove', function(data) {
-            console.log('Signaling server said to remove peer:', data);
-            var socket_id = data.socket_id;
-            if (socket_id in peerMediaElemenets) {
-                peerMediaElemenets[socket_id].remove();
-            }
-            if (socket_id in peers) {
-                peers[socket_id].close();
-            }
-
-            delete peers[socket_id];
-            delete peerMediaElemenets[data.socket_id];
-        });
-
-        $window.keydown(function(event) {
-            // Auto-focus the current input when a key is typed
-            if (!(event.ctrlKey || event.metaKey || event.altKey)) {
-                $currentInput.focus();
-            }
-            // When the client hits ENTER on their keyboard
-            if (event.which === 13) {
-                if (username) {
-                    sendMessage();
-                    transport.emit('typing-stop');
-                    typing = false;
-                } else {
-                    setUsername();
-                }
-            }
-        });
+    function janusErrorCallback(error) {
 
     }
 
-    function setup_local_media(callback, audio_level_callback) {
-        if (localMediaStream != null) {  /* ie, if we've already been initialized */
-            if (callback) callback();
-            return;
-        }
-        navigator.getUserMedia({'audio': true},
-            function(stream) { /* user accepted access to a/v */
-                console.log("Access granted to audio/video");
-                localMediaStream = stream;
-                var local_media = $('<audio>');
-                local_media.attr('autoplay', 'autoplay');
-                local_media.attr('muted', true); /* always mute ourselves by default */
-                $('#' + audioChatID).append(local_media);
-                navigator.attachMediaStream(local_media[0], stream);
+    function janusMessageCallback(msg, jsep) {
+		console.log(' ::: Got a message (publisher) :::');
+		console.log(JSON.stringify(msg));
+		var event = msg['videoroom'];
+		console.log('Event: ' + event);
+		if (event != null && event != undefined) {
+			if (event === 'joined') {
+				local.id = msg['id'];
+				console.log('Successfully joined room ' + msg['room'] + ' with ID ' + local.id);
+				publishOwnFeed(DEFAULT.MEDIA.audio, DEFAULT.MEDIA.video, true);
+				if(msg['publishers'] !== undefined && msg['publishers'] !== null) {
+					var list = msg['publishers'];
+					console.log('Got a list of available publishers/feeds:');
+					console.log(list);
 
-                var audioContext = new webkitAudioContext(),
-                    analyser = audioContext.createAnalyser(),
-                    microphone = audioContext.createMediaStreamSource(stream),
-                    javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
-
-                analyser.smoothingTimeConstant = 0.3;
-                analyser.fftSize = 1024;
-
-                microphone.connect(analyser);
-                analyser.connect(javascriptNode);
-                javascriptNode.connect(audioContext.destination);
-
-                javascriptNode.onaudioprocess = function() {
-                    var array =  new Uint8Array(analyser.frequencyBinCount);
-                    analyser.getByteFrequencyData(array);
-                    var values = 0;
-
-                    var length = array.length;
-                    for (var i = 0; i < length; i++) {
-                        values += array[i];
-                    }
-
-                    var average = values / length;
-                    if (average > MIC_THRESHOLD) {
-                        audio_level_callback(average);
-                    }
-                }
-
-
-                if (callback) callback(true);
-            },
-            function() { /* user denied access to a/v */
-                console.log("Access denied for audio/video");
-                if (callback) callback(false);
-            });
+					for(var f in list) {
+						var id = list[f]['id'];
+						var display = list[f]['display'];
+						console.log('  >> [' + id + '] ' + display);
+						newRemoteFeed(id, display)
+					}
+				}
+			} else if (event === 'destroyed') {
+				console.log('The room has been destroyed!');
+				window.location.reload();
+			} else if (event === 'event') {
+				if (msg['publishers'] !== undefined && msg['publishers'] !== null) {
+					var list = msg['publishers'];
+					for(var f in list) {
+						var id = list[f]['id'];
+						var display = list[f]['display'];
+						console.log('  >> [' + id + '] ' + display);
+						newRemoteFeed(id, display);
+					}
+				} else if (msg['leaving'] !== undefined && msg['leaving'] !== null) {
+					var leaving = msg["leaving"];
+					console.log("Publisher left: " + leaving);
+					var remoteFeed = null;
+					for(var i=1; i < DEFAULT.ROOM.LIMIT; i++) {
+						if(feeds[i] != null && feeds[i] != undefined && feeds[i].rfid == leaving) {
+							remoteFeed = feeds[i];
+							break;
+						}
+					}
+					if(remoteFeed != null) {
+						console.log("Feed " + remoteFeed.rfid + " (" + remoteFeed.rfdisplay + ") has left the room, detaching");
+						$('#media_' + remoteFeed.rfid).remove();
+						feeds[remoteFeed.rfindex] = null;
+						remoteFeed.detach();
+					}
+				} else if (msg['unpublished'] !== undefined && msg['unpublished'] !== null) {
+					var unpublished = msg["unpublished"];
+					console.log("Publisher left: " + unpublished);
+					var remoteFeed = null;
+					for (var i=1; i < DEFAULT.ROOM.LIMIT; i++) {
+						if (feeds[i] != null && feeds[i] != undefined && feeds[i].rfid == unpublished) {
+							remoteFeed = feeds[i];
+							break;
+						}
+					}
+					if (remoteFeed != null) {
+						console.log("Feed " + remoteFeed.rfid + " (" + remoteFeed.rfdisplay + ") has left the room, detaching");
+						$('#media_' + remoteFeed.rfid).remove();
+						feeds[remoteFeed.rfindex] = null;
+						remoteFeed.detach();
+					}
+				} else if (msg['error'] !== undefined && msg['error'] !== null) {
+					console.log(msg['error'])
+				}
+			}
+		}
+		if(jsep !== undefined && jsep !== null) {
+			local.handle.handleRemoteJsep({jsep: jsep});
+		}
     }
 
-
-    function cleanInput(input) {
-        return $('<div/>').text(input).text();
+    function janusLocalStreamCallback(stream) {
+    	local.stream = stream;
+    	if ($('#media_' + local.id).length === 0) {
+    		var media_tag = $('<video>');
+    		media_tag.attr('autoplay', 'autoplay');
+    		media_tag.attr('controls', '');
+    		media_tag.attr('id', 'media_' + local.id);
+    		media_tag.attr('muted', true);
+    		$('#audio_chat').append(media_tag);
+    	} else {
+    		var media_tag = $('#media_' + local.id);
+    	}
+    	attachMediaStream(media_tag[0], stream);
     }
 
-    function addParticipantsMessage(data) {
-        var message = '';
-        if (data.numUsers === 1) {
-            message += "there's 1 participant";
-        } else {
-            message += "there are " + data.numUsers + " participants";
-        }
-        log(message);
+    function janusOnDataOpenCallback(data) {
+    	console.log('OnDataOpenCallback', data);
     }
 
-    function setUsername() {
-        username = cleanInput($('.usernameInput').val().trim());
-
-        // If the username is valid
-        if (username) {
-            $('.login.page').fadeOut();
-            $('.chat.page').show();
-            $('.login.page').off('click');
-            $currentInput = $('.inputMessage').focus();
-
-            setup_local_media(function(access_granted) {
-                transport.emit('initialize', username, ROOM_UUID, access_granted);
-            }, function(volume) {
-                transport.emit('mic-volume-update');
-            });
-        }
+    function janusOnDataCallback(data) {
+    	console.log('OnDataOpenCallback', data);
     }
 
-    function send(type, data, fn) {
-        transport.emit(type, data, fn);
+    /* Janus callbacks - end */
+
+    function joinRoomCallback() {
+		local.handle.send({
+			message: {
+				request: 'join',
+				room: ROOM_ID,
+				ptype: 'publisher',
+				display: local.username
+			}
+		});
+    }
+
+    function publishOwnFeed(audio, video, data) {
+    	local.handle.createOffer({
+    		media: {
+    			audioRecv: false,
+    			videoRecv: false,
+    			audio: audio,
+    			video: video ? 'lowres' : false,
+    			data: data
+    		}, success: function(jsep) {
+				console.log('Got publisher SDP!');
+				console.log(jsep);
+				var publish = {
+					request: 'configure', 
+					audio: audio, 
+					video: video,
+    				data: data
+				};
+				local.handle.send({'message': publish, 'jsep': jsep});
+    		}, error: function(error) {
+    			if (video) {
+    				publishOwnFeed(audio, false, true);
+    			} else if (audio) {
+    				publishOwnFeed(false, video, true);
+    			} else if (data) {
+    				publishOwnFeed(false, false, data);
+    			} else {
+    				console.log('WebRTC error occured', error);
+    			}
+    		}
+    	});
+    }
+
+    function newRemoteFeed(id, display) {
+    	var remoteFeed;
+    	janus.attach({
+    		plugin: 'janus.plugin.videoroom',
+    		success: function(pluginHandle) {
+    			remoteFeed = pluginHandle;
+    			remoteFeed.send({
+    				message: {
+    					request: 'join',
+    					room: ROOM_ID,
+    					ptype: 'listener',
+    					feed: id
+    				}
+    			});
+    		},
+    		error: function(error) {
+
+    		},
+    		onmessage: function(msg, jsep) {
+    			var event = msg['videoroom'];
+    			if (event != undefined && event != null) {
+    				if (event === 'attached') {
+    					for (var i = 1; i < DEFAULT.ROOM.LIMIT; i++) {
+    						if (feeds[i] === undefined || feeds[i] === null) {
+    							feeds[i] = remoteFeed;
+    							remoteFeed.rfindex = i;
+    							break;
+    						}
+    					}
+    					remoteFeed.rfid = msg['id'];
+						remoteFeed.rfdisplay = msg['display'];
+    				} else {
+
+    				}
+    			}
+				if (jsep !== undefined && jsep !== null) {
+					remoteFeed.createAnswer({
+						jsep: jsep,
+						media: { audioSend: false, videoSend: false, data: true},
+						success: function(jsep) {
+							var body = { "request": "start", "room": ROOM_ID };
+							remoteFeed.send({"message": body, "jsep": jsep});
+						},
+						error: function(error) {
+							console.log("WebRTC error:");
+							console.log(error);
+						}
+					});
+				}
+    		},
+    		onremotestream: function(stream) {
+		    	if ($('#media_' + remoteFeed.rfid).length === 0) {
+		    		var media_tag = $('<video>');
+		    		media_tag.attr('autoplay', 'autoplay');
+		    		media_tag.attr('controls', '');
+		    		media_tag.attr('id', 'media_' + remoteFeed.rfid);
+		    		media_tag.attr('muted', true);
+		    		$('#audio_chat').append(media_tag);
+		    	} else {
+		    		var media_tag = $('#media_' + remoteFeed.rfid);
+		    	}
+		    	attachMediaStream(media_tag[0], stream);
+    		},
+    		ondata: function(data) {
+    			addChatMessage({
+    				message: data,
+    				username: remoteFeed.rfdisplay
+    			});
+    		}
+    	});
     }
 
     function sendMessage() {
@@ -395,15 +372,35 @@
         // Prevent markup from being injected into the message
         message = cleanInput(message);
         // if there is a non-empty message and a socket connection
-        if (message && connected) {
-            $('.inputMessage').val('');
-            transport.emit('chat-send', message);
+        if (message) {
+            local.handle.data({
+            	text: message,
+            	success: function() { 
+            		addChatMessage({
+            			message: message,
+            			username: local.username
+            		}); 
+            		$('.inputMessage').val('');
+            	}
+            })
         }
     }
 
-    function log(message, options) {
-        var $el = $('<li>').addClass('log').text(message);
-        addMessageElement($el, options);
+    function setUsername(callback) {
+        username = cleanInput($('.usernameInput').val().trim());
+
+        if (username) {
+            $('.login.page').fadeOut();
+            $('.chat.page').show();
+            $('.login.page').off('click');
+            $currentInput = $('.inputMessage').focus();
+            local.username = username;
+            callback();
+        }
+    }
+
+    function cleanInput(input) {
+        return $('<div/>').text(input).text();
     }
 
     function addChatMessage(data, options) {
@@ -430,20 +427,6 @@
         addMessageElement($messageDiv, options);
     }
 
-    // Adds the visual chat typing message
-    function addChatTyping(data) {
-        data.typing = true;
-        data.message = 'is typing';
-        addChatMessage(data);
-    }
-
-    // Removes the visual chat typing message
-    function removeChatTyping(data) {
-        getTypingMessages(data).fadeOut(function() {
-            $(this).remove();
-        });
-    }
-
     function addMessageElement(el, options) {
         var $el = $(el);
 
@@ -460,7 +443,7 @@
 
         // Apply options
         if (options.fade) {
-            $el.hide().fadeIn(FADE_TIME);
+            $el.hide().fadeIn(CHAT.TYPING.FADE_TIME);
         }
         if (options.prepend) {
             $('.messages').prepend($el);
@@ -483,33 +466,8 @@
             hash = username.charCodeAt(i) + (hash << 5) - hash;
         }
         // Calculate color
-        var index = Math.abs(hash % COLORS.length);
-        return COLORS[index];
+        var index = Math.abs(hash % CHAT.COLORS.length);
+        return CHAT.COLORS[index];
     }
 
-    function updateTyping(socket) {
-        if (connected) {
-            if (!typing) {
-                typing = true;
-                socket.emit('typing');
-            }
-            lastTypingTime = (new Date()).getTime();
-
-            setTimeout(function() {
-                var typingTimer = (new Date()).getTime();
-                var timeDiff = typingTimer - lastTypingTime;
-                if (timeDiff >= TYPING_TIMER_LENGTH && typing) {
-                    socket.emit('typing-stop');
-                    typing = false;
-                }
-            }, TYPING_TIMER_LENGTH);
-        }
-    }
-
-    function addUserMicVolume(data) {
-        console.log(data);
-    }
-
-    window.network = network;
-
-}());
+})();

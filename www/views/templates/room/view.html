@@ -4,6 +4,7 @@
 {% block custom_javascript %}
     <script>
         var ROOM_UUID = '{{ room_uuid }}';
+        var ROOM_ID = parseInt('{{ id }}');
     </script>
 {% endblock %}
 
@@ -31,10 +32,15 @@
                 <div class="insideFrameChat">
                     <ul class="pages">
                         <li class="chat page" style="width: 100%;">
-                            <div class="chatArea">
+                            <div class="chatArea" style="padding-bottom: 0; height: 80%;">
                                 <ul class="messages"></ul>
                             </div>
-                            <input class="inputMessage" placeholder="Type here..." />
+                            <input id="inputMessage" class="inputMessage" placeholder="Type here..." style="position: static;"/>
+                            <button id="toggle_video"style="
+                                border: 5px solid black;
+                                border-top: none;
+                                width: 100%;
+                                height: 45px;">Toggle video</button>
                         </li>
                         <li class="login page">
                             <div class="form">

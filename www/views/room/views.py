@@ -14,11 +14,11 @@ def create(req):
     return TemplateResponse(req, 'room/create.html')
 
 def view(req):
-    room_uuid = req.GET.get('uuid')
-    if not room_uuid:
+    room_id = req.GET.get('id')
+    if not room_id:
         return HttpResponseRedirect('/room/create/')
 
-    data = room.get_room(room_uuid)
+    data = room.get_room(room_id)
     if not data:
         return HttpResponseRedirect('/room/create/')
 

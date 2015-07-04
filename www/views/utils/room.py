@@ -25,7 +25,7 @@ def generate_room(params):
     if not channel:
     	return {'error': 'Unknown channel.'}
 
-    return {'room_uuid': room.generate_room(service, channel)}
+    return room.generate_room(service, channel)
 
 def get_room(room_uuid):
     data = room.get_room(room_uuid)
