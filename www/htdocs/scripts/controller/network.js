@@ -388,6 +388,9 @@
 
 		    		var controller = $('<div>');
 		    		wrapper.append(controller);
+		    		wrapper.css({
+		    			margin: '5px';
+		    		});
 
 		    		var volume = $('<input>');
 		    		volume.attr('type', 'range');
