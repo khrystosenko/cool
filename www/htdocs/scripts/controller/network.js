@@ -194,7 +194,10 @@
 					var list = msg['publishers'];
 					console.log('Got a list of available publishers/feeds:');
 					console.log(list);
-
+					if (list.length == DEFAULT.ROOM.LIMIT) {
+						alert('You can\' join this room because it is already full.');
+						window.location.href = '/room/create/'
+					}
 					for(var f in list) {
 						var id = list[f]['id'];
 						var display = list[f]['display'];
