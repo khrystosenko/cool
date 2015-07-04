@@ -46,14 +46,21 @@ var ROOM_ID = parseInt('{{ id }}');
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12" style="height: auto; margin-bottom: 20px; padding: 0;">
+            <div class="col-sm-12" style="height: auto;min-height: 200px; margin-bottom: 20px; padding: 0;">
                 <div id="audio_chat_me" style="float: left;">
                     <div id="myvideoLook" style="display: inline-block; margin: 5px;">
                     </div>
-                    <div id="stuff"  style="position: absolute;top: 0;">
-                        <button id="toggle_video"><img class="videoImg" style="display:none;" src="../img/video.png" width="20px"><img class="novideoImg" src="../img/novideo.jpg" width="20px"></button>
-                        <button id="toggle_audio"><img class="audioImg" style="display:none;" src="../img/audio.png" width="20px"><img class="noaudioImg" src="../img/noaudio.png" width="20px"></button>
-                    </div>                    
+                    <div id="stuff">
+                        <a id="toggle_video">
+                            <div style="border-radius: 15px; padding: 4px;margin:2px;" class="videoImg">
+                                <img src="../img/novideo.png" width="20px">
+                            </div>
+                        </a>
+                        <a id="toggle_audio">
+                            <div style="border-radius: 15px; padding: 4px;margin:2px;" class="audioImg">
+                                <img src="../img/noaudio.png" width="20px">
+                            </div>
+                        </a>              
                 </div>
                     <div id="audio_chat" style="display: inline-flex;  vertical-align: top;">
                     </div>

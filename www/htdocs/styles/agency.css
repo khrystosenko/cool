@@ -1202,5 +1202,5 @@ input[type=range]:focus::-ms-fill-upper {
     display: none;
 }
 #audio_chat_me:hover #stuff {
-    display: block;
+    display: flex;
 }

@@ -81,13 +81,15 @@
 					}
 					if (local.stream.getVideoTracks()[0].enabled) {
 						$('.myvideo').removeClass('hideVideo');
-						$('.videoImg').hide();
-						$('.novideoImg').show();
+						$('.videoImg').css({
+							'background-color': 'transparent'
+						});
 					}
 					else {
 						$('.myvideo').addClass('hideVideo');
-						$('.videoImg').show();
-						$('.novideoImg').hide();
+						$('.videoImg').css({
+							'background-color': '#C94A29'
+						});
 					}
 				});
 				$('#toggle_audio').on('click', function() {
@@ -96,13 +98,15 @@
 					}
 					if (local.stream.getAudioTracks()[0].enabled) {
 						$('.myvideo').removeClass('hideAudio');
-						$('.audioImg').hide();
-						$('.noaudioImg').show();
+						$('.audioImg').css({
+							'background-color': 'transparent'
+						});
 					}
 					else {
 						$('.myvideo').addClass('hideAudio');
-						$('.audioImg').show();
-						$('.noaudioImg').hide();
+						$('.audioImg').css({
+							'background-color': '#C94A29'
+						});
 					}
 				});
 				
