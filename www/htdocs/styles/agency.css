@@ -190,8 +190,9 @@ fieldset[disabled] .btn-xl.active {
 }
 
 .navbar-default .navbar-brand {
-    font-family: "Kaushan Script","Helvetica Neue",Helvetica,Arial,cursive;
+    /*font-family: "Kaushan Script","Helvetica Neue",Helvetica,Arial,cursive;*/
     color: #C94A29;
+    padding: 10px 15px;
 }
 
 .navbar-default .navbar-brand:hover,
@@ -246,6 +247,9 @@ fieldset[disabled] .btn-xl.active {
 }
 
 @media(min-width:768px) {
+    .navbar-default .navbar-brand {
+    padding: 0px 15px;
+}
     .navbar-default {
         padding: 10px 0;
         border: 0;
@@ -593,6 +597,7 @@ section h3.section-subheading {
 }
 
 @media(min-width:992px) {
+    
     .timeline>li {
         min-height: 150px;
     }
@@ -619,6 +624,7 @@ section h3.section-subheading {
 }
 
 @media(min-width:1200px) {
+    
     .timeline>li {
         min-height: 170px;
     }
@@ -1077,6 +1083,9 @@ ul {
   height: 0;
   overflow: hidden;
 }
+.imgLogo {
+    height: 55px;
+}
 @media(max-width:800px) { 
     .insideFrameChat {
         padding-bottom: 63%;
@@ -1088,6 +1097,9 @@ ul {
 @media(max-width:767px) { 
     .insideFrameChat {
         padding-bottom: 99%;
+    }
+    .imgLogo {
+        height: 35px;
     }
 }
 .frame {

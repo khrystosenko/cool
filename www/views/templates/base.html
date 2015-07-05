@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes">
     <meta name="author" content="">
     <meta name="description" content="Room it" /> 
+    <link rel="shortcut icon" href="{{ static('img/roomlogo32.png') }}">
     {% block css %}
     {% block custom_styles %}
     {% endblock %}
@@ -58,7 +59,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Start roomit</a>
+                <a class="navbar-brand" href="/"><img src="{{ static('img/roomlogo.png') }}" class="imgLogo"><!-- <p class="logoText">roomit.tv</p> --></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
