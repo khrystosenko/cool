@@ -7,24 +7,17 @@
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes">
     <meta name="author" content="">
-    <meta name="description" content="Room it" /> 
-    <link rel="shortcut icon" href="{{ static('img/roomlogo32.png') }}">
-    {% block css %}
-    {% block custom_styles %}
-    {% endblock %}
-    <link rel="stylesheet" type="text/css" href="{{ static('styles/bootstrap.css') }}" /> 
-    <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" /> 
+    <meta name="description" content="Room it" />
+    <link rel="shortcut icon" href="{{ static('img/roomlogo32.png') }}"> {% block css %} {% block custom_styles %} {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{{ static('styles/bootstrap.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" />
     <!-- Custom Fonts -->
     <link href="{{ static('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-    {% endblock %}
-
-    {% block javascript %}
-
-    <script src="{{ static('scripts/lib/janus.js') }}" ></script>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'> {% endblock %} {% block javascript %}
+    <script src="{{ static('scripts/lib/janus.js') }}"></script>
     <script src="{{ static('scripts/lib/jquery-2.1.4.js') }}"></script>
     <script src="{{ static('scripts/lib/bootstrap.js') }}"></script>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
@@ -43,7 +36,26 @@
     <script src="{{ static('scripts/controller/login-controller.js') }}"></script>
     <script src="{{ static('scripts/service/login-service.js') }}"></script>
     <script src="{{ static('scripts/navigation.js') }}"></script>
-    {% endblock %} 
+    {% endblock %}
+    <!-- Kissmetrics tracking snippet -->
+    <script type="text/javascript">
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '648f583b6d54b6cd0b5defb76130f25b10491d11';
+
+    function _kms(u) {
+        setTimeout(function() {
+            var d = document,
+                f = d.getElementsByTagName('script')[0],
+                s = d.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = u;
+            f.parentNode.insertBefore(s, f);
+        }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//scripts.kissmetrics.com/' + _kmk + '.2.js');
+    </script>
     {% block custom_javascript %} {% endblock %}
 </head>
 
@@ -59,7 +71,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/"><img src="{{ static('img/roomlogo.png') }}" class="imgLogo"><!-- <p class="logoText">roomit.tv</p> --></a>
+                <a class="navbar-brand" href="/"><img src="{{ static('img/roomlogo.png') }}" class="imgLogo">
+                    <!-- <p class="logoText">roomit.tv</p> -->
+                </a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
