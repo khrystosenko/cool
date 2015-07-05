@@ -1068,11 +1068,27 @@ ul {
   height: 0;
   overflow: hidden;
 }
+.videoFrameMargin {
+    margin-bottom: 20px;
+}
 .insideFrameChat {
   position: relative;
   padding-bottom: 179%;
   height: 0;
   overflow: hidden;
+}
+@media(max-width:800px) { 
+    .insideFrameChat {
+        padding-bottom: 63%;
+    }
+    .videoFrameMargin {
+        margin-bottom: 0px;
+    }
+}
+@media(max-width:767px) { 
+    .insideFrameChat {
+        padding-bottom: 99%;
+    }
 }
 .frame {
     position: absolute;
