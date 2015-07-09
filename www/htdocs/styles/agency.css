@@ -1084,7 +1084,7 @@ ul {
   overflow: hidden;
 }
 .imgLogo {
-    height: 50px;
+    height: 40px;
 }
 @media(max-width:800px) { 
     .insideFrameChat {
