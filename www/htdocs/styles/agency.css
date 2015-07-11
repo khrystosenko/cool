@@ -1079,7 +1079,7 @@ ul {
 }
 .insideFrameChat {
   position: relative;
-  padding-bottom: 179%;
+  padding-bottom: 165%;
   height: 0;
   overflow: hidden;
 }
@@ -1235,4 +1235,13 @@ input[type=range]:focus::-ms-fill-upper {
 }
 #audio_chat_me:hover #stuff {
     display: flex;
+}
+.nav-tabs {
+    border-bottom: 0px;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    border: 1px solid #ddd;
+}
+.nav-tabs > li > a {
+      border-radius: 0px 0px 0 0;
 }

@@ -27,3 +27,25 @@
 {% endif %}
 </div>
 {%- endmacro %}
+
+{% macro get_chat_frame(service, channel) -%}
+
+<div class="">
+{% if service == 'twitch' %}
+<iframe style="float: right; display: inline-block;" frameborder="0" scrolling="no" src="http://twitch.tv/{{ channel }}/chat" class="frame"></iframe>
+{% endif %}
+{% if service == 'hitbox' %}
+<iframe src="http://www.hitbox.tv/embedchat/{{ channel }}" frameborder="0" allowfullscreen class="frame"></iframe>
+{% endif %}
+{% if service == 'azubu' %}
+<iframe frameborder="0" src="http://www.azubu.tv/{{ channel }}/chatpopup" allowfullscreen class="frame"></iframe>
+{% endif %}
+{% if service == 'dailymotion' %}
+<iframe frameborder="0" src="http://live-chat.dmcdn.net/#csgoprizes/{{ channel }}/games" allowfullscreen class="frame"></iframe>
+{% endif %}
+{% if service == 'douyutv' %}
+{% endif %}
+{% if service == 'huomaotv' %}
+{% endif %}
+</div>
+{%- endmacro %}
