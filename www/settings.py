@@ -4,7 +4,12 @@ import os
 def rel(*x):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), *x)
 
-DEBUG = True
+try:
+    from local_settings import *
+except ImportError:
+    raise Exception('You forgot to create local_settings.py file in www directory.')
+
+DEBUG = DJANGO_DEV_SERVER
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -44,7 +49,7 @@ USE_L10N = False
 SECRET_KEY = 'a9sd86f^*dga88^(*g(egeg86*^*)^faesg^==sf68hf$&d7aj'
 
 SESSION_EXP_TIME = 60 * 60 * 24 * 365
-ROOM_EXP_TIME = 60 * 60 * 24 * 2
+ROOM_EXP_TIME = 60 * 60 * 24 * 7
 
 STATIC_URL = '/'
 
@@ -86,11 +91,6 @@ DATABASES_INFO_PATH = rel('..', 'db')
 DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.html'
 
 ALLOWED_HOSTS = ['*']
-
-try:
-    from local_settings import *
-except ImportError:
-    pass
 
 REGEXP = {
     'username': '^\w+$',

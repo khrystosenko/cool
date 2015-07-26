@@ -16,13 +16,18 @@ def store_room(cursor, service, channel, name):
 
 @dbcp.roomit
 def get_room(cursor, room_name):
-    fields = ('id', 'service', 'channel')
+    fields = ('id', 'service', 'channel', 'exp_time')
     query = """ SELECT `%s`
                 FROM `rooms`
-                WHERE `exp_time` >= %%s
-                  AND `name` = %%s
-
+                WHERE `name` = %%s
             """ % ('`, `'.join(fields),)
-    cursor.execute(query, [time.time(), room_name])
+    cursor.execute(query, [room_name])
     data = dbcp.tuple2dict(cursor.fetchone(), fields)
+    if data['exp_time'] <= time.time():
+        query = """ DELETE FROM `rooms`
+                           WHERE `id` = %s 
+                """
+        cursor.execute(query, [data['id']])
+        return {}
+
     return data
