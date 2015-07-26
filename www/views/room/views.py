@@ -13,12 +13,8 @@ def create(req):
 
     return TemplateResponse(req, 'room/create.html')
 
-def view(req):
-    room_id = req.GET.get('id')
-    if not room_id:
-        return HttpResponseRedirect('/room/create/')
-
-    data = room.get_room(room_id)
+def view(req, room_name):
+    data = room.get_room(room_name)
     if not data:
         return HttpResponseRedirect('/room/create/')
 

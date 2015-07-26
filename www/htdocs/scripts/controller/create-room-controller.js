@@ -16,22 +16,22 @@
 
         var data = {
             // username: $('#sender-name').val(),
-            link: $('#sender-link').val()
+            link: $('#sender-link').val(),
+            name: $('#sender-name').val()
             // username: $('#sender-game').val(),
             // username: $('#sender-language').val()
         };
 
         $('.createError').hide();
          
-        API.CreateRoom(data).done(function(success) {
+        API.CreateRoom(data).done(function(data) {
 
-            console.log("success");
-            if(success.error){
-                $('.createError').show();
+            if(data.error){
+                $('#create_room_' + data.field).show();
             }
             else {
                 $('.createError').hide();
-                window.location.href = '/room/?id='+success.id;
+                window.location.href = '/room/' + data.name;
             }
 
         }).fail(function(errors) {

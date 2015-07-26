@@ -482,15 +482,17 @@
             }
 
             function setUsername(callback) {
-                username = cleanInput($('.usernameInput').val().trim());
+                if ($('.usernameInput').val()) {
+                    username = cleanInput($('.usernameInput').val().trim());
 
-                if (username) {
-                    $('.login.page').fadeOut();
-                    $('.chat.page').show();
-                    $('.login.page').off('click');
-                    $currentInput = $('.inputMessage').focus();
-                    local.username = username;
-                    callback();
+                    if (username) {
+                        $('.login.page').fadeOut();
+                        $('.chat.page').show();
+                        $('.login.page').off('click');
+                        $currentInput = $('.inputMessage').focus();
+                        local.username = username;
+                        callback();
+                    }
                 }
             }
 

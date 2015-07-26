@@ -1,9 +1,15 @@
 from roomit.db import room
 
-def generate_room(service, channel):
-    data = room.store_room(service, channel)
-    return data
+class RoomExistsException(Exception):
+    pass
+    
 
-def get_room(room_uuid):
-    data = room.get_room(room_uuid)
+def generate_room(service, channel, name):
+    if room.get_room(name):
+        raise RoomExistsException()
+
+    room.store_room(service, channel, name)
+
+def get_room(room_name):
+    data = room.get_room(room_name)
     return data

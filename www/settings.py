@@ -95,6 +95,7 @@ except ImportError:
 REGEXP = {
     'username': '^\w+$',
     'email': '([^@|\s]+@[^@]+\.[^@|\s]+)',
+    'room_name': '^[\w-]{1,36}$',
     'link': [
         {
           'service': 'twitch', 

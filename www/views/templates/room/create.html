@@ -53,7 +53,7 @@
                 </div>
             </div> -->
             <div class="clearfix"></div>
-            <div class="row" style="padding: 15px;">
+            <div class="row" style="padding: 8px;">
                 <div class="col-md-3 text-right col-middle">
                     <div class="h4 text-light">Link</div>
                 </div>
@@ -62,29 +62,30 @@
                         <div class="col-md-9">
                             <div class="panel-light panel-border location-panel-body clearfix">
                                 <input id="sender-link" type="text" placeholder="f.e: twitch.tv/channel" class="form-control link">
-                                <div class="createError alert alert-danger" role="alert">
+                                <div id="create_room_link" class="createError alert alert-danger create-room-alert" role="alert">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please check if link is correct</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- <div class="clearfix"></div>
-            <div class="row" style="padding: 15px;">
+            <div class="row" style="padding: 8px;">
                 <div class="col-md-3 text-right col-middle">
-                    <div class="h4 text-light">Game</div>
+                    <div class="h4 text-light">Room Name</div>
                 </div>
                 <div class="col-md-9 fieldset fieldset_city col-middle">
                     <div class="row">
                         <div class="col-md-9">
                             <div class="panel-light panel-border location-panel-body clearfix">
-                                <input id="sender-game" type="text" placeholder="Game" class="form-control game">
+                                <input id="sender-name" type="text" placeholder="my_room" class="form-control" maxlength="36">
+                                <div id="create_room_name" class="createError alert alert-danger create-room-alert" role="alert">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> This name is either taken or contains not allowed characters. Please use following characters to name rooms: a-z 0-9 _ - </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="clearfix"></div>
+            <!-- <div class="clearfix"></div>
             <div class="row" style="padding: 15px;">
                 <div class="col-md-3 text-right col-middle">
                     <div class="h4 text-light">Language</div>

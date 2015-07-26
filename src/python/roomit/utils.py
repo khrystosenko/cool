@@ -4,12 +4,12 @@ import re
 from django.conf import settings
 
 
-def validation_error(parameter, value=None):
+def validation_error(parameter, value=None, field=None):
     msg = 'Invalid "%s" value' % (parameter,)
     if value is not None:
         msg += '("%s")' % (value,)
 
-    return {'error': msg, 'error_code': 406}
+    return {'error': msg, 'error_code': 406, 'field': parameter}
 
 def validate_regexp(key, value):
     return re.match(settings.REGEXP[key], value)
