@@ -23,7 +23,8 @@ def get_room(cursor, room_name):
             """ % ('`, `'.join(fields),)
     cursor.execute(query, [room_name])
     data = dbcp.tuple2dict(cursor.fetchone(), fields)
-    if data['exp_time'] <= time.time():
+
+    if data and data['exp_time'] <= time.time():
         query = """ DELETE FROM `rooms`
                            WHERE `id` = %s 
                 """
