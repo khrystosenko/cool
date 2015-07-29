@@ -1,5 +1,6 @@
 	document.addEventListener('DOMContentLoaded', function() 
 	{
+		$("#error").hide();
 	var roomName = document.getElementById('roomName');		
 	var openLink = document.getElementById('open');		
 	var newurl;		
@@ -14,19 +15,26 @@
 			link:newurl,
 			name:roomName.value			
 		}				
-		 $.ajax({
-              url: "http://localhost:8000/room/create/",
-             type: "POST",
-              data: data,
-              dataType: "text",
-			 success: function(responce){
-				 var x = jQuery.parseJSON(responce);
-				 openRoom("http://localhost:8000/room/"+ x.name);				 
-			 }			  			 
-         });		 
+		 $.ajax(
+		 {
+            url: "http://roomit.tv/room/create/",
+            type: "POST",
+            data: data,
+            dataType: "text",
+            error: function(xhr,status,error){
+              	
+            },
+			success: function(responce){
+				var x = jQuery.parseJSON(responce);
+				if(x.error==null){
+					openRoom("http://roomit.tv/room/"+ x.name);
+				}
+				else{$("#error").show();}
+			}  			 
+        }
+    );		 
 	});
 	});	 
-	function openRoom(url)
-	{
+	function openRoom(url){
 		chrome.tabs.create({url:url});		
 	};	

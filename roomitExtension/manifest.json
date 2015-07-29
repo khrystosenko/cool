@@ -1,20 +1,26 @@
 {
 "manifest_version": 2,
-"name": "Roomit.tv button extension",
-"version": "0.1",
-"description": "Roomit.tv button extension",
+"name": "Roomit.tv extension",
+"version": "1.0.0",
+"description": "Create private room with one click. Watch twitch.tv and talk with your friends using room chat and video group call on roomit.tv",
 
  "background":{
  "scripts":["background.js"],
  "persistent": false
  },
 
+"icons": 
+{ 
+	"16": "rLogo.png",
+	"48": "r48.png",
+    "128": "r128.png" 
+          },
+
 "permissions": [
 "tabs",
 "notifications",
 "http://roomit.tv/*",
-"https://roomit.tv/*",
-"http://localhost/*"
+"https://roomit.tv/*"
 ],
 "browser_action": {
 "default_icon":"rLogo.png"
