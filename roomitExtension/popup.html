@@ -1,13 +1,48 @@
 <html>
 <head>
 <script src = "jquery-2.1.4.min.js"></script>
+<style>
+.btn {
+    padding: 10px 20px;
+    border-color: #C94A29;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+	width: 200px;
+    background-color: #C94A29;
+	outline: none;
+}
+h2   {
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #C94A29;
+	text-align: center;
+}
+input[type="text"] {
+   border: 1px solid #C94A29;
+   padding: 3px;
+   border-radius: 3px; 
+   background: #ffffff !important; 
+   outline: none; 
+   height: 32px; 
+   width: 200px; 
+   color: #000000;  
+   font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+   font-size: 20px;
+}
+ 
+</style>
 </head>
 <body>
-<div style="width:250px;height:150px">
-Name of Room:<br>
+<div style="width:200px;height:80px">
+<h2>Room name:</h2>
 <input type="text" id="roomName">
-<input type = "button" id="open" value="open link">
 </div>
+<input type = "button" id="open" class="btn" value="Create room">
 <script src = "popup.js">
 </script>
 
