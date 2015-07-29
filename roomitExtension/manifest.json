@@ -1,0 +1,23 @@
+{
+"manifest_version": 2,
+"name": "Roomit.tv button extension",
+"version": "0.1",
+"description": "Roomit.tv button extension",
+
+ "background":{
+ "scripts":["background.js"],
+ "persistent": false
+ },
+
+"permissions": [
+"tabs",
+"notifications",
+"http://roomit.tv/*",
+"https://roomit.tv/*",
+"http://localhost/*"
+],
+"browser_action": {
+"default_icon":"rLogo.png"
+}
+}
+
