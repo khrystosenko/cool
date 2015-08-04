@@ -15,14 +15,14 @@
     io.sockets.on('connection', function(socket) {
       console.log('Socket ' + socket.id + ' is connected.');
       
-      socket.on('pre-initialize', function() {
+      socket.on('pre-initialize', function(username) {
+        socket.username = username
         socket.emit('socket-initialize', {socket_id: socket.id});
       });
 
-      socket.on('initialize', function(username, access, room_uuid) {
-        console.log('User ' + username + ' is added.');
+      socket.on('initialize', function(access, room_uuid) {
+        console.log('User ' + socket.username + ' is added.');
 
-        socket.username = username;
         socket.room_uuid = room_uuid;
         socket.access = access;
 
@@ -39,17 +39,19 @@
         
         for (var i in rooms[room_uuid]) {
           socket_id = rooms[room_uuid][i];
+          console.log('Sending peer-add to', socket_id)
           sockets[socket_id].emit('peer-add', {socket_id: socket.id, create_offer: false});
           socket.emit('peer-add', {socket_id: socket_id, create_offer: true, access: sockets[socket_id].access});
         }
 
         rooms[room_uuid].push(socket.id);
-        socket.emit('user-joined', {username: username, numUsers: rooms[socket.room_uuid].length});
-        socket.broadcast.to(socket.room_uuid).emit('chat-update', {username: 'SERVER', message: username + ' has connected to this room.'});
+        socket.emit('user-joined', {username: socket.username, numUsers: rooms[socket.room_uuid].length});
+        socket.broadcast.to(socket.room_uuid).emit('chat-update', {username: 'SERVER', message: socket.username + ' has connected to this room.'});
 
       });
 
       socket.on('chat-send', function (data) {
+        console.log('Received message', data);
         io.sockets.in(socket.room_uuid).emit('chat-update', {username: socket.username, message: data});
       });
 
