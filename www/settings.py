@@ -121,5 +121,13 @@ REGEXP = {
           'service': 'huomaotv', 
           'pattern': r'^(((https?:\/\/)?(www\.)?)?huomaotv\.com\/live\/([^\/]+)\/?)?$'
         },
+        {
+          'service': 'youtube',
+          'pattern': r'^(((https?:\/\/)?(www\.)?)?youtube\.com\/watch\?v=([^\/]+)\/?)?$'
+        },
+        {
+          'service': 'youtube',
+          'pattern': r'^(((https?:\/\/)?(www\.)?)?youtu\.be\/([^\/]+)\/?)?$'
+        },
     ]
 }
