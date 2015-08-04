@@ -27,6 +27,11 @@
           return;
         }
 
+        if (rooms[room_uuid].length >= ROOMIT.config.limit) {
+          socket.emit('room-error', {'msg': 'You can\' join this room because it is already full.'});
+          return
+        }
+
         sockets[socket.id] = socket;
 
         socket.join(socket.room_uuid);

@@ -12,7 +12,7 @@
     var MIC_FADE = 150;
     var FADE_TIME = 150; // ms
     var TYPING_TIMER_LENGTH = 400; // ms
-    var DEFAULT_AUDIO_VOLUME = 0;
+    var DEFAULT_AUDIO_VOLUME = 20;
     var COLORS = [
         '#e21400', '#91580f', '#f8a700', '#f78b00',
         '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
@@ -103,6 +103,11 @@
 
         transport.on('connect', function() {
             console.log('Socket connected.');
+        });
+
+        transport.on('room-error', function(data) {
+            alert(data.msg);
+            window.location.href = '/room/create/';
         });
 
         transport.on('disconnect', function() {
