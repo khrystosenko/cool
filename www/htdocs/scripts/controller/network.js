@@ -34,6 +34,8 @@
 
     if (navigator.mozGetUserMedia) {
       navigator.RTCPeerConnection = mozRTCPeerConnection;
+      navigator.RTCSessionDescription = mozRTCSessionDescription;
+      navigator.RTCIceCandidate = mozRTCIceCandidate;
       navigator.getUserMedia = navigator.mozGetUserMedia.bind(navigator);
       navigator.attachMediaStream = function(element, stream) {
         console.log("Attaching media stream");
@@ -42,6 +44,8 @@
       };
     } else if (navigator.webkitGetUserMedia) {
       navigator.RTCPeerConnection = webkitRTCPeerConnection;
+      navigator.RTCSessionDescription = RTCSessionDescription;
+      navigator.RTCIceCandidate = RTCIceCandidate;
       navigator.getUserMedia = navigator.webkitGetUserMedia.bind(navigator);
       navigator.attachMediaStream = function(element, stream) {
         element.src = webkitURL.createObjectURL(stream);
@@ -271,7 +275,7 @@
             var remote_description = data.session_description;
             console.log(remote_description);
 
-            var desc = new RTCSessionDescription(remote_description);
+            var desc = new navigator.RTCSessionDescription(remote_description);
             var stuff = peer.setRemoteDescription(desc, 
                 function() {
                     console.log('setRemoteDescription succeeded');
@@ -305,7 +309,7 @@
         transport.on('ice_candidate', function(data) {
             var peer = peers[data.socket_id];
             var ice_candidate = data.ice_candidate;
-            peer.addIceCandidate(new RTCIceCandidate(ice_candidate));
+            peer.addIceCandidate(new navigator.RTCIceCandidate(ice_candidate));
         });
 
         transport.on('peer-remove', function(data) {
