@@ -28,6 +28,7 @@
 
             if(data.error){
                 $('#create_room_' + data.field).show();
+                $('.mainCreateError').show();
             }
             else {
                 $('.createError').hide();
