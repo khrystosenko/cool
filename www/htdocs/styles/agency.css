@@ -1265,3 +1265,7 @@ input[type=range]:focus::-ms-fill-upper {
     border-color: transparent;
     border-radius: 36px;
 }
+
+.stream_highlighted {
+    border: 2px solid #ccc;
+}

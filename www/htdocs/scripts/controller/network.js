@@ -10,11 +10,9 @@
 
     var MIC_THRESHOLD = 30;
     var MIC_FADE = 150;
-    var MIC_DEFAULT = true;
-    var DEFAULT_AUDIO_VOLUME = 25;
-    var VIDEO_DEFAULT = false;
     var FADE_TIME = 150; // ms
     var TYPING_TIMER_LENGTH = 400; // ms
+    var DEFAULT_AUDIO_VOLUME = 0;
     var COLORS = [
         '#e21400', '#91580f', '#f8a700', '#f78b00',
         '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
@@ -46,7 +44,7 @@
       navigator.RTCPeerConnection = webkitRTCPeerConnection;
       navigator.getUserMedia = navigator.webkitGetUserMedia.bind(navigator);
       navigator.attachMediaStream = function(element, stream) {
-        element.src = URL.createObjectURL(stream);
+        element.src = webkitURL.createObjectURL(stream);
       };
 
       // The representation of tracks in a stream is changed in M26.
@@ -65,6 +63,7 @@
     } else {
       console.log("Browser does not appear to be WebRTC-capable");
     }
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 
     // Initialize varibles
@@ -103,7 +102,6 @@
         transport = io.connect(host + ':' + port);
 
         transport.on('connect', function() {
-            transport.local = {}
             console.log('Socket connected.');
         });
 
@@ -122,23 +120,12 @@
             peerMediaElemenets = {};
         });
 
-        transport.on('socket-initialize', function(data) {
-            transport.local.id = data.socket_id;
-            setup_local_media(function(access_granted) {
-                $('.inputMessage').on('input', function() {
-                    updateTyping(transport);
-                });
-
-                transport.emit('initialize', ROOM_UUID, {audio: MIC_DEFAULT, video: VIDEO_DEFAULT});
-            }, function(volume) {
-                transport.emit('mic-volume-update');
-            }, MIC_DEFAULT, VIDEO_DEFAULT);
-        })
-
         transport.on('login', function(data) {
             connected = true;
 
-
+            $('.inputMessage').on('input', function() {
+                updateTyping(transport);
+            });
         });
 
         transport.on('user-joined', function(data) {
@@ -170,6 +157,10 @@
             console.log('Signaling server said to add peer:', data);
 
             var socket_id = data.socket_id;
+            if (socket_id in peers) {
+                console.log('Already connected to peer ', socket_id);
+                return;
+            }
 
             var peer_connection = new navigator.RTCPeerConnection(
                 {iceServers: ICE_SERVERS},
@@ -193,7 +184,9 @@
             peer_connection.onaddstream = function(event) {
                 console.log('onAddStream', event);
 
-                var wrapper = $('<div>');
+                var wrapper = $('<div>', {
+                    id: 'stream_' + socket_id
+                });
                 $('#audio_chat').append(wrapper);
 
                 var media_tag = $('<video class="videostyle" width="120" height="120">');
@@ -241,12 +234,29 @@
             if (data.create_offer) {
                 console.log('Creating RTC offer to ', socket_id);
 
-                createOffer(socket_id, data.access);
-            }
-        });
+                peer_connection.createOffer(
+                    function (local_description) { 
+                        console.log('Local offer description is: ', local_description);
+                        peer_connection.setLocalDescription(local_description,
+                            function() { 
+                                transport.emit('session_description-relay', 
+                                    {'socket_id': socket_id, 'session_description': local_description});
 
-        transport.on('media-update', function(data) {
-            createOffer(data.socket_id, data.access);
+                                console.log('Offer setLocalDescription succeeded'); 
+                            },
+                            function() { alert('Offer setLocalDescription failed!'); }
+                        );
+                    },
+                    function (error) {
+                        console.log('Error sending offer: ', error);
+                    }, 
+                    {
+                        'optional': [],
+                        'mandatory': {
+                            'OfferToReceiveAudio': data.access_granted
+                        }
+                    });
+            }
         });
 
         transport.on('session_description', function(data) {
@@ -308,12 +318,13 @@
         });
 
         $window.keydown(function(event) {
+            // Auto-focus the current input when a key is typed
             if (!(event.ctrlKey || event.metaKey || event.altKey)) {
                 $currentInput.focus();
             }
-            
+            // When the client hits ENTER on their keyboard
             if (event.which === 13) {
-                if (transport.local && transport.local.username) {
+                if (username) {
                     sendMessage();
                     transport.emit('typing-stop');
                     typing = false;
@@ -325,44 +336,91 @@
 
     }
 
-    function setup_local_media(callback, audio_level_callback, audio, video) {
-        navigator.getUserMedia({'audio': audio, 'video': video},
+    function setup_local_media(callback, audio_level_callback) {
+        if (localMediaStream != null) {  /* ie, if we've already been initialized */
+            if (callback) callback();
+            return;
+        }
+        navigator.getUserMedia({'audio': true, 'video': true},
             function(stream) { /* user accepted access to a/v */
                 console.log("Access granted to audio/video");
                 localMediaStream = stream;
-                var local_media = $('<video class="videostyle" width="120" height="120">');
+                var local_media = $('<video class="videostyle myvideo" width="120" height="120">');
                 local_media.attr('autoplay', 'autoplay');
                 local_media.attr('muted', true); /* always mute ourselves by default */
                 $('#myvideoLook').append(local_media);
                 navigator.attachMediaStream(local_media[0], stream);
 
-                var audioContext = new AudioContext(),
-                    analyser = audioContext.createAnalyser(),
-                    microphone = audioContext.createMediaStreamSource(stream),
-                    javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+                // var audioContext = new webkitAudioContext(),
+                //     analyser = audioContext.createAnalyser(),
+                //     microphone = audioContext.createMediaStreamSource(stream),
+                //     javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
 
-                analyser.smoothingTimeConstant = 0.3;
-                analyser.fftSize = 1024;
+                // analyser.smoothingTimeConstant = 0.3;
+                // analyser.fftSize = 1024;
 
-                microphone.connect(analyser);
-                analyser.connect(javascriptNode);
-                javascriptNode.connect(audioContext.destination);
+                // microphone.connect(analyser);
+                // analyser.connect(javascriptNode);
+                // javascriptNode.connect(audioContext.destination);
 
-                javascriptNode.onaudioprocess = function() {
-                    var array =  new Uint8Array(analyser.frequencyBinCount);
-                    analyser.getByteFrequencyData(array);
-                    var values = 0;
+                // javascriptNode.onaudioprocess = function() {
+                //     var array =  new Uint8Array(analyser.frequencyBinCount);
+                //     analyser.getByteFrequencyData(array);
+                //     var values = 0;
 
-                    var length = array.length;
-                    for (var i = 0; i < length; i++) {
-                        values += array[i];
+                //     var length = array.length;
+                //     for (var i = 0; i < length; i++) {
+                //         values += array[i];
+                //     }
+
+                //     var average = values / length;
+                //     if (average > MIC_THRESHOLD) {
+                //         audio_level_callback(average);
+                //     }
+                // }
+
+                $('#toggle_video').on('click', function() {
+                    if (localMediaStream.getVideoTracks()[0]) {
+                        localMediaStream.getVideoTracks()[0].enabled = !localMediaStream.getVideoTracks()[0].enabled;
                     }
-
-                    var average = values / length;
-                    if (average > MIC_THRESHOLD) {
-                        audio_level_callback(average);
+                    if (localMediaStream.getVideoTracks()[0].enabled) {
+                        $('.myvideo').removeClass('hideVideo');
+                        $('.videoImg').css({
+                            'background-color': 'transparent'
+                        });
+                    } else {
+                        $('.myvideo').addClass('hideVideo');
+                        $('.videoImg').css({
+                            'background-color': '#C94A29'
+                        });
                     }
-                }
+                });
+
+                $('#toggle_audio').on('click', function() {
+                    if (localMediaStream.getAudioTracks()[0]) {
+                        localMediaStream.getAudioTracks()[0].enabled = !localMediaStream.getAudioTracks()[0].enabled;
+                    }
+                    if (localMediaStream.getAudioTracks()[0].enabled) {
+                        $('.myvideo').removeClass('hideAudio');
+                        $('.audioImg').css({
+                            'background-color': 'transparent'
+                        });
+                    } else {
+                        $('.myvideo').addClass('hideAudio');
+                        $('.audioImg').css({
+                            'background-color': '#C94A29'
+                        });
+                    }
+                });
+
+                $('.myvideo').on('click', function() {
+                    if ($('video.myvideo').hasClass('largervideo')) {
+                        $('video.myvideo').removeClass('largervideo')
+                    } else {
+                        $('video.myvideo').addClass('largervideo')
+
+                    }
+                });
 
 
                 if (callback) callback(true);
@@ -397,9 +455,12 @@
             $('.chat.page').show();
             $('.login.page').off('click');
             $currentInput = $('.inputMessage').focus();
-            transport.local.username = username;
 
-            transport.emit('pre-initialize', username);
+            setup_local_media(function(access_granted) {
+                transport.emit('initialize', username, ROOM_ID, access_granted);
+            }, function(volume) {
+                transport.emit('mic-volume-update');
+            });
         }
     }
 
@@ -412,7 +473,7 @@
         // Prevent markup from being injected into the message
         message = cleanInput(message);
         // if there is a non-empty message and a socket connection
-        if (message) {
+        if (message && connected) {
             $('.inputMessage').val('');
             transport.emit('chat-send', message);
         }
@@ -505,7 +566,7 @@
     }
 
     function updateTyping(socket) {
-        if (socket.local.username) {
+        if (connected) {
             if (!typing) {
                 typing = true;
                 socket.emit('typing');
@@ -523,35 +584,8 @@
         }
     }
 
-    function createOffer(socket_id, access) {
-        peer_connection = peers[socket_id];
-        peer_connection.createOffer(
-            function (local_description) { 
-                console.log('Local offer description is: ', local_description);
-                peer_connection.setLocalDescription(local_description,
-                    function() { 
-                        transport.emit('session_description-relay', 
-                            {'socket_id': socket_id, 'session_description': local_description});
-
-                        console.log('Offer setLocalDescription succeeded'); 
-                    },
-                    function() { alert('Offer setLocalDescription failed!'); }
-                );
-            },
-            function (error) {
-                console.log('Error sending offer: ', error);
-            }, 
-            {
-                'optional': [],
-                'mandatory': {
-                    'OfferToReceiveAudio': access.audio,
-                    'OfferToReceiveVideo': access.video
-                }
-            });
-    }
-
     function addUserMicVolume(data) {
-        console.log(data);
+
     }
 
     window.network = network;
