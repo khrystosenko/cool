@@ -131,7 +131,7 @@ REGEXP = {
         },
         {
           'service': 'youtube',
-          'pattern': r'^(((https?:\/\/)?(www\.)?)?youtube\.com\/watch\?v=([^\/]+)\/?(\&))?$'
+          'pattern': r'^(((https?:\/\/)?(www\.)?)?youtube\.com\/watch\?v=([^\/]+)\/?(\&))?'
         },
     ]
 }
