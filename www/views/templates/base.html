@@ -46,7 +46,6 @@
 
   ga('create', 'UA-65129332-1', 'auto');
   ga('send', 'pageview');
-
 </script>
     <!-- Kissmetrics tracking snippet -->
     <script type="text/javascript">
@@ -67,6 +66,23 @@
     _kms('//i.kissmetrics.com/i.js');
     _kms('//scripts.kissmetrics.com/' + _kmk + '.2.js');
     </script>
+    <style type="text/css">
+    .btn-popup {
+        padding: 10px 20px;
+        border-color: #C94A29;
+        border-radius: 3px;
+        text-transform: uppercase;
+        font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        width: 200px;
+        background-color: #C94A29;
+        outline: none;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+    </style>
     {% block custom_javascript %} {% endblock %}
 </head>
 
@@ -109,6 +125,39 @@
                     <!-- <li>
                         <a href="/room/" style="color: #C94A29;">View</a>
                     </li> -->
+                     <li>
+                        <a style="margin-right:5px;" data-toggle="modal" data-backdrop="static" data-target="#get-premium" class="btn btn-l">Get Premium</a>
+                    </li>
+
+                    <!-- Get Premium Popup-->
+                    <div id="get-premium" class="modal fade" role="dialog" >
+                        <div class="modal-dialog">
+
+                            
+                            <div class="modal-content">
+                                <div class="modal-header" style="text-align:center">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">get free premium account</h4>
+                                </div>
+                                 
+                                <div class="form-group">
+                                    <input type="text" style="margin:10px 0px 10px 10px;width:95%" class="form-control" placeholder="Name" id="feedback-name" required data-validation-required-message="Please enter your name." maxlength="64" minlength="1">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="email" style="margin:10px 0px 10px 10px;width:95%" class="form-control" placeholder="example@example.com" id="feedback-email" required data-validation-required-message="Please enter your email address." maxlength="128">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+
+
+                                <div class="modal-footer" style="text-align:center">
+                                    <button type="submit" class="btn-popup">send</button>   
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
                     <li>
                         <a href="/room/create/" class="btn btn-l">Create Room</a>
                     </li>
@@ -164,7 +213,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <span class="copyright"> &copy; Roomit.tv 2015</span>
+                    <span class="copyright">No Safari and IE support atm. &copy; Roomit.tv 2015</span>
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline social-buttons">
@@ -184,9 +233,21 @@
                             </li>
                             <li><a href="#">Policy</a>
                             </li>
+                            <li><a href="#">FAQ</a>
+                            </li>
                     </ul>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <span class="copyright">We currently do not support Safari and Inernet Explorer. Sorry for inconvenience. <a target="_blank" href="mailto:team@roomit.tv">team@roomit.tv</a></span>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col-md-12">
+                    <span class="copyright">We suggest using one </span>
+                </div>
+            </div> -->
         </div>
     </footer>
     {% endblock %}
