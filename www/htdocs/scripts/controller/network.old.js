@@ -11,7 +11,8 @@
     var MIC_THRESHOLD = 30;
     var MIC_FADE = 150;
     var MIC_DEFAULT = true;
-    var VIDEO_DEFAULT = false;
+    var DEFAULT_AUDIO_VOLUME = 0;
+    var VIDEO_DEFAULT = true;
     var FADE_TIME = 150; // ms
     var TYPING_TIMER_LENGTH = 400; // ms
     var COLORS = [
@@ -45,7 +46,7 @@
       navigator.RTCPeerConnection = webkitRTCPeerConnection;
       navigator.getUserMedia = navigator.webkitGetUserMedia.bind(navigator);
       navigator.attachMediaStream = function(element, stream) {
-        element.src = webkitURL.createObjectURL(stream);
+        element.src = URL.createObjectURL(stream);
       };
 
       // The representation of tracks in a stream is changed in M26.
@@ -64,7 +65,6 @@
     } else {
       console.log("Browser does not appear to be WebRTC-capable");
     }
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 
     // Initialize varibles
@@ -103,6 +103,7 @@
         transport = io.connect(host + ':' + port);
 
         transport.on('connect', function() {
+            transport.local = {}
             console.log('Socket connected.');
         });
 
@@ -121,19 +122,18 @@
             peerMediaElemenets = {};
         });
 
-        transport.on('login', function(data) {
-            connected = true;
+        transport.on('socket-initialize', function(data) {
+            transport.local.id = data.socket_id;
+            setup_local_media(function(access_granted) {
+                $('.inputMessage').on('input', function() {
+                    updateTyping(transport);
+                });
 
-            $('.inputMessage').on('input', function() {
-                updateTyping(transport);
-            });
-
-            $('#toggle_video').on('click', function() {
-                setup_local_media(function() {
-                    transport.emit('media-update', {audio: true, video: true});
-                }, function() {}, true, true);
-            });
-        });
+                transport.emit('initialize', ROOM_UUID, {audio: access_granted, video: access_granted});
+            }, function(volume) {
+                transport.emit('mic-volume-update');
+            }, MIC_DEFAULT, VIDEO_DEFAULT);
+        })
 
         transport.on('user-joined', function(data) {
             log(data.username + ' joined');
@@ -187,13 +187,45 @@
             peer_connection.onaddstream = function(event) {
                 console.log('onAddStream', event);
 
-                var remote_media = $('<audio>');
-                remote_media.attr('autoplay', 'autoplay');
-                remote_media.attr('controls', '');
-                remote_media.attr('muted', true); 
-                peerMediaElemenets[socket_id] = remote_media;
-                $('#' + audioChatID).append(remote_media);
-                navigator.attachMediaStream(remote_media[0], event.stream);
+                var wrapper = $('<div>');
+                $('#audio_chat').append(wrapper);
+
+                var media_tag = $('<video class="videostyle" width="120" height="120">');
+                media_tag.attr('autoplay', 'autoplay');
+                wrapper.append(media_tag);
+
+                var controller = $('<div>');
+                wrapper.append(controller);
+                wrapper.css({
+                    margin: '5px'
+                });
+
+                var volume = $('<input>');
+                volume.attr('type', 'range');
+                volume.css({
+                    width: '120px',
+                    float: 'left'
+                });
+
+                volume.on('change', function() {
+                    media_tag[0].volume = this.value / 100.0;
+                });
+
+                media_tag.on('click', function() {
+                    if (media_tag.hasClass('largervideo')) {
+                        media_tag.removeClass('largervideo')
+                    } else {
+                        media_tag.addClass('largervideo')
+
+                    }
+                });
+
+                volume[0].value = DEFAULT_AUDIO_VOLUME;
+
+                controller.append(volume);
+
+                peerMediaElemenets[socket_id] = media_tag;
+                navigator.attachMediaStream(media_tag[0], event.stream);
             }
 
             if (localMediaStream) {
@@ -203,12 +235,12 @@
             if (data.create_offer) {
                 console.log('Creating RTC offer to ', socket_id);
 
-                createOffer(socket_id, data.access_granted);
+                createOffer(socket_id, data.access);
             }
         });
 
         transport.on('media-update', function(data) {
-            createOffer(data.socket_id, data.access_granted);
+            createOffer(data.socket_id, data.access);
         });
 
         transport.on('session_description', function(data) {
@@ -259,7 +291,7 @@
             console.log('Signaling server said to remove peer:', data);
             var socket_id = data.socket_id;
             if (socket_id in peerMediaElemenets) {
-                peerMediaElemenets[socket_id].remove();
+                peerMediaElemenets[socket_id].parent().remove();
             }
             if (socket_id in peers) {
                 peers[socket_id].close();
@@ -275,7 +307,7 @@
             }
             
             if (event.which === 13) {
-                if (username) {
+                if (transport.local && transport.local.username) {
                     sendMessage();
                     transport.emit('typing-stop');
                     typing = false;
@@ -292,13 +324,13 @@
             function(stream) { /* user accepted access to a/v */
                 console.log("Access granted to audio/video");
                 localMediaStream = stream;
-                var local_media = video ? $('<video>') : $('<audio>');
+                var local_media = $('<video class="videostyle" width="120" height="120">');
                 local_media.attr('autoplay', 'autoplay');
                 local_media.attr('muted', true); /* always mute ourselves by default */
-                $('#' + audioChatID).append(local_media);
+                $('#myvideoLook').append(local_media);
                 navigator.attachMediaStream(local_media[0], stream);
 
-                var audioContext = new webkitAudioContext(),
+                var audioContext = new AudioContext(),
                     analyser = audioContext.createAnalyser(),
                     microphone = audioContext.createMediaStreamSource(stream),
                     javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
@@ -359,12 +391,9 @@
             $('.chat.page').show();
             $('.login.page').off('click');
             $currentInput = $('.inputMessage').focus();
+            transport.local.username = username;
 
-            setup_local_media(function(access_granted) {
-                transport.emit('initialize', username, ROOM_UUID, {audio: MIC_DEFAULT, video: VIDEO_DEFAULT});
-            }, function(volume) {
-                transport.emit('mic-volume-update');
-            }, MIC_DEFAULT, VIDEO_DEFAULT);
+            transport.emit('pre-initialize', username);
         }
     }
 
@@ -377,7 +406,7 @@
         // Prevent markup from being injected into the message
         message = cleanInput(message);
         // if there is a non-empty message and a socket connection
-        if (message && connected) {
+        if (message) {
             $('.inputMessage').val('');
             transport.emit('chat-send', message);
         }
@@ -470,7 +499,7 @@
     }
 
     function updateTyping(socket) {
-        if (connected) {
+        if (socket.local.username) {
             if (!typing) {
                 typing = true;
                 socket.emit('typing');

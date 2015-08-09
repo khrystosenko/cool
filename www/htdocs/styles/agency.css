@@ -1253,3 +1253,19 @@ input[type=range]:focus::-ms-fill-upper {
 .create-room-alert {
     margin-bottom: 0px !important;
 }
+.webstore-btn:hover {
+    border: 1px solid;
+    margin-bottom: 50px;
+    border-color: #C94A29;
+    border-radius: 36px;
+}
+.webstore-btn {
+    border: 1px solid;
+    margin-bottom: 50px;
+    border-color: transparent;
+    border-radius: 36px;
+}
+
+.stream_highlighted {
+    border: 2px solid #ccc;
+}

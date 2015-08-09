@@ -25,6 +25,9 @@
 {% if service == 'huomaotv' %}
 <iframe class="frame" src='http://www.huomaotv.com/index.php?c=outplayer&live_id={{ channel }}' frameborder=0 allowfullscreen></iframe>
 {% endif %}
+{% if service == 'youtube' %}
+<iframe class="frame" src="https://www.youtube.com/embed/{{ channel }}" frameborder="0" allowfullscreen></iframe>
+{% endif %}
 </div>
 {%- endmacro %}
 
@@ -46,6 +49,8 @@
 {% if service == 'douyutv' %}
 {% endif %}
 {% if service == 'huomaotv' %}
+{% endif %}
+{% if service == 'youtube' %}
 {% endif %}
 </div>
 {%- endmacro %}

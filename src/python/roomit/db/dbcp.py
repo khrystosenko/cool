@@ -23,7 +23,17 @@ def tuple2dict(arr, fields):
 	if type(arr) is tuple:
 		arr = [arr]
 
-	data = {fields[i]: arr[j][i] for i in range(len(fields)) for j in range(len(arr))}
+	if len(arr) == 1:
+		data = {fields[i]: arr[j][i] for i in range(len(fields)) for j in range(len(arr))}
+	else:
+		data = []
+		for item in arr:
+			row = {}
+			for i in range(len(fields)):
+				row[fields[i]] = item[i]
+
+			data.append(row)
+
 	return data
 
 

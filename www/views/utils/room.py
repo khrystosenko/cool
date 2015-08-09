@@ -20,6 +20,8 @@ def generate_room(params):
     		service = item['service']
     		channel = match.group(5)
 
+    print(channel)
+
     if not service:
     	return {'error': 'Unknown service.', 'field': 'link'}
 
