@@ -10,7 +10,7 @@ $(function() {
 
         e.preventDefault();
         var data = {
-            username: $('#feedback-name').val() || $('#premium-email').val(),
+            username: $('#feedback-name').val() || $('#premium-name').val(),
             email: $('#feedback-email').val() || $('#premium-email').val(),
             text: $('#feedback-text').val() || 'premium'
         };
