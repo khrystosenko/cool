@@ -18,6 +18,8 @@ $(function() {
         API.FeedbackSend(data).done(function(success) {
             $('#feedback-name').val('');
             $('#feedback-email').val('');
+            $('#premium-name').val('');
+            $('#premium-email').val('');
             $('#feedback-text').val('');
             $('#feedback-success').show();
             $('#get-premium').modal('hide');
