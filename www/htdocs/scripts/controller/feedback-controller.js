@@ -20,6 +20,7 @@ $(function() {
             $('#feedback-email').val('');
             $('#feedback-text').val('');
             $('#feedback-success').show();
+            $('#get-premium').modal('hide');
 
         }).fail(function(errors) {
             $('#feedback-error').text(serverError);

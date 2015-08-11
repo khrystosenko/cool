@@ -247,6 +247,7 @@ fieldset[disabled] .btn-xl.active {
 }
 
 @media(min-width:768px) {
+
     .navbar-default .navbar-brand {
     padding: 0px 15px;
 }
@@ -558,8 +559,14 @@ section h3.section-subheading {
 .timeline .timeline-body>ul {
     margin-bottom: 0;
 }
-
-@media(min-width:768px) {
+.premium-btn {
+    margin-right:0px;
+    margin-bottom: 5px;
+    }
+@media(min-width:768px) { 
+    .premium-btn {
+    margin-right:5px;
+}
     .timeline:before {
         left: 50%;
     }
@@ -1095,6 +1102,9 @@ ul {
     }
 }
 @media(max-width:767px) { 
+    .modal-dialog {
+        width: 300px;
+    }
     .insideFrameChat {
         padding-bottom: 99%;
     }
