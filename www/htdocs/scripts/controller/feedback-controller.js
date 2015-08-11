@@ -12,7 +12,7 @@ $(function() {
         var data = {
             username: $('#feedback-name').val(),
             email: $('#feedback-email').val(),
-            text: $('#feedback-text').val()
+            text: $('#feedback-text').val() || 'premium'
         };
 
         API.FeedbackSend(data).done(function(success) {
