@@ -357,6 +357,7 @@
                 var local_media = $('<video class="videostyle myvideo" width="120" height="120">');
                 local_media.attr('autoplay', 'autoplay');
                 local_media.attr('muted', true); /* always mute ourselves by default */
+                local_media.prop('muted', true); 
                 $('#myvideoLook').append(local_media);
                 navigator.attachMediaStream(local_media[0], stream);
 
