@@ -95,7 +95,7 @@ def update_streams(cursor, streams):
                         streams.display_name = VALUES(streams.display_name),
                         streams.name = VALUES(streams.name),
                         streams.preview = VALUES(streams.preview),
-                        streams.logo = VALUES(streams.logo),
+                        streams.logo = VALUES(streams.logo)
             """ % ('`, `'.join(fields),)
 
     cursor.executemany(query, prepared_data)
