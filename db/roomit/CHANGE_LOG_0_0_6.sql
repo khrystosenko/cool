@@ -14,7 +14,7 @@ CREATE TABLE streams (
     id INT NOT NULL AUTO_INCREMENT,
     service_id INT NOT NULL,
     game_id INT NOT NULL,
-    stream_id VARCHAR(32) NOT NULL,
+    channel_id VARCHAR(32) NOT NULL,
 
     online BOOLEAN NOT NULL,
     viewers INT NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE streams (
     logo VARCHAR(256) DEFAULT NULL,
 
     PRIMARY KEY (id),
-    UNIQUE(service_id, stream_id),
+    UNIQUE(service_id, channel_id),
     FOREIGN KEY (service_id) REFERENCES services(id),
     FOREIGN KEY (game_id) REFERENCES games(id),
 
