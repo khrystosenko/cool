@@ -6,6 +6,9 @@ import requests
 # import sys, os
 # sys.path.insert(1, os.getcwd() + '\\..\\..')
 # sys.path.insert(1, os.getcwd() + '\\..\\..\\..\\..\\www')
+# or
+# sys.path.insert(1, os.getcwd() + '/../..')
+# sys.path.insert(1, os.getcwd() + '/../../../../www')
 # os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
 
 from django.conf import settings
