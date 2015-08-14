@@ -53,7 +53,8 @@ def __get_game_id(cursor, value):
 @dbcp.roomit
 def __reset_streams(cursor):
     query = """ UPDATE `streams`
-                SET online = 0
+                SET online = 0,
+                    viewers = 0
             """
     cursor.execute(query)
 
@@ -65,18 +66,19 @@ def update_streams(cursor, streams):
     games = __get_games()
     service_id = __get_service_id('twitch')
     for stream in streams:
-        if not stream['channel']['name'] or stream['game'] is None:
+        if not stream['channel']['name'] or stream['game'] is None or len(stream['game'].strip()) > 192:
             continue
 
+        game_name = stream['game'].strip()
         if not stream['channel']['display_name']:
             stream['channel']['display_name'] = stream['channel']['name']
 
-        game_id = games.get(stream['game'])
+        game_id = games.get(game_name)
         if not game_id:
-            game_id = __get_game_id(stream['game'])
-            games[game_id] = stream['game']
+            game_id = __get_game_id(game_name)
+            games[stream['game']] = game_id
 
-        prepared_data.append((service_id, game_id, stream['channel']['_id'], True, stream['viewers'],
+        prepared_data.append((service_id, game_id, stream['channel']['_id'], 1, stream['viewers'],
                               stream['channel'].get('mature') or 0, stream['channel'].get('language') or '',
                               stream['channel']['display_name'], stream['channel']['name'],
                               stream['preview'].get('template'), stream['channel'].get('logo')))
@@ -95,7 +97,7 @@ def update_streams(cursor, streams):
                         streams.display_name = VALUES(streams.display_name),
                         streams.name = VALUES(streams.name),
                         streams.preview = VALUES(streams.preview),
-                        streams.logo = VALUES(streams.logo),
+                        streams.logo = VALUES(streams.logo)
             """ % ('`, `'.join(fields),)
 
     cursor.executemany(query, prepared_data)
