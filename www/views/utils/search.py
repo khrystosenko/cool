@@ -34,3 +34,34 @@ def filter_by_params(params):
     limit = min(100, int(limit))
 
     return search.filter_by_params(game, platform, only_online, offset, limit)
+
+def get_top_games(params):
+    limit = params.get('limit', '10')
+    if not limit.isdigit():
+        return utils.validation_error('limit')
+
+    limit = min(50, int(limit))
+
+    return search.get_top_games(limit)
+
+def get_top_platforms(params):
+    limit = params.get('limit', '10')
+    if not limit.isdigit():
+        return utils.validation_error('limit')
+
+    limit = min(50, int(limit))
+
+    return search.get_top_platforms(limit)
+
+def get_games_like(params):
+    limit = params.get('limit', '10')
+    if not limit.isdigit():
+        return utils.validation_error('limit')
+
+    limit = min(50, int(limit))
+
+    text = params.get('text', '')
+    if len(text) < 3 or len(text) > 128:
+        return utils.validation_error('text')
+
+    return search.get_games_like(text, limit)
