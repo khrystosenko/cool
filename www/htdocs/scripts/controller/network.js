@@ -604,7 +604,7 @@
 
     function addUserMicVolume(data) {
         $('#' + data.socket_id).addClass('lightVideo');
-        setTimeout(function() {$('#' + data.socket_id).removeClass('lightVideo')}, 1000);
+        setTimeout(function() {$('#' + data.socket_id).removeClass('lightVideo')}, TYPING_TIMER_LENGTH);
     }
 
     window.network = network;
