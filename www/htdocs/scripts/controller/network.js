@@ -190,6 +190,7 @@
                 }
             }
 
+
             peer_connection.onaddstream = function(event) {
                 console.log('onAddStream', event);
 
@@ -199,8 +200,12 @@
                 $('#audio_chat').append(wrapper);
 
                 var media_tag = $('<video class="videostyle" width="120" height="120">');
+                media_tag.attr('id', socket_id);
                 media_tag.attr('autoplay', 'autoplay');
                 wrapper.append(media_tag);
+
+                var name_label = $('<h6 class="h6" align="center">' + data.username + '<h6>');
+                wrapper.append(name_label);
 
                 var controller = $('<div>');
                 wrapper.append(controller);
@@ -361,33 +366,36 @@
                 $('#myvideoLook').append(local_media);
                 navigator.attachMediaStream(local_media[0], stream);
 
-                // var audioContext = new webkitAudioContext(),
-                //     analyser = audioContext.createAnalyser(),
-                //     microphone = audioContext.createMediaStreamSource(stream),
-                //     javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+                var audioContext = new webkitAudioContext(),
+                    analyser = audioContext.createAnalyser(),
+                    microphone = audioContext.createMediaStreamSource(stream),
+                    javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
 
-                // analyser.smoothingTimeConstant = 0.3;
-                // analyser.fftSize = 1024;
+                 analyser.smoothingTimeConstant = 0.3;
+                 analyser.fftSize = 1024;
 
-                // microphone.connect(analyser);
-                // analyser.connect(javascriptNode);
-                // javascriptNode.connect(audioContext.destination);
+                microphone.connect(analyser);
+                analyser.connect(javascriptNode);
+                 javascriptNode.connect(audioContext.destination);
 
-                // javascriptNode.onaudioprocess = function() {
-                //     var array =  new Uint8Array(analyser.frequencyBinCount);
-                //     analyser.getByteFrequencyData(array);
-                //     var values = 0;
+                 javascriptNode.onaudioprocess = function() {
+                     var array =  new Uint8Array(analyser.frequencyBinCount);
+                     analyser.getByteFrequencyData(array);
+                     var values = 0;
 
-                //     var length = array.length;
-                //     for (var i = 0; i < length; i++) {
-                //         values += array[i];
-                //     }
+                     var length = array.length;
+                     for (var i = 0; i < length; i++) {
+                         values += array[i];
+                     }
 
-                //     var average = values / length;
-                //     if (average > MIC_THRESHOLD) {
-                //         audio_level_callback(average);
-                //     }
-                // }
+                     var average = values / length;
+                     if (average > MIC_THRESHOLD) {
+                         audio_level_callback(average);
+                     }
+                     
+                 }
+
+
 
                 $('#toggle_video').on('click', function() {
                     if (localMediaStream.getVideoTracks()[0]) {
@@ -595,7 +603,8 @@
     }
 
     function addUserMicVolume(data) {
-
+        $('#' + data.socket_id).addClass('lightVideo');
+        setTimeout(function() {$('#' + data.socket_id).removeClass('lightVideo')}, 1000);
     }
 
     window.network = network;

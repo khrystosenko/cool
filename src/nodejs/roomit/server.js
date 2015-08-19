@@ -36,16 +36,16 @@
 
         socket.join(socket.room_uuid);
         socket.emit('login');
-        
-        for (var i in rooms[room_uuid]) {
-          socket_id = rooms[room_uuid][i];
-          sockets[socket_id].emit('peer-add', {socket_id: socket.id, create_offer: false});
-          socket.emit('peer-add', {socket_id: socket_id, create_offer: true, access_granted: sockets[socket_id].access_granted});
-        }
-
+      
         rooms[room_uuid].push(socket.id);
         socket.emit('user-joined', {username: username, numUsers: rooms[socket.room_uuid].length});
         socket.broadcast.to(socket.room_uuid).emit('chat-update', {username: 'SERVER', message: username + ' has connected to this room.'});
+
+        for (var i in rooms[room_uuid]) {
+          socket_id = rooms[room_uuid][i];
+          sockets[socket_id].emit('peer-add', {username: username, socket_id: socket.id, create_offer: false});
+          socket.emit('peer-add', {username: sockets[socket_id].username, socket_id: socket_id, create_offer: true, access_granted: sockets[socket_id].access_granted});
+        }
 
       });
 
@@ -81,9 +81,9 @@
           }
       });
 
-      // socket.on('mic-volume-update', function(data) {
-      //     socket.broadcast.to(socket.room_uuid).emit('mic-volume-update', {socket_id: socket.id});
-      // });
+       socket.on('mic-volume-update', function(data) {
+           socket.broadcast.to(socket.room_uuid).emit('mic-volume-update', {socket_id: socket.id});
+       });
 
       socket.on('disconnect', function () {
         console.log('Socket ' + socket.id + ' is disconnected.');
