@@ -1260,6 +1260,11 @@ input[type=range]:focus::-ms-fill-upper {
     width: 320px;
     height: 320px;
 }
+.lightVideo {
+    -webkit-box-shadow: 0px 0px 13px 9px rgba(201,74,41,1);
+    -moz-box-shadow: 0px 0px 13px 9px rgba(201,74,41,1);
+    box-shadow: 0px 0px 13px 9px rgba(201,74,41,1);
+}
 .create-room-alert {
     margin-bottom: 0px !important;
 }
