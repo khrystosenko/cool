@@ -16,9 +16,10 @@
                                         Create room
                                     </button>
                                 </span>
-                        </div><br>
+                        </div>
+                        <br>
                         <div align="middle" class="col-md-2 col-md-offset-5 createError mainCreateError alert alert-danger" role="alert">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please check if link is correct</div>
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please check if link is correct</div>
                     </form>
                 </div>
                 <div class="clearfix"></div>
@@ -31,10 +32,12 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
-            <h2 class="section-heading">New service</h2>
-            <h3 class="section-subheading text-muted" style="margin-bottom:0px;">Now you can watch Youtube with friends</h3>
-            <a target="_blank" href="https://www.youtube.com/"><img height="250px" src="/img/youtube-logo.png"></a><br>
-            <a target="_blank" href="https://chrome.google.com/webstore/detail/roomittv/glmgofgiagcobkgbdeopgmpaipajglnm"><img class="webstore-btn" src="{{ static('img/webstore.png') }}"></a><br>
+                <h2 class="section-heading">New service</h2>
+                <h3 class="section-subheading text-muted" style="margin-bottom:0px;">Now you can watch Youtube with friends</h3>
+                <a target="_blank" href="https://www.youtube.com/"><img height="250px" src="/img/youtube-logo.png"></a>
+                <br>
+                <a target="_blank" href="https://chrome.google.com/webstore/detail/roomittv/glmgofgiagcobkgbdeopgmpaipajglnm"><img class="webstore-btn" src="{{ static('img/webstore.png') }}"></a>
+                <br>
                 <h2 class="section-heading">benefits</h2>
                 <h3 class="section-subheading text-muted">of watching streams with us</h3>
             </div>
@@ -89,25 +92,48 @@
         <div class="row text-center">
             <div class="col-md-12 col-lg-4 col-sm-12">
                 <a href="http://www.twitch.tv/" target="_blank"><img src="img/twitch-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;"></a>
-                </div>
+            </div>
             <div class="col-md-12 col-lg-4 col-sm-12">
                 <a href="http://www.huomaotv.com/" target="_blank"><img src="img/huomei-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;"></a>
-                </div>
-            <div class="col-md-12 col-lg-4 col-sm-12" >
+            </div>
+            <div class="col-md-12 col-lg-4 col-sm-12">
                 <a href="http://www.hitbox.tv/" target="_blank"><img src="img/hitbox-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;"></a>
-                </div>
+            </div>
         </div>
         <div class="row text-center">
             <div class="col-md-12 col-lg-4 col-sm-12">
                 <a href="http://www.douyutv.com/" target="_blank"><img src="img/douyutv-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;">
-                </div></a>
+            </div>
+            </a>
             <div class="col-md-12 col-lg-4 col-sm-12">
                 <a href="http://games.dailymotion.com/" target="_blank"><img src="img/dailymotion-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;">
-                </div></a>
+            </div>
+            </a>
             <div class="col-md-12 col-lg-4 col-sm-12">
                 <a href="http://www.azubu.tv/" target="_blank"><img src="img/azubu-logo.jpg" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;">
-                </div></a>
+            </div>
+            </a>
         </div>
     </div>
 </section>
+{% endblock %} {% block api %}
+<div class=" search-form">
+    <div class="col-md-12">
+        <form class="form-inline" role="form" onsubmit="return APP.CreateRoom.createRoom(event)">
+            <div class="input-group">
+                <!-- <input type="text" class="form-control input-l" placeholder="Enter game"> -->
+                <input type="text" id="sender-link" class="form-control input-l" placeholder="f.e: twitch.tv/channel">
+                <span class="input-group-btn">
+                                    <button class="btn btn-l signup" type="submit">
+                                        Create room
+                                    </button>
+                                </span>
+            </div>
+            <br>
+            <div align="middle" class="col-md-2 col-md-offset-5 createError mainCreateError alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please check if link is correct</div>
+        </form>
+    </div>
+    <div class="clearfix"></div>
+</div>
 {% endblock %} {% endblock %}
