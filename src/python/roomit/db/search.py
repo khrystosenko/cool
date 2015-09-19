@@ -87,4 +87,7 @@ def get_games_like(cursor, text, limit):
     cursor.execute(query, [text, limit])
 
     data = dbcp.tuple2dict(cursor.fetchall(), fields)
+    if isinstance(data, dict):
+        data = [data]
+        
     return data
