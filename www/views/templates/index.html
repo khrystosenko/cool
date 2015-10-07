@@ -1,138 +1,117 @@
-{% extends 'base.html' %} {% block main %} {% block header %}
-<header>
-    <div class="container-fluid" style="padding-right:0px;padding-left:0px;">
-        <div class="intro-text">
-            <!-- <div class="intro-lead-in">Welcome To Our Studio!</div> -->
-            <div class="intro-heading">It's Nice To Meet You</div>
-            <!-- <a href="#services" class="btn btn-xl">Tell Me More</a> -->
-            <div class="hidden-sm hidden-xs search-form">
-                <div class="col-md-12">
-                    <form class="form-inline" role="form" onsubmit="return APP.CreateRoom.createRoom(event)">
-                        <div class="input-group">
-                            <!-- <input type="text" class="form-control input-l" placeholder="Enter game"> -->
-                            <input type="text" id="sender-link" class="form-control input-l" placeholder="f.e: twitch.tv/channel">
-                            <span class="input-group-btn">
-                                    <button class="btn btn-l signup" type="submit">
-                                        Create room
-                                    </button>
-                                </span>
-                        </div>
-                        <br>
-                        <div align="middle" class="col-md-2 col-md-offset-5 createError mainCreateError alert alert-danger" role="alert">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please check if link is correct</div>
-                    </form>
-                </div>
-                <div class="clearfix"></div>
+{% extends 'base.html' %}
+
+{% block header %}
+<header id="menu" class="navbar-fixed">
+    <nav class="grey darken-3">
+        <div class="nav-wrapper container">
+            <a href="#!" class="brand-logo"><img src="{{ static('img/roomit_logo.png') }}" /></a>
+            <div class="right main-menu hide-on-med-and-down">
+                <a href="#" data-scroll-to="benefits" class="scrollable-link">FEATURES</a>
+                <a href="#">DISCOVER</a>
+                <a href="#">BLOG</a>
+                <a href="#">CONTACTS</a>
+                <a class="waves-effect waves-light btn get-premium">GET PREMIUM</a>
             </div>
         </div>
-    </div>
+    </nav>
 </header>
-{% endblock %} {% block content %}
-<section id="benefits">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2 class="section-heading">New service</h2>
-                <h3 class="section-subheading text-muted" style="margin-bottom:0px;">Now you can watch Youtube with friends</h3>
-                <a target="_blank" href="https://www.youtube.com/"><img height="250px" src="/img/youtube-logo.png"></a>
-                <br>
-                <a target="_blank" href="https://chrome.google.com/webstore/detail/roomittv/glmgofgiagcobkgbdeopgmpaipajglnm"><img class="webstore-btn" src="{{ static('img/webstore.png') }}"></a>
-                <br>
-                <h2 class="section-heading">benefits</h2>
-                <h3 class="section-subheading text-muted">of watching streams with us</h3>
+{% endblock %}
+
+{% block content %}
+<div class="section no-pad-bot no-pad-top" id="header-banner">
+    <div class="container header valign-wrapper">
+        <div class="valign">
+            <div class="header-with-dot">
+                <h3 class="header white-text">Watching should make pleasure
+                <div class="roomit-dot"></div></h3>
             </div>
+            <h4 class="white-text">We understand you</h4>
+            <a href="#" data-scroll-to="create-room" class="btn waves-effect waves-light deep-orange scrollable-link">Create room</a>
         </div>
-        <div class="row text-center">
-            <div class="col-md-4">
-                <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-globe fa-stack-1x fa-inverse"></i>
-                    </span>
-                <h4 class="service-heading">Stay connected</h4>
-                <p class="text-muted">Watch your favourite streams together with your friends in virtual rooms. Choose your favourite livestream from six world best platforms!</p>
+    </div>
+    <div class="container center scroll">
+        <a href="#" class="scrollable-link" data-scroll-to="discover"><img src="{{ static('img/scroll.png') }}" /></a>
+    </div>
+</div>
+<div class="section grey lighten-4" id="support-header">
+    <div class="container center-align">
+        <img src="{{ static('img/support/youtube.png') }}" alt="YouTube" />
+        <img src="{{ static('img/support/twitch.png') }}" alt="Twitch" />
+        <img src="{{ static('img/support/hitbox.png') }}" alt="Hitbox" />
+        <img src="{{ static('img/support/dailymotion.png') }}" alt="Dailymotion" />
+        <img src="{{ static('img/support/huamao.png') }}" alt="HuaMao" />
+        <img src="{{ static('img/support/douyu.png') }}" alt="Douyu" />
+        <img src="{{ static('img/support/azubu.png') }}" alt="Azubu" />
+    </div>
+</div>
+<div class="section main grey lighten-3" id="benefits">
+    <div class="container center">
+        <span class="header grey-text">This is how we roll</span>
+        <div class="row benefits-row first-row">
+            <div class="col s12 m4">
+                <img src="{{ static('img/benefits/connected.png') }}" />
+                <p class="benefit-title">STAY CONNECTED</p>
+                <div class="roomit-dot"></div>
+                <p class="grey-text text-darken-1 description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
             </div>
-            <div class="col-md-4">
-                <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-share fa-stack-1x fa-inverse"></i>
-                    </span>
-                <h4 class="service-heading">Spread the word</h4>
-                <p class="text-muted">Invite friends to your private room and share the most interesting moments with them!</p>
+            <div class="col s12 m4">
+                <img src="{{ static('img/benefits/friends.png') }}" />
+                <p class="benefit-title">FRIENDS ONLY</p>
+                <div class="roomit-dot"></div>
+                <p class="grey-text text-darken-1 description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
             </div>
-            <div class="col-md-4">
-                <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-comments fa-stack-1x fa-inverse"></i>
-                    </span>
-                <h4 class="service-heading">Communicate</h4>
-                <p class="text-muted">Communicate using text chat, audio and video group calls, exchange ideas, impressions and just spend time with pleasure!</p>
+            <div class="col s12 m4">
+                <img src="{{ static('img/benefits/nospam.png') }}" />
+                <p class="center benefit-title">NO SPAM IN ROOMS</p>
+                <div class="roomit-dot"></div>
+                <p class="grey-text text-darken-1 description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
             </div>
         </div>
     </div>
-</section>
-<!-- <aside class="clients">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 col-sm-6">
-                <a href="#">
-                    <img src="img/logos/envato.jpg" class="img-responsive img-centered" alt="">
-                </a>
+</div>
+<div class="section main almost-white" id="discover">
+    <div class="container center">
+      <span class="header grey-text">Discover what we have</span>
+
+      <div class="row first-row">
+        {% for stream in streams %}
+            <div class="col s12 m4 stream">
+              <div class="card hoverable">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <a href="#"><img src="{{ stream.preview.replace('{width}', '420').replace('{height}', '263') }}"></a>
+                </div>
+                <div class="card-content grey-text">
+                    <ul class="collection details">
+                        <li class="collection-item avatar">
+                          <img src="{{ static('img/games/dota2.png') }}" class="circle">
+                          <p class="title grey-text text-darken-2">{{ stream.display_name }}</p>
+                          <span class="views">
+                            <i class="tiny material-icons">visibility</i> {{ '{:,d}'.format(stream.viewers).replace(',', ' ') }}
+                          </span>
+                          <span class="platform">
+                            <i class="tiny material-icons">stay_primary_landscape</i> TWITCH.TV
+                          </span>
+                          <span class="language">
+                            <i class="tiny material-icons">translate</i> {{ stream.language }}
+                          </span>
+                        </li>
+                    </ul>
+                </div>
+              </div>
             </div>
-        </div>
+        {% endfor %}
+        <a class="waves-effect waves-light btn discover-more-btn">DISCOVER MORE</a>
+      </div>
     </div>
-</aside> -->
-<section id="services">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2 class="section-heading">services</h2>
-                <h3 class="section-subheading text-muted">watch one of these with us</h3>
-            </div>
+</div>
+<div class="section main" id="create-room">
+    <div class="container center">
+        <div class="header-with-dot">
+            <span class="header white-text">Get <span class="bold">pleasure</span> from watching right now<div class="roomit-dot"
+            ></div></span>
         </div>
-        <div class="row text-center">
-            <div class="col-md-12 col-lg-4 col-sm-12">
-                <a href="http://www.twitch.tv/" target="_blank"><img src="img/twitch-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;"></a>
-            </div>
-            <div class="col-md-12 col-lg-4 col-sm-12">
-                <a href="http://www.huomaotv.com/" target="_blank"><img src="img/huomei-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;"></a>
-            </div>
-            <div class="col-md-12 col-lg-4 col-sm-12">
-                <a href="http://www.hitbox.tv/" target="_blank"><img src="img/hitbox-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;"></a>
-            </div>
-        </div>
-        <div class="row text-center">
-            <div class="col-md-12 col-lg-4 col-sm-12">
-                <a href="http://www.douyutv.com/" target="_blank"><img src="img/douyutv-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;">
-            </div>
-            </a>
-            <div class="col-md-12 col-lg-4 col-sm-12">
-                <a href="http://games.dailymotion.com/" target="_blank"><img src="img/dailymotion-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;">
-            </div>
-            </a>
-            <div class="col-md-12 col-lg-4 col-sm-12">
-                <a href="http://www.azubu.tv/" target="_blank"><img src="img/azubu-logo.jpg" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;">
-            </div>
-            </a>
-        </div>
+        <input placeholder="Insert link of stream here" id="stream-link" type="text" class="validate">
+        <a href="#" id="create-room-btn" class="btn btn-small waves-effect waves-light deep-orange">Create room</a>
     </div>
-</section>
-{% endblock %} {% block api %}
-<!-- <div class=" search-form">
-    <div class="col-md-12">
-        <form class="form-inline" role="form" onsubmit="return APP.CreateRoom.createRoom(event)">
-            <div class="input-group">
-                <input type="text" id="sender-link" class="form-control input-l" placeholder="f.e: twitch.tv/channel">
-                <span class="input-group-btn">
-                                    <button class="btn btn-l signup" type="submit">
-                                        Create room
-                                    </button>
-                                </span>
-            </div>
-            <br>
-            <div align="middle" class="col-md-2 col-md-offset-5 createError mainCreateError alert alert-danger" role="alert">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please check if link is correct</div>
-        </form>
-    </div>
-    <div class="clearfix"></div>
-</div> -->
-{% endblock %} {% endblock %}
+</div>
+{% endblock %}

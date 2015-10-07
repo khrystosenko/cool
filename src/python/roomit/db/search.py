@@ -28,6 +28,7 @@ def get_by_params(cursor, game, platform, only_online, offset, limit):
     query = """ SELECT `%s`
                 FROM `streams`
                 %s
+                ORDER BY `viewers` DESC
                 LIMIT %%s
                 OFFSET %%s
             """ % ('`, `'.join(fields), filter_query)

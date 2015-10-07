@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}Watch Video Games Together | Watch Twitch Together - Roomit{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes">
+    <meta name="author" content="">
+    <meta name="description" content="watch twitch together or Watch live streams with your friends in virtual rooms. Communicate using text chat, audio and video group calls at Roomit." />
+    <link rel="shortcut icon" href="{{ static('img/roomlogo232.png') }}"> {% block css %} {% block custom_styles %} {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{{ static('styles/bootstrap.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ static('styles/agency.css') }}" />
+    <!-- Custom Fonts -->
+    <link href="{{ static('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'> {% endblock %} {% block javascript %}
+    <script src="{{ static('scripts/lib/janus.js') }}"></script>
+    <script src="{{ static('scripts/lib/jquery-2.1.4.js') }}"></script>
+    <script src="{{ static('scripts/lib/bootstrap.js') }}"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script>
+    var serverError = 'Server found itself in trouble. Please try again later. Sorry for inconvenience.';
+    </script>
+    <script src="{{ static('scripts/core.js') }}"></script>
+    <script src="{{ static('scripts/controller/network.js') }}"></script>
+    <script src="{{ static('scripts/controller/text-chat-controller.js') }}"></script>
+    <script src="{{ static('scripts/controller/signup-controller.js') }}"></script>
+    <script src="{{ static('scripts/controller/create-room-controller.js') }}"></script>
+    <script src="{{ static('scripts/controller/feedback-controller.js') }}"></script>
+    <script src="{{ static('scripts/service/signup-service.js') }}"></script>
+    <script src="{{ static('scripts/service/create-room-service.js') }}"></script>
+    <script src="{{ static('scripts/service/feedback-service.js') }}"></script>
+    <script src="{{ static('scripts/controller/login-controller.js') }}"></script>
+    <script src="{{ static('scripts/service/login-service.js') }}"></script>
+    <script src="{{ static('scripts/navigation.js') }}"></script>
+    {% endblock %}
+    <!-- google analytics -->
+    <script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-65129332-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+    <!-- Kissmetrics tracking snippet -->
+    <script type="text/javascript">
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '648f583b6d54b6cd0b5defb76130f25b10491d11';
+
+    function _kms(u) {
+        setTimeout(function() {
+            var d = document,
+                f = d.getElementsByTagName('script')[0],
+                s = d.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = u;
+            f.parentNode.insertBefore(s, f);
+        }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//scripts.kissmetrics.com/' + _kmk + '.2.js');
+    </script>
+    <style type="text/css">
+    .btn-popup {
+        padding: 10px 20px;
+        border-color: #C94A29;
+        border-radius: 3px;
+        text-transform: uppercase;
+        font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        width: 200px;
+        background-color: #C94A29;
+        outline: none;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+    </style>
+    {% block custom_javascript %} {% endblock %}
+</head>
+
+<body id="page-top" class="index">
+    {% block menu %}
+    <nav class="navbar navbar-default" style="position: relative;width:100%;margin-bottom:0px;">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- 
+                <a class="navbar-brand" href="/"><img src="{{ static('img/roomlogo.png') }}" class="imgLogo">
+ -->
+                <a class="navbar-brand" href="/"><img src="{{ static('img/roomlogo3.png') }}" class="imgLogo">
+                    <!-- <p class="logoText">roomit.tv</p> -->
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <!-- <li>
+                        <a href="/auth/logout/" style="color: #C94A29;">Logout</a>
+                    </li>
+                    <li>
+                        <a href="/auth/profile/" style="color: #C94A29;">Profile</a>
+                    </li>
+                    <li>
+                        <a href="/auth/signup/" style="color: #C94A29;">Sign up</a>
+                    </li>
+                    <li>
+                        <a href="/auth/login/" style="color: #C94A29;">Login</a>
+                    </li> -->
+                    <!-- <li>
+                        <a href="/room/" style="color: #C94A29;">View</a>
+                    </li> -->
+                    <li>
+                        <a data-toggle="modal" data-backdrop="static" data-target="#get-premium" class="btn btn-l premium-btn">Get Premium</a>
+                    </li>
+                    <!-- Get Premium Popup-->
+                    <div id="get-premium" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form onsubmit="return APP.Feedback.send(event)">
+                                    <div class="modal-header" style="text-align:center">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Get free premium account</h4>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" style="margin:10px 0px 10px 10px;width:95%" class="form-control" placeholder="Name" id="premium-name" required data-validation-required-message="Please enter your name." maxlength="64" minlength="1">
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" style="margin:10px 0px 10px 10px;width:95%" class="form-control" placeholder="example@example.com" id="premium-email" required data-validation-required-message="Please enter your email address." maxlength="128">
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div class="modal-footer" style="text-align:center">
+                                        <button type="submit" class="btn-popup">Get</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <li>
+                        <a href="/room/create/" class="btn btn-l">Create Room</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    {% endblock %} {% block main %} {% endblock %}
+    {% block footer %}
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Something to say? Get in touch!</h2>
+                    <h3 class="section-subheading" style="color: #fff;">We love to hear what you think - good, or bad! Fill in the form below and we'll get back to you as soon as possible!</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <form name="sendMessage" id="contactForm" onsubmit="return APP.Feedback.send(event)">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Name" id="feedback-name" required data-validation-required-message="Please enter your name." maxlength="64" minlength="1">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control" placeholder="example@example.com" id="feedback-email" required data-validation-required-message="Please enter your email address." maxlength="128">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="form-group">
+                                    <textarea class="form-control" placeholder="Message" id="feedback-text" required data-validation-required-message="Please enter a message." maxlength="500"></textarea>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 text-center">
+                                <div id="feedback-success" style="display: none;">Your message has been sent.</div>
+                                <div id="feedback-error" style="display: none;"></div>
+                                <button type="submit" class="btn btn-xl">send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="site-footer" style="background-color: white;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="copyright">No Safari and IE support atm. &copy; Roomit.tv 2015</span>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline social-buttons">
+                        <li><a target="_blank" href="https://twitter.com/roomitTV"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li><a target="_blank" href="https://www.facebook.com/roomit.tv"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li><a target="_blank" href="https://www.linkedin.com/company/roomit-tv"><i class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline quicklinks">
+                        <li><a href="{{ static('img/roomit.zip') }}">Press kit</a>
+                        </li>
+                        <li><a href="#">Terms</a>
+                        </li>
+                        <li><a href="#">Policy</a>
+                        </li>
+                        <li><a href="#">FAQ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <span class="copyright">We currently do not support Safari and Internet Explorer. Sorry for inconvenience. <a target="_blank" href="mailto:team@roomit.tv">team@roomit.tv</a></span>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col-md-12">
+                    <span class="copyright">We suggest using one </span>
+                </div>
+            </div> -->
+        </div>
+    </footer>
+    {% endblock %}
+</body>
+
+</html>

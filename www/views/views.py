@@ -1,4 +1,7 @@
 from django.template.response import TemplateResponse
 
+from utils import search
+
 def index(req):
-    return TemplateResponse(req, 'index.html')
+    top_streams = search.filter_by_params({'limit': '6'})
+    return TemplateResponse(req, 'index.html', {'streams': top_streams['data']})

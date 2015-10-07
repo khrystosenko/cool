@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from roomit import utils
 from roomit.handlers import search
 
@@ -33,7 +35,11 @@ def filter_by_params(params):
 
     limit = min(100, int(limit))
 
-    return search.filter_by_params(game, platform, only_online, offset, limit)
+    data = search.filter_by_params(game, platform, only_online, offset, limit)
+    for item in data['data']:
+        item['language'] = settings.ROOMIT_LANG_CODE[item['language']]
+
+    return data
 
 def get_top_games(params):
     limit = params.get('limit', '10')

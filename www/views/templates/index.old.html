@@ -1,0 +1,138 @@
+{% extends 'base.html' %} {% block main %} {% block header %}
+<header>
+    <div class="container-fluid" style="padding-right:0px;padding-left:0px;">
+        <div class="intro-text">
+            <!-- <div class="intro-lead-in">Welcome To Our Studio!</div> -->
+            <div class="intro-heading">It's Nice To Meet You</div>
+            <!-- <a href="#services" class="btn btn-xl">Tell Me More</a> -->
+            <div class="hidden-sm hidden-xs search-form">
+                <div class="col-md-12">
+                    <form class="form-inline" role="form" onsubmit="return APP.CreateRoom.createRoom(event)">
+                        <div class="input-group">
+                            <!-- <input type="text" class="form-control input-l" placeholder="Enter game"> -->
+                            <input type="text" id="sender-link" class="form-control input-l" placeholder="f.e: twitch.tv/channel">
+                            <span class="input-group-btn">
+                                    <button class="btn btn-l signup" type="submit">
+                                        Create room
+                                    </button>
+                                </span>
+                        </div>
+                        <br>
+                        <div align="middle" class="col-md-2 col-md-offset-5 createError mainCreateError alert alert-danger" role="alert">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please check if link is correct</div>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %} {% block content %}
+<section id="benefits">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">New service</h2>
+                <h3 class="section-subheading text-muted" style="margin-bottom:0px;">Now you can watch Youtube with friends</h3>
+                <a target="_blank" href="https://www.youtube.com/"><img height="250px" src="/img/youtube-logo.png"></a>
+                <br>
+                <a target="_blank" href="https://chrome.google.com/webstore/detail/roomittv/glmgofgiagcobkgbdeopgmpaipajglnm"><img class="webstore-btn" src="{{ static('img/webstore.png') }}"></a>
+                <br>
+                <h2 class="section-heading">benefits</h2>
+                <h3 class="section-subheading text-muted">of watching streams with us</h3>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-globe fa-stack-1x fa-inverse"></i>
+                    </span>
+                <h4 class="service-heading">Stay connected</h4>
+                <p class="text-muted">Watch your favourite streams together with your friends in virtual rooms. Choose your favourite livestream from six world best platforms!</p>
+            </div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-share fa-stack-1x fa-inverse"></i>
+                    </span>
+                <h4 class="service-heading">Spread the word</h4>
+                <p class="text-muted">Invite friends to your private room and share the most interesting moments with them!</p>
+            </div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-comments fa-stack-1x fa-inverse"></i>
+                    </span>
+                <h4 class="service-heading">Communicate</h4>
+                <p class="text-muted">Communicate using text chat, audio and video group calls, exchange ideas, impressions and just spend time with pleasure!</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- <aside class="clients">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-6">
+                <a href="#">
+                    <img src="img/logos/envato.jpg" class="img-responsive img-centered" alt="">
+                </a>
+            </div>
+        </div>
+    </div>
+</aside> -->
+<section id="services">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">services</h2>
+                <h3 class="section-subheading text-muted">watch one of these with us</h3>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-12 col-lg-4 col-sm-12">
+                <a href="http://www.twitch.tv/" target="_blank"><img src="img/twitch-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;"></a>
+            </div>
+            <div class="col-md-12 col-lg-4 col-sm-12">
+                <a href="http://www.huomaotv.com/" target="_blank"><img src="img/huomei-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;"></a>
+            </div>
+            <div class="col-md-12 col-lg-4 col-sm-12">
+                <a href="http://www.hitbox.tv/" target="_blank"><img src="img/hitbox-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;"></a>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-12 col-lg-4 col-sm-12">
+                <a href="http://www.douyutv.com/" target="_blank"><img src="img/douyutv-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;">
+            </div>
+            </a>
+            <div class="col-md-12 col-lg-4 col-sm-12">
+                <a href="http://games.dailymotion.com/" target="_blank"><img src="img/dailymotion-logo.png" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;">
+            </div>
+            </a>
+            <div class="col-md-12 col-lg-4 col-sm-12">
+                <a href="http://www.azubu.tv/" target="_blank"><img src="img/azubu-logo.jpg" height="112px" style="padding: 5px;margin: 25px 15px 25px 15px;">
+            </div>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %} {% block api %}
+<!-- <div class=" search-form">
+    <div class="col-md-12">
+        <form class="form-inline" role="form" onsubmit="return APP.CreateRoom.createRoom(event)">
+            <div class="input-group">
+                <input type="text" id="sender-link" class="form-control input-l" placeholder="f.e: twitch.tv/channel">
+                <span class="input-group-btn">
+                                    <button class="btn btn-l signup" type="submit">
+                                        Create room
+                                    </button>
+                                </span>
+            </div>
+            <br>
+            <div align="middle" class="col-md-2 col-md-offset-5 createError mainCreateError alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Please check if link is correct</div>
+        </form>
+    </div>
+    <div class="clearfix"></div>
+</div> -->
+{% endblock %} {% endblock %}

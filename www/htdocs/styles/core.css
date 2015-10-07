@@ -1,0 +1,273 @@
+.hoverable:hover {
+    transition: box-shadow .25s !important;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2), 0 2px 15px 0 rgba(0, 0, 0, 0.19) !important;
+}
+
+input:focus {
+  border-bottom: 1px solid #EB5122 !important;
+  -webkit-box-shadow: 0 1px 0 0 #EB5122 !important;
+  -moz-box-shadow: 0 1px 0 0 #EB5122 !important;
+  box-shadow: 0 1px 0 0 #EB5122 !important;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+header {
+    height: 0px !important;
+    position: fixed;
+    width: 100%;
+}
+
+main {
+   flex: 1 0 auto;
+}
+
+footer {
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+}
+
+.header-transparent {
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+.roomit-dot {
+    height: 3px;
+    width: 3px;
+    background-color: #EB5122;
+}
+
+.bold {
+    font-weight: 500;
+}
+
+.almost-white {
+    background-color: #F2F2F2 !important;
+}
+
+header .container {
+    width: 75% !important;
+}
+
+header .main-menu a {
+    padding: 0px 15px;
+}
+
+header .main-menu a {
+    font-size: 13px;
+}
+
+header .main-menu a:hover{
+    color: #FF5722;
+}
+
+header .get-premium {
+    background-color: transparent;
+    border: 1px solid #FF5722;
+    color: #FF5722;
+}
+
+header .get-premium:hover {
+    background-color: #FF5722;
+    color: #FFFFFF !important;
+}
+
+.header-with-dot h1,
+.header-with-dot h2,
+.header-with-dot h3,
+.header-with-dot h4,
+.header-with-dot span,
+.header-with-dot .roomit-dot {
+    display: inline-block;
+}
+
+.header-with-dot h3 {
+    margin: 0;
+}
+
+.header-with-dot h3 .roomit-dot {
+    margin-left: -6px;
+    height: 5px;
+    width: 5px;
+}
+
+.header-with-dot span .roomit-dot {
+    margin-left: 2px;
+}
+
+#header-banner {
+    background: url('/img/header.png') 50% 50% no-repeat;
+    background-size: cover;
+}
+
+#header-banner .container.header {
+    height: 100%;
+    width: 75% !important;
+}
+
+#header-banner .container.scroll {
+    position: relative;
+    bottom: 40px;
+}
+
+#support-header .container img {
+    margin: 5px 10px;
+}
+
+.section.main {
+    padding-top: 45px;
+}
+
+.section.main .header {
+    font-size: 28px;
+}
+
+.section.main .first-row{
+    padding-top: 45px;
+}
+
+#benefits .roomit-dot {
+    margin: 0 auto;
+}
+
+.benefits-row p {
+    margin-top: 17px;
+    margin-bottom: 17px;
+}
+
+.benefits-row .description {
+    font-size: 13px;
+}
+
+.benefit-title {
+    font-size: 23px;
+    font-weight: 500;
+}
+
+#discover {
+    padding: 45px 0px;
+}
+
+.stream .card-content {
+    width: 100%;
+    cursor: default;
+    padding: 10px 10px 7px 10px !important;
+    float: left;
+    font-size: 10px;
+}
+
+.stream .details {
+    margin: 0px;
+    width: 100%;
+    border: none;
+
+    text-align: left;
+}
+
+.stream .details i {
+    position: relative;
+    top: 2px;
+
+    font-size: 11px;
+}
+
+.stream .details .collection-item {
+    padding: 0px 0px 0px 50px !important;
+    min-height: 0px !important;
+    line-height: 18px !important;
+}
+
+.stream .avatar .circle {
+    left: 0px !important;
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.stream .details span {
+    padding-right: 5px;
+    white-space: nowrap;
+}
+
+.stream .details .title {
+    font-size: 12px !important;
+    font-weight: 500;
+}
+
+.stream .details .language {
+    text-transform: uppercase;
+}
+
+.discover-more-btn {
+    background-color: #FF5722 !important;
+    margin-top: 25px;
+}
+
+#create-room {
+    padding: 100px 0px;
+    background-color: #333333;
+}
+
+#create-room .header-with-dot {
+    padding-bottom: 30px;
+}
+
+#stream-link {
+    font-size: 11px;
+    height: 20px;
+    width: 50%;
+    color: #FFFFFF;
+}
+
+#create-room-btn {
+    font-size: 13px;
+    margin-left: 40px;
+    padding: 0 1.5rem;
+}
+
+footer .container {
+    width: 75% !important;
+    padding: 15px 0px;
+}
+
+footer .container .row {
+    margin-bottom: 0px;
+}
+
+footer .roomit-logo-wrapper {
+    display: inline-block;
+}
+
+footer .roomit-logo-wrapper span {
+    line-height: 7px;
+    font-size: 9px;
+    font-weight: 400;
+    display: block;
+}
+
+footer .links {
+    text-align: center;
+}
+
+footer .links a {
+    margin-right: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #9E9E9E;
+}
+
+footer .links a:hover {
+    color: #333333;
+}
+
+footer .social {
+    text-align: right;
+}
+
+footer .social a {
+    margin-right: 10px;
+}
