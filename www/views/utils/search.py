@@ -37,7 +37,7 @@ def filter_by_params(params):
 
     data = search.filter_by_params(game, platform, only_online, offset, limit)
     for item in data['data']:
-        item['language'] = settings.ROOMIT_LANG_CODE[item['language']]
+        item['language'] = settings.ROOMIT_LANG_CODE.get(item['language'], item['language'])
 
     return data
 
