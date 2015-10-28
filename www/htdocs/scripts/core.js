@@ -50,9 +50,11 @@ function setUpScrollable(selector) {
 		if (scrollTo == 'top') {
 			position = 0;
 		} else {
-			position = $('#' + scrollTo).offset().top - 20
+			position = $('#' + scrollTo).offset().top - 20;
 		}
 		$('html, body').animate({scrollTop: position}, 'slow');
+
+		return false;
 	});
 }
 
