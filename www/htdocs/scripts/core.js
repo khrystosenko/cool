@@ -1,6 +1,6 @@
 String.prototype.rsplit = function(sep, maxsplit) {
     var split = this.split(sep);
-    return maxsplit ? [ split.slice(0, -maxsplit).join(sep) ].concat(split.slice(-maxsplit)) : split;
+    return maxsplit ? [split.slice(0, -maxsplit).join(sep)].concat(split.slice(-maxsplit)) : split;
 }
 
 function updateHeaderHeight() {
@@ -29,7 +29,7 @@ function getImagePath(currentSource) {
 	return file[0].substring(0, file[0].length - 6) + '.' + file[1];
 }
 
-function changeImageOnMouse(selector) {
+function changeImageOnHover(selector) {
 	var image = $(selector);
 	$(image).mouseover(function() {
 		var currentSource = $(this).attr('src');
@@ -61,7 +61,7 @@ function setUpScrollable(selector) {
 $(document).ready(function() {
 	headerCurrentHeight = updateHeaderHeight();
 	updateHeaderColor(headerCurrentHeight);
-	changeImageOnMouse('.hoverable-image');
+	changeImageOnHover('.hoverable-image');
 	setUpScrollable('.scrollable-link');
 
     $(window).resize(function() {
