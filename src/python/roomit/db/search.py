@@ -43,7 +43,7 @@ def get_by_params(cursor, game, platform, only_online, offset, limit):
 
 @dbcp.roomit
 def get_top_games(cursor, limit):
-    fields = ['id', 'name', 'logo']
+    fields = ['id', 'name']
     query = """ SELECT %s, SUM(viewers) as total_viewers
                 FROM streams s
                 JOIN games g
@@ -60,7 +60,7 @@ def get_top_games(cursor, limit):
 
 @dbcp.roomit
 def get_top_platforms(cursor, limit):
-    fields = ['id', 'name', 'logo']
+    fields = ['id', 'name']
     query = """ SELECT %s, SUM(viewers) as total_viewers
                 FROM streams s
                 JOIN services p
@@ -77,7 +77,7 @@ def get_top_platforms(cursor, limit):
 
 @dbcp.roomit
 def get_games_like(cursor, text, limit):
-    fields = ['id', 'name', 'logo']
+    fields = ['id', 'name']
     text =  '%%%s%%' % (text,)
     query = """ SELECT `%s`
                 FROM games
