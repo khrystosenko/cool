@@ -50,7 +50,6 @@ def __get_game_id(cursor, value):
 
     return game_id
 
-@dbcp.roomit
 def __reset_streams(cursor):
     query = """ UPDATE `streams`
                 SET online = 0,
@@ -60,7 +59,7 @@ def __reset_streams(cursor):
 
 @dbcp.roomit
 def update_streams(cursor, streams):
-    __reset_streams()
+    __reset_streams(cursor)
 
     prepared_data = []
     games = __get_games()

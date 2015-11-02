@@ -58,11 +58,21 @@ function setUpScrollable(selector) {
 	});
 }
 
+function imageWithFallback(selector) {
+	$(selector).error(function() {
+		var fallbackImage = $(this).attr('data-fallback-src');
+		if (this.src != fallbackImage) {
+			this.src = fallbackImage;
+		}
+	});
+}
+
 $(document).ready(function() {
 	headerCurrentHeight = updateHeaderHeight();
 	updateHeaderColor(headerCurrentHeight);
 	changeImageOnHover('.hoverable-image');
 	setUpScrollable('.scrollable-link');
+	imageWithFallback('.img-with-fallback');
 
     $(window).resize(function() {
         headerCurrentHeight = updateHeaderHeight();

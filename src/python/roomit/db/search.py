@@ -7,7 +7,7 @@ from roomit.db import dbcp
 
 @dbcp.roomit
 def get_by_params(cursor, game, platform, only_online, offset, limit):
-    fields = ['online', 'viewers', 'mature', 'language', 'display_name', 'name', 'preview', 'logo']
+    fields = ('online', 'viewers', 'mature', 'language', 'display_name', 'name', 'preview', 'logo')
     filter_query = []
     params = []
     if game:
@@ -25,19 +25,21 @@ def get_by_params(cursor, game, platform, only_online, offset, limit):
     if filter_query:
         filter_query = 'WHERE ' + filter_query
 
-    query = """ SELECT `%s`
-                FROM `streams`
+    query = """ SELECT %s, g.name
+                FROM `streams` s
+                JOIN `games` g
+                ON g.id = s.game_id
                 %s
                 ORDER BY `viewers` DESC
                 LIMIT %%s
                 OFFSET %%s
-            """ % ('`, `'.join(fields), filter_query)
+            """ % (','.join(['s.%s' % (field,) for field in fields]), filter_query)
 
     params.append(limit)
     params.append(offset)
 
     cursor.execute(query, params)
-    data = dbcp.tuple2dict(cursor.fetchall(), fields)
+    data = dbcp.tuple2dict(cursor.fetchall(), fields + ('game',))
 
     return data
 

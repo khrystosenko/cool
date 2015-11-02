@@ -83,7 +83,8 @@
                 <div class="card-content grey-text">
                     <ul class="collection details">
                         <li class="collection-item avatar">
-                          <img src="{{ static('img/games/dota2.png') }}" class="circle">
+                          <img src="{{ static('img/games/'~stream.game_canonical~'.png') }}" class="circle img-with-fallback" 
+                               data-fallback-src="{{ static('img/games/notfound.png') }}">                
                           <p class="title grey-text text-darken-2">{{ stream.display_name }}</p>
                           <span class="views">
                             <i class="tiny material-icons">visibility</i> {{ '{:,d}'.format(stream.viewers).replace(',', ' ') }}
