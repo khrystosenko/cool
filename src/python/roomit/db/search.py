@@ -40,6 +40,8 @@ def get_by_params(cursor, game, platform, only_online, offset, limit):
 
     cursor.execute(query, params)
     data = dbcp.tuple2dict(cursor.fetchall(), fields + ('game',))
+    if isinstance(data, dict):
+        data = [data]
 
     return data
 
@@ -58,6 +60,9 @@ def get_top_games(cursor, limit):
 
     cursor.execute(query, [limit])
     data = dbcp.tuple2dict(cursor.fetchall(), fields)
+    if isinstance(data, dict):
+        data = [data]
+
     return data
 
 @dbcp.roomit
@@ -75,6 +80,9 @@ def get_top_platforms(cursor, limit):
 
     cursor.execute(query, [limit])
     data = dbcp.tuple2dict(cursor.fetchall(), fields)
+    if isinstance(data, dict):
+        data = [data]
+
     return data
 
 @dbcp.roomit
@@ -92,5 +100,5 @@ def get_games_like(cursor, text, limit):
     data = dbcp.tuple2dict(cursor.fetchall(), fields)
     if isinstance(data, dict):
         data = [data]
-        
+
     return data
