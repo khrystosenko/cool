@@ -50,6 +50,24 @@ footer {
     background-color: #F2F2F2 !important;
 }
 
+.centerDiscover {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.almost-black {
+    background-color: #312929 !important; /* trying to make dark theme */
+}
+
+.card {
+    background-color: #442f30 !important; /* trying to make dark theme on cards like discover page */
+}
+
+.card-black {
+     background-color: #442f30 !important; /* trying to make dark theme on li in cards like discover page */
+}
+
 header .container {
     width: 75% !important;
 }
