@@ -3,18 +3,23 @@ import mysql.connector
 from django.conf import settings
 
 
+_connection = None
+
 class connection_pool():
-	
+
 	def __init__(self, database):
-		self.configs = settings.DBS[database]
+		global _connection
+		if _connection is None:
+			_connection = mysql.connector.connect(**settings.DBS[database])
+
+		self._connection = _connection
 
 	def __enter__(self):
-		self.connection = mysql.connector.connect(**self.configs)
-		return self.connection.cursor()
+		return self._connection.cursor()
 
 	def __exit__(self, *args, **kwargs):
-		self.connection.commit()
-		self.connection.close()
+		self._connection.commit()
+
 
 def tuple2dict(arr, fields):
 	if arr is None:

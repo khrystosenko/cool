@@ -21,7 +21,11 @@ from roomit.handlers import twitch
 
 def collect_data(link, result=[]):
 	response = requests.get(link, verify=False)
-	data = json.loads(response.content)
+	try:
+		data = json.loads(response.content)
+	except ValueError:
+		return result
+		
 	result.extend(data['streams'])
 
 	if len(result) % 1000 == 0:

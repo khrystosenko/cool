@@ -1,3 +1,6 @@
+import re
+import string
+
 from django.conf import settings
 
 from roomit import utils
@@ -36,8 +39,20 @@ def filter_by_params(params):
     limit = min(100, int(limit))
 
     data = search.filter_by_params(game, platform, only_online, offset, limit)
+    pattern = re.compile('[\W]+')
     for item in data['data']:
-        item['language'] = settings.ROOMIT_LANG_CODE.get(item['language'], item['language'])
+        language = settings.ROOMIT_LANG_CODE.get(item['language'])
+        if language is None:
+            language = settings.ROOMIT_LANG_CODE.get(item['language'][:2])
+
+        if language is None:
+            language = settings.ROOMIT_LANG_CODE.get(item['language'].split('-')[0])
+
+        if language is None:
+            language = item['language']
+
+        item['language'] = language
+        item['game_canonical'] = pattern.sub('', item['game']).lower()
 
     return data
 

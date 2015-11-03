@@ -11,18 +11,18 @@
     <meta name="description" content="watch twitch together or Watch live streams with your friends in virtual rooms. Communicate using text chat, audio and video group calls at Roomit." />
     <!-- Meta data end -->
 
-    <link rel="shortcut icon" href="{{ static('img/roomit_logo.png') }}">
+    <link rel="shortcut icon" href="{{ static('img/roomit_circle.png') }}">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     {% block styles %}
         <link type="text/css" rel="stylesheet" href="{{ static('styles/core.css') }}" />
-        <link type="text/css" rel="stylesheet" href="{{ static('styles/materialize.min.css') }}" media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="{{ static('styles/lib/materialize.min.css') }}" media="screen,projection"/>
         {% block additional_styles %}{% endblock %}
     {% endblock %}
 
 </head>
     <body>
         {% block header %}{% endblock %}
-       
+
         <main>{% block content %}{% endblock %}</main>
         <footer class="almost-white">
             <div class="container">

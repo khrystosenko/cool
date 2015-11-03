@@ -7,7 +7,7 @@ from roomit.db import dbcp
 
 @dbcp.roomit
 def get_by_params(cursor, game, platform, only_online, offset, limit):
-    fields = ['online', 'viewers', 'mature', 'language', 'display_name', 'name', 'preview', 'logo']
+    fields = ('online', 'viewers', 'mature', 'language', 'display_name', 'name', 'preview', 'logo')
     filter_query = []
     params = []
     if game:
@@ -25,25 +25,29 @@ def get_by_params(cursor, game, platform, only_online, offset, limit):
     if filter_query:
         filter_query = 'WHERE ' + filter_query
 
-    query = """ SELECT `%s`
-                FROM `streams`
+    query = """ SELECT %s, g.name
+                FROM `streams` s
+                JOIN `games` g
+                ON g.id = s.game_id
                 %s
                 ORDER BY `viewers` DESC
                 LIMIT %%s
                 OFFSET %%s
-            """ % ('`, `'.join(fields), filter_query)
+            """ % (','.join(['s.%s' % (field,) for field in fields]), filter_query)
 
     params.append(limit)
     params.append(offset)
 
     cursor.execute(query, params)
-    data = dbcp.tuple2dict(cursor.fetchall(), fields)
+    data = dbcp.tuple2dict(cursor.fetchall(), fields + ('game',))
+    if isinstance(data, dict):
+        data = [data]
 
     return data
 
 @dbcp.roomit
 def get_top_games(cursor, limit):
-    fields = ['id', 'name', 'logo']
+    fields = ['id', 'name']
     query = """ SELECT %s, SUM(viewers) as total_viewers
                 FROM streams s
                 JOIN games g
@@ -56,11 +60,14 @@ def get_top_games(cursor, limit):
 
     cursor.execute(query, [limit])
     data = dbcp.tuple2dict(cursor.fetchall(), fields)
+    if isinstance(data, dict):
+        data = [data]
+
     return data
 
 @dbcp.roomit
 def get_top_platforms(cursor, limit):
-    fields = ['id', 'name', 'logo']
+    fields = ['id', 'name']
     query = """ SELECT %s, SUM(viewers) as total_viewers
                 FROM streams s
                 JOIN services p
@@ -73,11 +80,14 @@ def get_top_platforms(cursor, limit):
 
     cursor.execute(query, [limit])
     data = dbcp.tuple2dict(cursor.fetchall(), fields)
+    if isinstance(data, dict):
+        data = [data]
+
     return data
 
 @dbcp.roomit
 def get_games_like(cursor, text, limit):
-    fields = ['id', 'name', 'logo']
+    fields = ['id', 'name']
     text =  '%%%s%%' % (text,)
     query = """ SELECT `%s`
                 FROM games
@@ -90,5 +100,5 @@ def get_games_like(cursor, text, limit):
     data = dbcp.tuple2dict(cursor.fetchall(), fields)
     if isinstance(data, dict):
         data = [data]
-        
+
     return data
