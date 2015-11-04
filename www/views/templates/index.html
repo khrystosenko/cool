@@ -77,20 +77,21 @@
         </div>
     </div>
 </div>
-<div class="section main almost-white" id="discover">
+
+<div class="section main almost-black" id="discover">
     <div class="container center">
       <span class="header grey-text">Discover what we have</span>
 
-      <div class="row first-row">
+      <div class="row first-row centerDiscover">
         {% for stream in streams %}
-            <div class="col s12 m4 stream">
+            <div class="col s12 m4 stream" style="min-width: 322px;">
               <div class="card hoverable">
                 <div class="card-image waves-effect waves-block waves-light">
                   <a href="#"><img src="{{ stream.preview.replace('{width}', '420').replace('{height}', '263') }}"></a>
                 </div>
                 <div class="card-content grey-text">
                     <ul class="collection details">
-                        <li class="collection-item avatar">
+                        <li class="collection-item card-black avatar">
                           <img src="{{ static('img/games/'~stream.game_canonical~'.png') }}" class="circle img-with-fallback"
                                data-fallback-src="{{ static('img/games/notfound.png') }}">
                           <p class="title grey-text text-darken-2">{{ stream.display_name }}</p>
@@ -109,10 +110,11 @@
               </div>
             </div>
         {% endfor %}
-        <a class="waves-effect waves-light btn discover-more-btn">DISCOVER MORE</a>
+        <div class="col s12 m12"><a class="waves-effect waves-light btn discover-more-btn">DISCOVER MORE</a></div>
       </div>
     </div>
 </div>
+
 <div class="section main" id="create-room">
     <div class="container center">
         <div class="header-with-dot">

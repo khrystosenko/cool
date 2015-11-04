@@ -45,3 +45,15 @@ footer {
 .almost-white {
     background-color: #F2F2F2 !important;
 }
+
+.almost-black {
+    background-color: #312929 !important; /* trying to make dark theme */
+}
+
+.card {
+    background-color: #442f30 !important; /* trying to make dark theme on cards like discover page */
+}
+
+.card-black {
+     background-color: #442f30 !important; /* trying to make dark theme on li in cards like discover page */
+}

@@ -182,6 +182,12 @@ header .get-premium:hover {
     padding: 0 1.5rem;
 }
 
+.centerDiscover {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 footer .container {
     width: 75% !important;
     padding: 15px 0px;
