@@ -24,30 +24,7 @@
         {% block header %}{% endblock %}
 
         <main>{% block content %}{% endblock %}</main>
-        <footer class="almost-white">
-            <div class="container">
-                <div class="row valign-wrapper">
-                    <div class="col s6 l3 roomit-logo-wrapper">
-                        <a href="/"><img src="{{ static('img/roomit_logo_small.png') }}" class="hoverable-image" /></a>
-                        <span class="grey-text">© Roomit 2015</span>
-                    </div>
-                    <div class="col l6 hide-on-med-and-down links">
-                        <a href="#" data-scroll-to="top" class="scrollable-link">TO TOP</a>
-                        <a href="#">FEATURES</a>
-                        <a href="#">DISCOVER</a>
-                        <a href="#">GET PREMIUM</a>
-                        <a href="#">BLOG</a>
-                        <a href="#">CONTACTS</a>
-                    </div>
-                    <div class="col s6 l3 social">
-                        <a href="#!"><img class="hoverable-image" src="{{ static('img/social/facebook.png') }}"/></a>
-                        <a href="#!"><img class="hoverable-image" src="{{ static('img/social/twitter.png') }}"/></a>
-                        <a href="#!"><img class="hoverable-image" src="{{ static('img/social/youtube.png') }}"/></a>
-                        <a href="#!"><img class="hoverable-image" src="{{ static('img/social/gplus.png') }}"/></a>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        {% block footer %}{% endblock %}
         {% block scripts %}
             <script type="text/javascript" src="{{ static('scripts/lib/jquery-2.1.4.js') }}"></script>
             <script type="text/javascript" src="{{ static('scripts/lib/materialize.min.js') }}"></script>
