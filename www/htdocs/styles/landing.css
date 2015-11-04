@@ -109,9 +109,9 @@ header .get-premium:hover {
 .stream .card-content {
     width: 100%;
     cursor: default;
-    padding: 10px 10px 7px 10px !important;
+    padding: 16px 10px 17px 16px !important;
     float: left;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .stream .details {
@@ -130,7 +130,7 @@ header .get-premium:hover {
 }
 
 .stream .details .collection-item {
-    padding: 0px 0px 0px 50px !important;
+    padding: 0px 0px 0px 45px !important;
     min-height: 0px !important;
     line-height: 18px !important;
 }
@@ -147,7 +147,7 @@ header .get-premium:hover {
 }
 
 .stream .details .title {
-    font-size: 12px !important;
+    font-size: 18px !important;
     font-weight: 500;
 }
 
