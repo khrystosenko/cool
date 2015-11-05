@@ -19,10 +19,38 @@
                 'id': {{ service.id }}
             })
         {% endfor %}
-    </script>
+        </script>
     <script type="text/javascript" src="{{ static('scripts/discover.js') }}"></script>
 {% endblock %}
 
 {% block additional_styles %}
     <link type="text/css" rel="stylesheet" href="{{ static('styles/discover.css') }}" />
 {% endblock %}
+
+{% block sidemenu %}
+    <div class="side_menu grey darken-4">
+            <ul class="guest_menu">
+                <a href="/"><li class="logo"></li></a>
+
+                <a href="#"><li class="items item-1 active">discover</li></a>
+
+                <a href="#"><li class="items item-2">popular</li></a>
+
+                <a href="#"><li class="items item-3">new room</li></a>
+            </ul>
+            <ul class="guest_menu_footer">
+                <ul id="drop-more" class="more">
+                   <a href="#"><li class="items item-6">about</li></a>
+                   <a href="#"><li class="items item-7">privacy</li></a>
+                   <a href="#"><li class="items item-8">terms</li></a>
+                   <a href="#"><li class="items item-9">blog</li></a>
+                 </ul>
+                <li id="more" class="items item-4" onclick="hideShow('#drop-more');"></li>
+                <li class="items item-5">sign up</li>
+            </ul>
+    </div>
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+

@@ -21,8 +21,8 @@
 
 </head>
     <body>
+        {% block sidemenu %}{% endblock %}
         {% block header %}{% endblock %}
-
         <main>{% block content %}{% endblock %}</main>
         {% block footer %}{% endblock %}
         {% block scripts %}
