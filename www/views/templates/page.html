@@ -1,4 +1,16 @@
 {% extends 'base.html' %}
+
+{% block additional_scripts %}
+	<script type="text/javascript" src="{{ static('scripts/page.js') }}"></script>
+	{% block add_scripts %}{% endblock %}
+{% endblock %}
+
+
+{% block additional_styles %}
+    <link type="text/css" rel="stylesheet" href="{{ static('styles/page.css') }}" />
+	{% block add_styles %}{% endblock %}
+{% endblock %}
+
 {% block sidemenu %}
     <div class="side_menu grey darken-4">
             <ul class="guest_menu">

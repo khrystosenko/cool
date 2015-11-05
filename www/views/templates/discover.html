@@ -1,6 +1,6 @@
 {% extends 'page.html' %}
 
-{% block additional_scripts %}
+{% block add_scripts %}
     <script>
         var games = [];
 
@@ -23,10 +23,27 @@
     <script type="text/javascript" src="{{ static('scripts/discover.js') }}"></script>
 {% endblock %}
 
-{% block additional_styles %}
+{% block add_styles %}
     <link type="text/css" rel="stylesheet" href="{{ static('styles/discover.css') }}" />
 {% endblock %}
 
 {% block header %}
+    <div class="discover_header">
+        <div class="header_container">
+            <div class="discover_search">
+                <form>
+                    <div class="search_field">
+                        <input id="disc_search" type="search" placeholder="Search by name, game or channel">
+                        <label for="search"><i class="material-icons">search</i></label><!-- 
+                        <i class="material-icons">close</i> -->
+                    </div>
+                </form>
+            </div>
+            <div class="discover_selection">
+                <div class="discover_game"></div>
+                <div class="discover_language"></div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
