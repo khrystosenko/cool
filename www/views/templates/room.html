@@ -2,9 +2,14 @@
 
 {% block additional_scripts %}
     <script type="text/javascript" src="{{ static('scripts/lib/peer.js') }}"></script>
+    <script type="text/javascript" src="{{ static('scripts/lib/network.js') }}"></script>
     <script type="text/javascript" src="{{ static('scripts/room.js') }}"></script>
 {% endblock %}
 
 {% block additional_styles %}
     <link type="text/css" rel="stylesheet" href="{{ static('styles/room.css') }}" />
+{% endblock %}
+
+{% block content %}
+    <video id="local_stream" autoplay=""></video>
 {% endblock %}

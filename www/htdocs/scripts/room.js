@@ -1,53 +1,30 @@
-function makeid() {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for( var i=0; i < 5; i++ )
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
-}
-
-var peers = {};
-
+var handler;
 $(document).ready(function() {
-    var peer = new Peer('room-id_' + makeid(), {
-        host: SIGNALING_SERVER.HOST, 
-        port: SIGNALING_SERVER.PORT, 
-        path: SIGNALING_SERVER.PATH
-    });
+    handler = new PeerHandler('room_id');
+    handler.init();
 
-    peer.on('error', function(error) {
-        if (error.code) {
-            console.log('Error code:', error.code);
-        } else {
-            console.log(error);
-        }
-    });
+    handler.chatMessageCallback = function(data) {
+        $('body').append('Peer #' + data.peer + ' said: ' + data.message);
+    }
 
-    peer.on('open', function(id, data) {
-        for (var i in data.room) {
-            var peer_id = data.room[i];
-            if (peer_id == id) {
-                continue;
-            }
+    handler.roomFullCallback = function() {
+        alert('This room is already full');
+    }
 
-            peers[peer_id] = peer.connect(peer_id);
+    handler.webRTCNotSupportedCallback = function() {
+        alert('WebRTC is not supported by your browser.')
+    }
 
-            peers[peer_id].on('open', function (peer_id) {
-                return function() {
-                    peers[peer_id].send('Hello ' + peer_id);
-                }   
-            }(peer_id));
-        }
-    });
+    handler.updateLocalStreamCallback = function(stream, audio, video) {
+        var localStream = $('#local_stream');
+          if (navigator.webkitGetUserMedia) {
+              localStream.attr('src', window.URL.createObjectURL(stream));
+          } else {
+              localStream.attr('src', stream);
+          }
+    };
 
-    peer.on('connection', function(conn) {
-        console.log('New connection', conn);
-
-        conn.on('data', function(data) {
-            console.log(data);
-        });
-    });
-
+    handler.updateRemoteStreamCallback = function(stream, peer_id) {
+        console.log('New stream from ' + peer_id);
+    }
 });
