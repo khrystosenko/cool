@@ -20,14 +20,15 @@ function PeerHandler(room_id, host, port, path) {
 
     this.LOG_LEVEL = this.LOG_LEVELS.DEBUG;
     this.DATA_TRANSFER_TYPES = {
-        CHAT: 1
+        CHAT: 1,
+        CALL_ME_BACK: 2
     };
     this.EVENTS = {
         CHAT: 'chat-message'
     };
     this.DEFAULT = {
         MEDIA: {
-            AUDIO: false,
+            AUDIO: true,
             VIDEO: true
         }
     };
@@ -42,8 +43,8 @@ function PeerHandler(room_id, host, port, path) {
     this.init = function() {
         this.__log('Start initialization');
         this.peer = new Peer(room_id + '_' + this.__makeID(), {
-            host: SIGNALING_SERVER.HOST, 
-            port: SIGNALING_SERVER.PORT, 
+            host: SIGNALING_SERVER.HOST,
+            port: SIGNALING_SERVER.PORT,
             path: SIGNALING_SERVER.PATH
         });
 
@@ -62,53 +63,68 @@ function PeerHandler(room_id, host, port, path) {
 
                     self.peers[peer_id].on('open', (function(peer_id) {
                         return function(id) {
-                            self.__debug('Connection to ' + peer_id + ' is established.')
+                            self.__debug('Connection to ' + peer_id + ' is established.');
+                            connected = true;
+                            for (var i in self.peers) connected &= self.peers[i].open;
+                            if (connected) {
+                                self.connectedToRoom();
+                            }
                         }
                     })(peer_id));
                     self.peers[peer_id].on('data', self.dataHandler(self, peer_id));
                     self.peers[peer_id].on('close', self.connectionClosed(self, peer_id));
                 }
-            }   
+            }
         })(this));
         this.peer.on('connection', this.connectionHandler(this));
         this.peer.on('call', this.callHandler(this));
     }
 
-    this.updateLocalMedia = function(data, callback, errorCallback) {
+    this.connectedToRoom = function() {
+        this.call();
+    }
+
+    this.updateLocalMedia = function(data, callback, errorCallback, retry) {
         if (this.localStream) {
             if (this.audio && !data.audio) {
                 this.localStream.getAudioTracks()[0].stop();
-            } 
+                this.audio = false;
+            }
 
             if (this.video && !data.video) {
                 this.localStream.getVideoTracks()[0].stop();
+                this.video = false;
             }
         }
 
         if (!data.audio && !data.video) {
-            callback(this);
+            if (retry) {
+                errorCallback(this)
+            } else {
+                callback(this);
+            }
             return
         }
 
         navigator.getUserMedia(data, (function(self) {
             return function(stream) {
                 self.localStream = stream;
-                self.audio = data.audio;
-                self.video = data.video;
+                self.audio = self.localStream.getAudioTracks().length == 1;
+                self.video = self.localStream.getVideoTracks().length == 1;
 
                 callback(self);
             }
         })(this), (function(self) {
             return function(error) {
                 if (data.video) {
-                    self.updateLocalMedia({audio: data.audio, video: false}, callback, errorCallback);
+                    self.updateLocalMedia({audio: data.audio, video: false}, callback, errorCallback, true);
                 } else if (data.audio) {
-                    self.updateLocalMedia({audio: false, video: data.video}, callback, errorCallback);
+                    self.updateLocalMedia({audio: false, video: data.video}, callback, errorCallback, true);
                 } else {
                     errorCallback(self);
                 }
             }
-        })(this));   
+        })(this));
     }
 
     this.errorHandler = function(self) {
@@ -128,8 +144,8 @@ function PeerHandler(room_id, host, port, path) {
             self.__log('Connection to ' + conn.peer + ' is established.');
             self.peers[conn.peer] = conn;
 
-            self.peers[conn.peer].on('data', self.dataHandler(self, conn.peer)); 
-            self.peers[conn.peer].on('close', self.connectionClosed(self, conn.peer));   
+            self.peers[conn.peer].on('data', self.dataHandler(self, conn.peer));
+            self.peers[conn.peer].on('close', self.connectionClosed(self, conn.peer));
         }
     }
 
@@ -137,6 +153,8 @@ function PeerHandler(room_id, host, port, path) {
         return function(data) {
             if (data.type == self.DATA_TRANSFER_TYPES.CHAT) {
                 self.chatMessageCallback(data.payload);
+            } else if (data.type == self.DATA_TRANSFER_TYPES.CALL_ME_BACK && self.localStream) {
+                self.streams[peer_id] = self.peer.call(peer_id, self.localStream);
             }
         }
     }
@@ -185,8 +203,14 @@ function PeerHandler(room_id, host, port, path) {
 
             for (var peer_id in self.peers) {
                 var peer = self.peers[peer_id];
-                self.streams[peer_id] = self.peer.call(peer_id, self.localStream);
-                self.streams[peer_id].on('stream', self.remoteStreamHandler(self, peer_id));
+                if (self.localStream) {
+                    self.streams[peer_id] = self.peer.call(peer_id, self.localStream);
+                    self.streams[peer_id].on('stream', self.remoteStreamHandler(self, peer_id));
+                } else {
+                    self.peers[peer_id].send({
+                        type: self.DATA_TRANSFER_TYPES.CALL_ME_BACK
+                    })
+                }
             }
         }, function(self) {
             self.webRTCNotSupportedCallback();
@@ -202,7 +226,7 @@ function PeerHandler(room_id, host, port, path) {
 
         return text;
     }
-    
+
     this.__log = function(msg, priority) {
         var priority = priority || this.LOG_LEVELS.INFO;
         if (priority <= this.LOG_LEVEL) {
@@ -223,7 +247,7 @@ function PeerHandler(room_id, host, port, path) {
 
     this.roomFullCallback = function() {};
     this.webRTCNotSupportedCallback = function() {};
-    
+
     this.chatMessageCallback = function(data) {};
     this.updateLocalStreamCallback = function(stream, audio, video) {};
     this.updateRemoteStreamCallback = function(stream) {};
