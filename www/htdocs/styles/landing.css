@@ -54,7 +54,7 @@ header .get-premium:hover {
 }
 
 #header-banner {
-    background: url('/img/header.png') 50% 50% no-repeat;
+    background: url('/img/header1.png') 50% 50% no-repeat;
     background-size: cover;
 }
 
@@ -70,6 +70,10 @@ header .get-premium:hover {
 
 #support-header .container img {
     margin: 5px 10px;
+}
+
+.supportBackground {
+    background-color: #2a2a2a;
 }
 
 .section.main {
@@ -100,6 +104,10 @@ header .get-premium:hover {
 .benefit-title {
     font-size: 23px;
     font-weight: 500;
+}
+
+.benefitsBackground {
+    background-color: #333333;
 }
 
 #discover {
@@ -147,7 +155,7 @@ header .get-premium:hover {
 }
 
 .stream .details .title {
-    font-size: 18px !important;
+    /*font-size: 18px !important;*/
     font-weight: 500;
 }
 
@@ -163,6 +171,8 @@ header .get-premium:hover {
 #create-room {
     padding: 100px 0px;
     background-color: #333333;
+    background: url('/img/support/bg.png') 50% 50% no-repeat;
+    background-size: cover;
 }
 
 #create-room .header-with-dot {
@@ -229,4 +239,8 @@ footer .social {
 
 footer .social a {
     margin-right: 10px;
+}
+
+.footerBackground {
+    background-color: #212121;
 }

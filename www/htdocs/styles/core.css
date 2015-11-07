@@ -47,13 +47,13 @@ footer {
 }
 
 .almost-black {
-    background-color: #312929 !important; /* trying to make dark theme */
+    background-color: #2a2a2a !important; /* trying to make dark theme */
 }
 
 .card {
-    background-color: #442f30 !important; /* trying to make dark theme on cards like discover page */
+    background-color: #333333 !important; /* trying to make dark theme on cards like discover page */
 }
 
 .card-black {
-     background-color: #442f30 !important; /* trying to make dark theme on li in cards like discover page */
+     background-color: #333333 !important; /* trying to make dark theme on li in cards like discover page */
 }

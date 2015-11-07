@@ -41,7 +41,7 @@
         <a href="#" class="scrollable-link" data-scroll-to="discover"><img src="{{ static('img/scroll.png') }}" /></a>
     </div>
 </div>
-<div class="section grey lighten-4" id="support-header">
+<div class="section supportBackground" id="support-header">
     <div class="container center-align">
         <img src="{{ static('img/support/youtube.png') }}" alt="YouTube" />
         <img src="{{ static('img/support/twitch.png') }}" alt="Twitch" />
@@ -52,9 +52,11 @@
         <img src="{{ static('img/support/azubu.png') }}" alt="Azubu" />
     </div>
 </div>
-<div class="section main grey lighten-3" id="benefits">
+<div class="section main benefitsBackground" id="benefits">
     <div class="container center">
-        <span class="header grey-text">This is how we roll</span>
+        <div class="header-with-dot">
+            <span class="header white-text">This is how we roll<div class="roomit-dot"></div></span>
+        </div>
         <div class="row benefits-row first-row">
             <div class="col s12 m4">
                 <img src="{{ static('img/benefits/connected.png') }}" />
@@ -80,7 +82,9 @@
 
 <div class="section main almost-black" id="discover">
     <div class="container center">
-      <span class="header grey-text">Discover what we have</span>
+      <div class="header-with-dot">
+            <span class="header white-text">Discover what we have<div class="roomit-dot"></div></span>
+        </div>
 
       <div class="row first-row centerDiscover">
         {% for stream in streams %}
@@ -94,7 +98,7 @@
                         <li class="collection-item card-black avatar">
                           <img src="{{ static('img/games/'~stream.game_canonical~'.png') }}" class="circle img-with-fallback"
                                data-fallback-src="{{ static('img/games/notfound.png') }}">
-                          <p class="title grey-text text-darken-2">{{ stream.display_name }}</p>
+                          <p class="title white-text">{{ stream.display_name }}</p>
                           <span class="views">
                             <i class="tiny material-icons">visibility</i> {{ '{:,d}'.format(stream.viewers).replace(',', ' ') }}
                           </span>
@@ -128,7 +132,7 @@
 {% endblock %}
 
 {% block footer %}
-<footer class="almost-white">
+<footer class="footerBackground">
     <div class="container">
         <div class="row valign-wrapper">
             <div class="col s6 l3 roomit-logo-wrapper">
