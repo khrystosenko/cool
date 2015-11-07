@@ -19,6 +19,26 @@
                 'id': {{ service.id }}
             })
         {% endfor %}
+
+        console.log(games);
+
+        var streams = [];
+        var newHTML = [];
+
+        {% for stream in streams %}
+            streams.push({
+                'name': '{{ stream.name }}'
+            })
+        {% endfor %}
+
+        console.log(streams);
+
+        for (var i = streams.length - 1; i >= 0; i--) {
+            newHTML.push('<span>' + streams[i].name + '</span>');
+        };
+
+        $(".array").html(newHTML.join(""));
+
         </script>
     <script type="text/javascript" src="{{ static('scripts/discover.js') }}"></script>
 {% endblock %}
@@ -33,6 +53,7 @@
             <div class="discover_search">
                 <form>
                     <div class="search_field">
+                        <button onclick="loadDoc()">GO</button>
                         <input id="disc_search" type="search" placeholder="Search by name, game or channel">
                         <label for="search"><i class="material-icons">search</i></label><!-- 
                         <i class="material-icons">close</i> -->
@@ -46,4 +67,33 @@
         </div>
     </div>
 {% endblock %}
-
+{% block content %}
+<div class="array"></div>
+<!-- {% for stream in streams %}
+            <div class="col s12 m4 stream" style="min-width: 422.5px;">
+              <div class="card hoverable">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <a href="#"><img src="{{ stream.preview.replace('{width}', '400').replace('{height}', '224') }}"></a>
+                </div>
+                <div class="card-content grey-text">
+                    <ul class="collection details">
+                        <li class="collection-item card-black avatar">
+                          <img src="{{ static('img/games/'~stream.game_canonical~'.png') }}" class="circle img-with-fallback"
+                               data-fallback-src="{{ static('img/games/notfound.png') }}">
+                          <p class="title white-text">{{ stream.display_name }}</p>
+                          <span class="views">
+                            <i class="tiny material-icons">visibility</i> {{ '{:,d}'.format(stream.viewers).replace(',', ' ') }}
+                          </span>
+                          <span class="platform">
+                            <i class="tiny material-icons">stay_primary_landscape</i> TWITCH.TV
+                          </span>
+                          <span class="language">
+                            <i class="tiny material-icons">translate</i> {{ stream.language }}
+                          </span>
+                        </li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+        {% endfor %} -->
+{% endblock %}
