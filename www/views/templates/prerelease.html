@@ -8,23 +8,6 @@
     <link type="text/css" rel="stylesheet" href="{{ static('styles/landing.css') }}" />
 {% endblock %}
 
-{% block header %}
-<header id="menu" class="navbar-fixed">
-    <nav class="grey darken-3">
-        <div class="nav-wrapper container">
-            <a href="#!" class="brand-logo"><img src="{{ static('img/roomit_logo.png') }}" /></a>
-            <!-- <div class="right main-menu hide-on-med-and-down">
-                <a href="#" data-scroll-to="benefits" class="scrollable-link">FEATURES</a>
-                <a href="/discover/">DISCOVER</a>
-                <a href="#">BLOG</a>
-                <a href="#">CONTACTS</a>
-                <a class="waves-effect waves-light btn get-premium">GET PREMIUM</a>
-            </div> -->
-        </div>
-    </nav>
-</header>
-{% endblock %}
-
 {% block content %}
 <div id="header-banner">
     <div class="container header valign-wrapper">
@@ -39,7 +22,7 @@
     </div>
     <div class="container center scroll">
         <div style="font-size: 12px; color: #515555;">LEARN MORE</div>
-        <a href="#" class="scrollable-link" data-scroll-to="discover"><img src="{{ static('img/scroll.png') }}" /></a>
+        <a href="#" class="scrollable-link" data-scroll-to="benefits"><img class="hoverable-image" src="{{ static('img/scroll.png') }}" /></a>
     </div>
 </div>
 <div class="section supportBackground" id="support-header">
@@ -103,7 +86,6 @@
                 <span class="grey-text darken-1">© Roomit 2015</span>
             </div>
             <div class="col l6 hide-on-med-and-down links">
-                <a href="#" data-scroll-to="top" class="scrollable-link">TO TOP</a>
                 <a href="#"></a>
                 <a href="#"></a>
                 <a href="#"></a>
@@ -113,8 +95,6 @@
             <div class="col s6 l3 social" >
                 <a target="_blank" href="https://www.facebook.com/roomit.tv/"><img class="hoverable-image" src="{{ static('img/social/facebook.png') }}"/></a>
                 <a target="_blank" href="https://twitter.com/roomitTV"><img class="hoverable-image" src="{{ static('img/social/twitter.png') }}"/></a>
-                <!-- <a target="_blank" href="#!"><img class="hoverable-image" src="{{ static('img/social/youtube.png') }}"/></a> -->
-                <!-- <a target="_blank" href="#!"><img class="hoverable-image" src="{{ static('img/social/gplus.png') }}"/></a> -->
             </div>
         </div>
     </div>

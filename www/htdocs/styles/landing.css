@@ -3,7 +3,7 @@
     box-shadow: none;
 }
 
-/*header .container {
+header .container {
     width: 75% !important;
 }
 
@@ -18,8 +18,8 @@ header .main-menu a {
 header .main-menu a:hover{
     color: #FF5722;
 }
-*/
-/*header .get-premium {
+
+header .get-premium {
     background-color: transparent;
     border: 1px solid #FF5722;
     color: #FF5722;
@@ -28,7 +28,7 @@ header .main-menu a:hover{
 header .get-premium:hover {
     background-color: #FF5722;
     color: #FFFFFF !important;
-}*/
+}
 
 .header-with-dot h1,
 .header-with-dot h2,
