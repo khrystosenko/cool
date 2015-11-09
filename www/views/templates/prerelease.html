@@ -2,6 +2,7 @@
 
 {% block additional_scripts %}
     <script type="text/javascript" src="{{ static('scripts/landing.js') }}"></script>
+    <script type="text/javascript" src="{{ static('scripts/prerelease.js') }}"></script>
 {% endblock %}
 
 {% block additional_styles %}
@@ -74,8 +75,18 @@
             <span class="header white-text">Like <span style="font-weight: bold">roomit</span>? Subscribe for updates<span class="roomit-dot"
             ></span></span>
         </div>
-        <input placeholder="Your email" id="stream-link" type="text" class="validate">
-        <div class="center"><a href="#" id="create-room-btn" class="btn btn-small waves-effect waves-light deep-orange" style="padding: 0 15px 10px;margin:0;">Subscribe</a></div>
+        <form>
+            <div class="input-field">
+                <input placeholder="Your email" id="stream-link" type="email" class="validate">
+            </div>
+            
+            <div class="center">
+                <button class="btn btn-small waves-effect waves-light deep-orange" type="submit"
+                        id="create-room-btn" style="padding: 0 15px 10px;margin:0;">Subscribe
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}
