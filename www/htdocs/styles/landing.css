@@ -65,7 +65,6 @@ header .get-premium:hover {
 
 #header-banner .container.header {
     height: 100%;
-    width: 75% !important;
 }
 
 #header-banner .container.scroll {
@@ -95,6 +94,7 @@ header .get-premium:hover {
 }
 
 #benefits .roomit-dot {
+display: inline-block;
 }
 
 .benefits-row p {
@@ -104,7 +104,7 @@ header .get-premium:hover {
 
 .benefits-row .description {
     font-size: 13px;
-    color: #a9a9a9;
+    color: #f5f5f5;
 }
 
 .benefit-title {
@@ -252,13 +252,13 @@ footer .social a {
 .footerBackground {
     background-color: #212121;
 }
-.valign{
+.valign, .valign .header.white-text{
     width: 100%;
 }
 .header_h4{
-    text-align: right;
-    margin-right: 155px;
-    line-height: 0;
+    position: absolute; 
+    right:0; 
+    top: 30px;
     text-transform: uppercase;
     color: #797e80;
     font-size: 15px;
