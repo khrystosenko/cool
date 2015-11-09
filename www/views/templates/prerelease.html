@@ -13,31 +13,32 @@
     <nav class="grey darken-3">
         <div class="nav-wrapper container">
             <a href="#!" class="brand-logo"><img src="{{ static('img/roomit_logo.png') }}" /></a>
-            <div class="right main-menu hide-on-med-and-down">
+            <!-- <div class="right main-menu hide-on-med-and-down">
                 <a href="#" data-scroll-to="benefits" class="scrollable-link">FEATURES</a>
                 <a href="/discover/">DISCOVER</a>
                 <a href="#">BLOG</a>
                 <a href="#">CONTACTS</a>
                 <a class="waves-effect waves-light btn get-premium">GET PREMIUM</a>
-            </div>
+            </div> -->
         </div>
     </nav>
 </header>
 {% endblock %}
 
 {% block content %}
-<div class="section no-pad-bot no-pad-top" id="header-banner">
+<div id="header-banner">
     <div class="container header valign-wrapper">
         <div class="valign">
-            <div class="header-with-dot">
-                <h3 class="header white-text">Watching should make pleasure
+            <div class="header-with-dot" >
+                <h3 class="header white-text" style="width: 100%">Watching should make pleasure
                 <div class="roomit-dot"></div></h3>
             </div>
-            <h4 class="white-text">We understand you</h4>
-            <a href="#" data-scroll-to="create-room" class="btn waves-effect waves-light deep-orange scrollable-link">Create room</a>
+            <h4 class="header_h4">We understand you</h4>
+             <div class="center"><a href="#" data-scroll-to="create-room" class="btn waves-effect waves-light deep-orange scrollable-link create-room-btn">Create room</a></div>
         </div>
     </div>
     <div class="container center scroll">
+        <div style="font-size: 12px; color: #515555;">LEARN MORE</div>
         <a href="#" class="scrollable-link" data-scroll-to="discover"><img src="{{ static('img/scroll.png') }}" /></a>
     </div>
 </div>
@@ -52,29 +53,30 @@
         <img src="{{ static('img/support/azubu.png') }}" alt="Azubu" />
     </div>
 </div>
-<div class="section main benefitsBackground" id="benefits">
+<div class="section main benefitsBackground" id="benefits" style="height: 600px; padding: 105px 0;">
     <div class="container center">
         <div class="header-with-dot">
-            <span class="header white-text">This is how we roll<div class="roomit-dot"></div></span>
+            <span class="header white-text">This is how we roll<span class="roomit-dot" style="height:5px; width: 5px;margin-left: 6px;"></span></span>
         </div>
         <div class="row benefits-row first-row">
             <div class="col s12 m4">
                 <img src="{{ static('img/benefits/connected.png') }}" />
-                <p class="benefit-title">STAY CONNECTED</p>
-                <div class="roomit-dot"></div>
-                <p class="grey-text text-darken-1 description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
+                <p class="benefit-title">STAY CONNECTED
+                <span class="roomit-dot" style="display: inline-block;"></span></p>
+                <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
             </div>
             <div class="col s12 m4">
                 <img src="{{ static('img/benefits/friends.png') }}" />
-                <p class="benefit-title">FRIENDS ONLY</p>
-                <div class="roomit-dot"></div>
-                <p class="grey-text text-darken-1 description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
+                <p class="benefit-title">FRIENDS ONLY
+                <span class="roomit-dot" style="display: inline-block;"></span></p>
+                
+                <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
             </div>
             <div class="col s12 m4">
                 <img src="{{ static('img/benefits/nospam.png') }}" />
-                <p class="center benefit-title">NO SPAM IN ROOMS</p>
-                <div class="roomit-dot"></div>
-                <p class="grey-text text-darken-1 description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
+                <p class="center benefit-title">NO SPAM IN ROOMS
+                <span class="roomit-dot" style="display: inline-block;"></span></p>
+                <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
             </div>
         </div>
     </div>
@@ -82,12 +84,12 @@
 
 <div class="section main" id="create-room">
     <div class="container center">
-        <div class="header-with-dot">
-            <span class="header white-text">Get <span class="bold">pleasure</span> from watching right now<div class="roomit-dot"
-            ></div></span>
+        <div class="header-with-dot" style="margin-bottom: 120px;">
+            <span class="header white-text">Get <span style="font-weight: bold">pleasure</span> from watching right now<span class="roomit-dot"
+            ></span></span>
         </div>
         <input placeholder="Insert link of stream here" id="stream-link" type="text" class="validate">
-        <a href="#" id="create-room-btn" class="btn btn-small waves-effect waves-light deep-orange">Create room</a>
+        <div class="center"><a href="#" id="create-room-btn" class="btn btn-small waves-effect waves-light deep-orange" style="padding: 0 15px 10px;margin:0;">Create room</a></div>
     </div>
 </div>
 {% endblock %}
@@ -97,18 +99,18 @@
     <div class="container">
         <div class="row valign-wrapper">
             <div class="col s6 l3 roomit-logo-wrapper">
-                <a href="/"><img src="{{ static('img/roomit_logo_small.png') }}" class="hoverable-image" /></a>
-                <span class="grey-text">© Roomit 2015</span>
+                <a href="/"><img src="{{ static('img/roomit_logo_small_2.png') }}" class="hoverable-image" /></a>
+                <span class="grey-text darken-1">© Roomit 2015</span>
             </div>
             <div class="col l6 hide-on-med-and-down links">
-                <a href="#" data-scroll-to="top" class="scrollable-link">TO TOP</a>
-                <a href="#">FEATURES</a>
-                <a href="#">DISCOVER</a>
-                <a href="#">GET PREMIUM</a>
-                <a href="#">BLOG</a>
-                <a href="#">CONTACTS</a>
+                <a href="#" data-scroll-to="top" class="scrollable-link"></a>
+                <a href="#"></a>
+                <a href="#"></a>
+                <a href="#"></a>
+                <a href="#"></a>
+                <a href="#"></a>
             </div>
-            <div class="col s6 l3 social">
+            <div class="col s6 l3 social" >
                 <a href="#!"><img class="hoverable-image" src="{{ static('img/social/facebook.png') }}"/></a>
                 <a href="#!"><img class="hoverable-image" src="{{ static('img/social/twitter.png') }}"/></a>
                 <a href="#!"><img class="hoverable-image" src="{{ static('img/social/youtube.png') }}"/></a>
