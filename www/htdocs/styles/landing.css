@@ -179,7 +179,7 @@ header .get-premium:hover {
     padding: 100px 0px;
     background-color: #333333;
     background: url('/img/support/bg.png') 50% 50% no-repeat;
-    background-size: cover;
+    /*background-size: cover;*/
 }
 
 #create-room .header-with-dot {
