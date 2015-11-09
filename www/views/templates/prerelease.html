@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block additional_scripts %}
+    <script type="text/javascript" src="{{ static('scripts/landing.js') }}"></script>
+{% endblock %}
+
+{% block additional_styles %}
+    <link type="text/css" rel="stylesheet" href="{{ static('styles/landing.css') }}" />
+{% endblock %}
+
+{% block header %}
+<header id="menu" class="navbar-fixed">
+    <nav class="grey darken-3">
+        <div class="nav-wrapper container">
+            <a href="#!" class="brand-logo"><img src="{{ static('img/roomit_logo.png') }}" /></a>
+            <div class="right main-menu hide-on-med-and-down">
+                <a href="#" data-scroll-to="benefits" class="scrollable-link">FEATURES</a>
+                <a href="/discover/">DISCOVER</a>
+                <a href="#">BLOG</a>
+                <a href="#">CONTACTS</a>
+                <a class="waves-effect waves-light btn get-premium">GET PREMIUM</a>
+            </div>
+        </div>
+    </nav>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="section no-pad-bot no-pad-top" id="header-banner">
+    <div class="container header valign-wrapper">
+        <div class="valign">
+            <div class="header-with-dot">
+                <h3 class="header white-text">Watching should make pleasure
+                <div class="roomit-dot"></div></h3>
+            </div>
+            <h4 class="white-text">We understand you</h4>
+            <a href="#" data-scroll-to="create-room" class="btn waves-effect waves-light deep-orange scrollable-link">Create room</a>
+        </div>
+    </div>
+    <div class="container center scroll">
+        <a href="#" class="scrollable-link" data-scroll-to="discover"><img src="{{ static('img/scroll.png') }}" /></a>
+    </div>
+</div>
+<div class="section supportBackground" id="support-header">
+    <div class="container center-align">
+        <img src="{{ static('img/support/youtube.png') }}" alt="YouTube" />
+        <img src="{{ static('img/support/twitch.png') }}" alt="Twitch" />
+        <img src="{{ static('img/support/hitbox.png') }}" alt="Hitbox" />
+        <img src="{{ static('img/support/dailymotion.png') }}" alt="Dailymotion" />
+        <img src="{{ static('img/support/huamao.png') }}" alt="HuaMao" />
+        <img src="{{ static('img/support/douyu.png') }}" alt="Douyu" />
+        <img src="{{ static('img/support/azubu.png') }}" alt="Azubu" />
+    </div>
+</div>
+<div class="section main benefitsBackground" id="benefits">
+    <div class="container center">
+        <div class="header-with-dot">
+            <span class="header white-text">This is how we roll<div class="roomit-dot"></div></span>
+        </div>
+        <div class="row benefits-row first-row">
+            <div class="col s12 m4">
+                <img src="{{ static('img/benefits/connected.png') }}" />
+                <p class="benefit-title">STAY CONNECTED</p>
+                <div class="roomit-dot"></div>
+                <p class="grey-text text-darken-1 description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
+            </div>
+            <div class="col s12 m4">
+                <img src="{{ static('img/benefits/friends.png') }}" />
+                <p class="benefit-title">FRIENDS ONLY</p>
+                <div class="roomit-dot"></div>
+                <p class="grey-text text-darken-1 description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
+            </div>
+            <div class="col s12 m4">
+                <img src="{{ static('img/benefits/nospam.png') }}" />
+                <p class="center benefit-title">NO SPAM IN ROOMS</p>
+                <div class="roomit-dot"></div>
+                <p class="grey-text text-darken-1 description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et nostrud exercitation ullamco laboris nisi.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section main" id="create-room">
+    <div class="container center">
+        <div class="header-with-dot">
+            <span class="header white-text">Get <span class="bold">pleasure</span> from watching right now<div class="roomit-dot"
+            ></div></span>
+        </div>
+        <input placeholder="Insert link of stream here" id="stream-link" type="text" class="validate">
+        <a href="#" id="create-room-btn" class="btn btn-small waves-effect waves-light deep-orange">Create room</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="footerBackground">
+    <div class="container">
+        <div class="row valign-wrapper">
+            <div class="col s6 l3 roomit-logo-wrapper">
+                <a href="/"><img src="{{ static('img/roomit_logo_small.png') }}" class="hoverable-image" /></a>
+                <span class="grey-text">© Roomit 2015</span>
+            </div>
+            <div class="col l6 hide-on-med-and-down links">
+                <a href="#" data-scroll-to="top" class="scrollable-link">TO TOP</a>
+                <a href="#">FEATURES</a>
+                <a href="#">DISCOVER</a>
+                <a href="#">GET PREMIUM</a>
+                <a href="#">BLOG</a>
+                <a href="#">CONTACTS</a>
+            </div>
+            <div class="col s6 l3 social">
+                <a href="#!"><img class="hoverable-image" src="{{ static('img/social/facebook.png') }}"/></a>
+                <a href="#!"><img class="hoverable-image" src="{{ static('img/social/twitter.png') }}"/></a>
+                <a href="#!"><img class="hoverable-image" src="{{ static('img/social/youtube.png') }}"/></a>
+                <a href="#!"><img class="hoverable-image" src="{{ static('img/social/gplus.png') }}"/></a>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}
