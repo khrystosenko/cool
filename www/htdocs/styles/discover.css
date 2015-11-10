@@ -23,12 +23,6 @@ input[type=search]{
 input[type=search]:focus:not([readonly])+label{
 	color: #eeeeee;
 }
-.discover_game, .discover_language{
-	display: inline-block;
-}
-.discover_language{
-	float: right;
-}
 .material-icons{
 	transform: translateY(11px);
 }
@@ -37,14 +31,16 @@ input[type=search]:focus:not([readonly])+label{
 	height: 60px;
 }
 .tabs .tab{
-	margin-right: 25px;
 	padding-top: 15px;
 	text-transform: none;
 	height: 60px;
-	width: auto;
+	font-size: 15px;
 }
 .tabs .tab a{
 	color: #9e9e9e;
+}
+.tabs .tab .active, .tabs .tab a:hover{
+	color:#eeeeee;
 }
 .tabs .indicator{
 	background-color: #ff5722;
