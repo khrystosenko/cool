@@ -53,12 +53,7 @@
             <div class="discover_search">
                 <form>
                     <div class="search_field">
-<<<<<<< HEAD
-                        <input id="disc_search" type="search" placeholder="Search by name or game">
-=======
-                        <button onclick="loadDoc()">GO</button>
                         <input id="disc_search" type="search" placeholder="Search by name, game or channel">
->>>>>>> 39805e085d6da53287501bd661040e5be643f315
                         <label for="search"><i class="material-icons">search</i></label><!-- 
                         <i class="material-icons">close</i> -->
                     </div>
@@ -103,56 +98,5 @@
             </div>
     </div>
 {% endblock %}
-<<<<<<< HEAD
-
 {% block content %}
-	<div class="streams">
-        {% for stream in streams %}
-            <div class="col s12 m4 stream">
-=======
-{% block content %}
-<div class="array"></div>
-<!-- {% for stream in streams %}
-            <div class="col s12 m4 stream" style="min-width: 422.5px;">
->>>>>>> 39805e085d6da53287501bd661040e5be643f315
-              <div class="card hoverable">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <a href="#"><img src="{{ stream.preview.replace('{width}', '400').replace('{height}', '224') }}"></a>
-                </div>
-                <div class="card-content grey-text">
-                    <ul class="collection details">
-                        <li class="collection-item card-black avatar">
-                          <img src="{{ static('img/games/'~stream.game_canonical~'.png') }}" class="circle img-with-fallback"
-                               data-fallback-src="{{ static('img/games/notfound.png') }}">
-<<<<<<< HEAD
-                          <p class="title grey-text text-darken-2">{{ stream.display_name }}</p>
-=======
-                          <p class="title white-text">{{ stream.display_name }}</p>
->>>>>>> 39805e085d6da53287501bd661040e5be643f315
-                          <span class="views">
-                            <i class="tiny material-icons">visibility</i> {{ '{:,d}'.format(stream.viewers).replace(',', ' ') }}
-                          </span>
-                          <span class="platform">
-                            <i class="tiny material-icons">stay_primary_landscape</i> TWITCH.TV
-                          </span>
-                          <span class="language">
-                            <i class="tiny material-icons">translate</i> {{ stream.language }}
-                          </span>
-                        </li>
-                    </ul>
-<<<<<<< HEAD
-              </div>
-            </div>
-        {% endfor %}
-        <div class="col s12 m12"><a class="waves-effect waves-light btn discover-more-btn">DISCOVER MORE</a></div>
-      </div>
-	</div>
 {% endblock %}
-
-=======
-                </div>
-              </div>
-            </div>
-        {% endfor %} -->
-{% endblock %}
->>>>>>> 39805e085d6da53287501bd661040e5be643f315
