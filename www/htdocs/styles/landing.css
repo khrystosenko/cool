@@ -82,7 +82,7 @@ header .get-premium:hover {
 
 .section.main {
     padding-top: 45px;
-    height: 420px;
+    /*height: 420px;*/
 }
 
 .section.main .header {
@@ -176,7 +176,7 @@ display: inline-block;
 }
 
 #create-room {
-    padding: 100px 0px;
+    /*padding: 100px 0px;*/
     background-color: #333333;
     background: url('/img/support/bg.png') 50% 50% no-repeat;
     /*background-size: cover;*/
