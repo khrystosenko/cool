@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+(function ($) {
+
   var methods = {
     init : function() {
       return this.each(function() {
@@ -145,6 +148,8 @@
   $(document).ready(function(){
     $('ul.tabs').tabs();
   });
+}( jQuery ));
+=======
 function loadDoc() {
             $.ajax({url: "http://localhost:8000/search/?limit=2", success: function(result){
         	console.log(result);
@@ -152,3 +157,4 @@ function loadDoc() {
     		}
     	})
         };
+>>>>>>> 39805e085d6da53287501bd661040e5be643f315
