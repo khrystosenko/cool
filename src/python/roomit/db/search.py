@@ -6,7 +6,7 @@ from roomit.db import dbcp
 
 
 @dbcp.roomit
-def get_by_params(cursor, game, platform, only_online, offset, limit):
+def get_by_params(cursor, game, platform, stream, only_online, offset, limit):
     fields = ('online', 'viewers', 'mature', 'language', 'display_name', 'name', 'preview', 'logo')
     filter_query = []
     params = []
@@ -20,6 +20,10 @@ def get_by_params(cursor, game, platform, only_online, offset, limit):
 
     if only_online:
         filter_query.append('`online` = 1')
+
+    if stream:
+        params.append('%{}%'.format(stream))
+        filter_query.append('s.name LIKE %s')
 
     filter_query = ' AND '.join(filter_query)
     if filter_query:

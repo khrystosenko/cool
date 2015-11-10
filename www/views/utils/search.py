@@ -26,6 +26,8 @@ def filter_by_params(params):
 
     only_online = bool(int(only_online))
 
+    stream = params.get('stream', '').strip()
+
     offset = params.get('offset', '0')
     if not offset.isdigit():
         return utils.validation_error('offset')
@@ -38,7 +40,7 @@ def filter_by_params(params):
 
     limit = min(100, int(limit))
 
-    data = search.filter_by_params(game, platform, only_online, offset, limit)
+    data = search.filter_by_params(game, platform, stream, only_online, offset, limit)
     pattern = re.compile('[\W]+')
     for item in data['data']:
         language = settings.ROOMIT_LANG_CODE.get(item['language'])
