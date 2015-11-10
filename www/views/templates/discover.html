@@ -20,24 +20,13 @@
             })
         {% endfor %}
 
-        console.log(games);
-
         var streams = [];
-        var newHTML = [];
 
         {% for stream in streams %}
             streams.push({
                 'name': '{{ stream.name }}'
             })
         {% endfor %}
-
-        console.log(streams);
-
-        for (var i = streams.length - 1; i >= 0; i--) {
-            newHTML.push('<span>' + streams[i].name + '</span>');
-        };
-
-        $(".array").html(newHTML.join(""));
 
         </script>
     <script type="text/javascript" src="{{ static('scripts/discover.js') }}"></script>
@@ -53,12 +42,7 @@
             <div class="discover_search">
                 <form>
                     <div class="search_field">
-<<<<<<< HEAD
                         <input id="disc_search" type="search" placeholder="Search by name or game">
-=======
-                        <button onclick="loadDoc()">GO</button>
-                        <input id="disc_search" type="search" placeholder="Search by name, game or channel">
->>>>>>> 39805e085d6da53287501bd661040e5be643f315
                         <label for="search"><i class="material-icons">search</i></label><!-- 
                         <i class="material-icons">close</i> -->
                     </div>
@@ -67,54 +51,27 @@
         </div>
             <div class="discover_selection">
                 <div class="discover_game">
-					      <ul class="tabs">
-					        <li class="tab"><a class="active" href="#game1">All games</a></li>
-					        <li class="tab"><a href="#game2">Dota 2</a></li>
-					        <li class="tab"><a href="#game3">Lol</a></li>
-					        <li class="tab"><a href="#game4">Hearthstone</a></li>
-					        <li class="tab"><a href="#game5">CS:GO</a></li>
-					        <li class="tab"><a href="#game6">HotS</a></li>
-					        <li class="tab"><a href="#game7">Others</a></li>
-					      </ul>
-						    <div id="game1"></div>
-						    <div id="game2"></div>
-						    <div id="game3"></div>
-						    <div id="game4"></div>
-							<div id="game5"></div>
-							<div id="game6"></div>
-							<div id="game7"></div>
-  				</div><!-- 
-                <div class="discover_language">
-					      <ul class="tabs">
-					        <li class="tab"><a class="active" href="#lang1">All languages</a></li>
-					        <li class="tab"><a href="#lang2">English</a></li>
-					        <li class="tab"><a href="#lang3">Русский</a></li>
-					        <li class="tab"><a href="#lang4">##</a></li>
-					        <li class="tab"><a href="#lang5">Others</a></li>
-					      </ul>
-						    <div id="lang1"></div>
-						    <div id="lang2"></div>
-						    <div id="lang3"></div>
-						    <div id="lang4"></div>
-							<div id="lang5"></div>
-							<div id="lang6"></div>
-							<div id="lang7"></div>
-                </div> -->
+					<div class="row">
+                    <div class="col s12">
+                              <ul class="tabs">
+                                <li class="tab col s1"><a class="active" href="#test1">All games</a></li>
+                                <li class="tab col s1"><a href="#">Dota 2</a></li>
+                                <li class="tab col s1"><a href="#">Lol</a></li>
+                                <li class="tab col s1"><a href="#">Hearthstone</a></li>
+                                <li class="tab col s1"><a href="#">CS:GO</a></li>
+                                <li class="tab col s1"><a href="#">HotS</a></li>
+                                <li class="tab col s1"><a href="#">Others</a></li>
+                              </ul>
+                    </div>
+                    </div>
+                </div>
             </div>
-    </div>
 {% endblock %}
-<<<<<<< HEAD
 
 {% block content %}
 	<div class="streams">
-        {% for stream in streams %}
+    {% for stream in streams %}
             <div class="col s12 m4 stream">
-=======
-{% block content %}
-<div class="array"></div>
-<!-- {% for stream in streams %}
-            <div class="col s12 m4 stream" style="min-width: 422.5px;">
->>>>>>> 39805e085d6da53287501bd661040e5be643f315
               <div class="card hoverable">
                 <div class="card-image waves-effect waves-block waves-light">
                   <a href="#"><img src="{{ stream.preview.replace('{width}', '400').replace('{height}', '224') }}"></a>
@@ -124,11 +81,7 @@
                         <li class="collection-item card-black avatar">
                           <img src="{{ static('img/games/'~stream.game_canonical~'.png') }}" class="circle img-with-fallback"
                                data-fallback-src="{{ static('img/games/notfound.png') }}">
-<<<<<<< HEAD
-                          <p class="title grey-text text-darken-2">{{ stream.display_name }}</p>
-=======
                           <p class="title white-text">{{ stream.display_name }}</p>
->>>>>>> 39805e085d6da53287501bd661040e5be643f315
                           <span class="views">
                             <i class="tiny material-icons">visibility</i> {{ '{:,d}'.format(stream.viewers).replace(',', ' ') }}
                           </span>
@@ -140,19 +93,9 @@
                           </span>
                         </li>
                     </ul>
-<<<<<<< HEAD
-              </div>
-            </div>
-        {% endfor %}
-        <div class="col s12 m12"><a class="waves-effect waves-light btn discover-more-btn">DISCOVER MORE</a></div>
-      </div>
-	</div>
-{% endblock %}
-
-=======
                 </div>
               </div>
             </div>
-        {% endfor %} -->
+        {% endfor %}
+     </div>
 {% endblock %}
->>>>>>> 39805e085d6da53287501bd661040e5be643f315
