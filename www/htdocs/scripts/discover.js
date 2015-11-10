@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 (function ($) {
 
   var methods = {
@@ -149,12 +148,3 @@
     $('ul.tabs').tabs();
   });
 }( jQuery ));
-=======
-function loadDoc() {
-            $.ajax({url: "http://localhost:8000/search/?limit=2", success: function(result){
-        	console.log(result);
-        	var streams = result; 
-    		}
-    	})
-        };
->>>>>>> 39805e085d6da53287501bd661040e5be643f315
