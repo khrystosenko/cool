@@ -102,14 +102,19 @@ function PeerHandler(room_id, host, port, path) {
 
     this.updateLocalMedia = function(data, callback) {
         if (this.localStream) {
-            if (this.audio && !data.audio) {
-                this.localStream.getAudioTracks()[0].stop();
-                this.audio = false;
-            }
 
-            if (this.video && !data.video) {
-                this.localStream.getVideoTracks()[0].stop();
-                this.video = false;
+            var audioTrack = this.localStream.getAudioTracks()[0],
+                videoTrack = this.localStream.getVideoTracks()[0];
+
+            if (audioTrack && videoTrack) {
+                audioTrack.enabled = data.audio;
+                videoTrack.enabled = data.video;
+
+                this.audio = data.audio;
+                this.video = data.video;
+
+                callback(this);
+                return;
             }
         }
 
@@ -117,7 +122,7 @@ function PeerHandler(room_id, host, port, path) {
             self.audio = false;
             self.video = false;
             callback(this);
-            return
+            return;
         }
 
         navigator.getUserMedia(data, (function(self) {
@@ -234,6 +239,11 @@ function PeerHandler(room_id, host, port, path) {
 
             for (var peer_id in self.peers) {
                 var peer = self.peers[peer_id];
+
+                if (self.streams[peer_id]) {
+                    continue;
+                }
+
                 if (self.localStream) {
                     self.streams[peer_id] = self.peer.call(peer_id, self.localStream);
                     self.streams[peer_id].on('stream', self.remoteStreamHandler(self, peer_id));
