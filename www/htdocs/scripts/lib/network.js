@@ -21,10 +21,9 @@ function PeerHandler(room_id, host, port, path) {
     this.LOG_LEVEL = this.LOG_LEVELS.DEBUG;
     this.DATA_TRANSFER_TYPES = {
         CHAT: 1,
-        CALL_ME_BACK: 2
-    };
-    this.EVENTS = {
-        CHAT: 'chat-message'
+        CALL_ME_BACK: 2,
+        USERNAME_SET: 3,
+        GET_USERNAME: 4
     };
     this.DEFAULT = {
         MEDIA: {
@@ -34,6 +33,7 @@ function PeerHandler(room_id, host, port, path) {
     };
 
     this.peer = undefined;
+    this.username = undefined;
     this.localStream = undefined;
     this.audio = false;
     this.video = false;
@@ -45,13 +45,24 @@ function PeerHandler(room_id, host, port, path) {
         this.peer = new Peer(room_id + '_' + this.__makeID(), {
             host: SIGNALING_SERVER.HOST,
             port: SIGNALING_SERVER.PORT,
-            path: SIGNALING_SERVER.PATH
+            path: SIGNALING_SERVER.PATH,
+            config: {
+                iceServers: [
+                    { url: 'stun:stun.l.google.com:19302' },
+                    { url: 'turn:185.65.245.105:3478', credential: '1234', username: 'test'}
+                ]
+            }
         });
 
         this.peer.on('error', this.errorHandler(this));
         this.peer.on('open', (function(self) {
             return function(id, data) {
                 self.__log('Connection is established.');
+                if (data.room.length == 1) {
+                    self.connectedToRoom();
+                    return;
+                }
+
                 for (var i in data.room) {
                     var peer_id = data.room[i];
                     if (peer_id == id) {
@@ -62,10 +73,15 @@ function PeerHandler(room_id, host, port, path) {
                     self.peers[peer_id] = self.peer.connect(peer_id);
 
                     self.peers[peer_id].on('open', (function(peer_id) {
-                        return function(id) {
+                        return function() {
                             self.__debug('Connection to ' + peer_id + ' is established.');
+                            self.tellMeYourUsername(peer_id);
                             connected = true;
-                            for (var i in self.peers) connected &= self.peers[i].open;
+                            for (var i in data.room) {
+                                var pid = data.room[i];
+                                connected &= id == pid || (self.peers[pid] && self.peers[pid].open);
+                            }
+
                             if (connected) {
                                 self.connectedToRoom();
                             }
@@ -84,7 +100,7 @@ function PeerHandler(room_id, host, port, path) {
         this.call();
     }
 
-    this.updateLocalMedia = function(data, callback, errorCallback, retry) {
+    this.updateLocalMedia = function(data, callback) {
         if (this.localStream) {
             if (this.audio && !data.audio) {
                 this.localStream.getAudioTracks()[0].stop();
@@ -98,11 +114,9 @@ function PeerHandler(room_id, host, port, path) {
         }
 
         if (!data.audio && !data.video) {
-            if (retry) {
-                errorCallback(this)
-            } else {
-                callback(this);
-            }
+            self.audio = false;
+            self.video = false;
+            callback(this);
             return
         }
 
@@ -117,11 +131,11 @@ function PeerHandler(room_id, host, port, path) {
         })(this), (function(self) {
             return function(error) {
                 if (data.video) {
-                    self.updateLocalMedia({audio: data.audio, video: false}, callback, errorCallback, true);
+                    self.updateLocalMedia({audio: data.audio, video: false}, callback);
                 } else if (data.audio) {
-                    self.updateLocalMedia({audio: false, video: data.video}, callback, errorCallback, true);
+                    self.updateLocalMedia({audio: false, video: data.video}, callback);
                 } else {
-                    errorCallback(self);
+                    callback(self);
                 }
             }
         })(this));
@@ -134,7 +148,7 @@ function PeerHandler(room_id, host, port, path) {
                     self.roomFullCallback();
                     break;
                 default:
-                    console.log(error);
+                    alert(error);
             }
         }
     }
@@ -152,9 +166,16 @@ function PeerHandler(room_id, host, port, path) {
     this.dataHandler = function(self, peer_id) {
         return function(data) {
             if (data.type == self.DATA_TRANSFER_TYPES.CHAT) {
-                self.chatMessageCallback(data.payload);
+                self.chatMessageCallback({
+                    message: data.payload.message,
+                    username: self.peers[data.payload.peer].username
+                });
             } else if (data.type == self.DATA_TRANSFER_TYPES.CALL_ME_BACK && self.localStream) {
                 self.streams[peer_id] = self.peer.call(peer_id, self.localStream);
+            } else if (data.type == self.DATA_TRANSFER_TYPES.USERNAME_SET) {
+                self.peers[peer_id].username = data.payload.username;
+            } else if (data.type == self.DATA_TRANSFER_TYPES.GET_USERNAME) {
+                self.sendUsernameTo(peer_id);
             }
         }
     }
@@ -176,10 +197,16 @@ function PeerHandler(room_id, host, port, path) {
         return function() {
             self.__log('Connection to ' + peer_id + ' was closed.');
             delete self.peers[peer_id];
+
+            self.connectionClosedCallback(peer_id);
         }
     }
 
     this.sendChatMessage = function(msg) {
+        if (!this.username) {
+            return;
+        }
+
         var payload = {
             message: msg,
             peer: this.peer.id
@@ -191,7 +218,11 @@ function PeerHandler(room_id, host, port, path) {
                 payload: payload
             });
         }
-        this.chatMessageCallback(payload);
+        
+        this.chatMessageCallback({
+            message: msg,
+            username: this.username
+        });
     }
 
     this.call = function(audio, video) {
@@ -212,9 +243,33 @@ function PeerHandler(room_id, host, port, path) {
                     })
                 }
             }
-        }, function(self) {
-            self.webRTCNotSupportedCallback();
         });
+    }
+
+    this.setUsername = function(username) {
+        this.username = username;
+        for (var peer_id in this.peers) {
+            this.sendUsernameTo(peer_id);
+        }
+    }
+
+    this.sendUsernameTo = function(peer_id) {
+        if (peer_id && this.username) {
+            this.peers[peer_id].send({
+                type: this.DATA_TRANSFER_TYPES.USERNAME_SET,
+                payload: {
+                    username: this.username
+                }
+            });
+        }
+    }
+
+    this.tellMeYourUsername = function(peer_id) {
+        if (peer_id) {
+            this.peers[peer_id].send({
+                type: this.DATA_TRANSFER_TYPES.GET_USERNAME
+            })
+        }
     }
 
     this.__makeID = function() {
@@ -251,4 +306,6 @@ function PeerHandler(room_id, host, port, path) {
     this.chatMessageCallback = function(data) {};
     this.updateLocalStreamCallback = function(stream, audio, video) {};
     this.updateRemoteStreamCallback = function(stream) {};
+
+    this.connectionClosedCallback = function(peer_id) {};
 }
