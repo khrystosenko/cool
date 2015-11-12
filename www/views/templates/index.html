@@ -16,8 +16,6 @@
             <div class="right main-menu hide-on-med-and-down">
                 <a href="#" data-scroll-to="benefits" class="scrollable-link">HOW IT WORKS</a>
                 <a href="/discover/">DISCOVER</a>
-                <!-- <a href="#">BLOG</a>
-                <a href="#">CONTACTS</a> -->
                 <a class="waves-effect waves-light btn get-premium" style="color: #ff5722;border-radius:0;">GET PREMIUM</a>
             </div>
         </div>
@@ -72,7 +70,7 @@
                 <img src="{{ static('img/benefits/friends.png') }}" />
                 <p class="benefit-title">INVITE FRIENDS
                 <span class="roomit-dot"></span></p>
-                
+
                 <p class="description">There are moments You want to share with friends. Only You decide whom to invite to Your room.</p>
             </div>
             <div class="col s12 m4">
@@ -101,8 +99,7 @@
                 <div class="card-content grey-text">
                     <ul class="collection details">
                         <li class="collection-item card-black avatar">
-                          <img src="{{ static('img/games/'~stream.game_canonical~'.png') }}" class="circle img-with-fallback"
-                               data-fallback-src="{{ static('img/games/notfound.png') }}">
+                          <img src="{{ stream.logo }}" class="circle">
                           <p class="title white-text">{{ stream.display_name }}</p>
                           <span class="views">
                             <i class="tiny material-icons">visibility</i> {{ '{:,d}'.format(stream.viewers).replace(',', ' ') }}
@@ -150,9 +147,7 @@
                 <a href="#" data-scroll-to="top" class="scrollable-link">TO TOP</a>
                 <a href="#" data-scroll-to="benefits" class="scrollable-link">HOW IT WORKS</a>
                 <a href="/discover/">DISCOVER</a>
-                <a href="#">GET PREMIUM</a><!-- 
-                <a href="#">BLOG</a>
-                <a href="#">CONTACTS</a> -->
+                <a href="#">GET PREMIUM</a>
             </div>
             <div class="col s6 l3 social">
                 <a href="#!"><img class="hoverable-image" src="{{ static('img/social/facebook.png') }}"/></a>
