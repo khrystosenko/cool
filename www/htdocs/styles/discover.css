@@ -54,5 +54,7 @@ main{
 .streams{
 	height: 100%;
 	width: 92%;
+	display: flex;
+	flex-wrap: wrap;
 	margin: 0 auto;
 }
