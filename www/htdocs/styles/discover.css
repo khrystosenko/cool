@@ -64,3 +64,8 @@ main{
 	flex-wrap: wrap;
 	margin: 0 auto;
 }
+
+.stream {
+	width: 350px;
+	margin-right: 10px;
+}

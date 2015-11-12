@@ -1,68 +1,164 @@
-var currentGameID,
-	currentSearch;
-
-function streamSuccessCallback(data) {
-	console.log(data);
-}
-
-function streamErrorCallback(error) {
-
-}
-
-function getStreams(game, search) {
-	data = {
-		game: game
-	}
-
-	search = search.trim();
-	if (search) {
-		data.stream = search
-	}
-
-	$.ajax({
-		type: 'GET',
-		data: data,
-		url: '/search/',
-		success: streamSuccessCallback,
-		error: streamErrorCallback
-	})
-}
-
 function DiscoverHandler() {
-	this.offset = 0;
-	this.limit = 25;
+    this.searchURL = '/search/'
 
-	this.getStreams = function(game, search) {
+    this.streamWidth = 400;
+    this.streamHeight = 224;
 
-	}
+    this.offset = 0;
+    this.limit = 9;
 
-	this.init = function() {
+    this.searchElement = null;
+    this.gameFilterElement = null;
 
-	}
+    this.getStreams = function(loadMore) {
+        data = {
+            offset: this.offset,
+            limit: this.limit,
+            game: this.game
+        }
 
+        if (this.stream) {
+            data.stream = this.stream;
+        }
+
+        $.ajax({
+            type: 'GET',
+            data: data,
+            url: this.searchURL,
+            success: this.__streamSuccessCallback(this, loadMore),
+            error: this.__streamErrorCallback(this)
+        });
+
+    }
+
+    this.init = function(configs) {
+        this.searchElement = $('#' + configs.streamSearchID);
+        this.gameFilterElement = $('#' + configs.gameFilterID);
+        this.loadMoreElement = $('#' + configs.loadMoreID);
+
+        this.addStreamsCallback = configs.addStreamsCallback;
+
+        this.searchElement.find('label').click((function(self) {
+            return function() {
+                var searchValue = self.searchElement.find('input').val().trim();
+                if (searchValue == self.stream) {
+                    return;
+                }
+
+                self.offset = 0;
+                self.stream = searchValue;
+                self.getStreams(false);
+            }
+        })(this));
+        this.gameFilterElement.find('a').click((function(self) {
+            return function() {
+                var gameID = $(this).attr('data-game-id');
+                var stream = self.searchElement.find('input').val().trim();
+                if (gameID == self.game && stream == self.stream) {
+                    return;
+                }
+
+                self.offset = 0;
+                self.stream = stream;
+                self.game = gameID;
+                self.getStreams(false);
+            }
+        })(this));
+        this.loadMoreElement.click((function(self) {
+            return function() {
+                self.getStreams(true);
+            }
+        })(this));
+
+        this.getStreams();
+    }
+
+    this.__streamSuccessCallback = function(self, loadMore) {
+        return function(data) {
+            for (var i in data.data) {
+                data.data[i].preview = data.data[i].preview.replace(/{width}/, self.streamWidth)
+                                                           .replace(/{height}/, self.streamHeight);
+                preloadImage(data.data[i].preview);
+                self.offset += 1;
+
+            }
+            self.addStreamsCallback(data.data, loadMore);
+        }
+    }
+
+    this.__streamErrorCallback = function(self) {
+        return function(error) {
+            console.log(error);
+        }
+    }
+
+}
+
+function addStreamsCallback(streams, loadMore) {
+    if (!loadMore) {
+        $('#streams').html('');
+    }
+
+    for (i in streams) {
+        var stream = streams[i];
+        var streamDiv = $('<div>');
+        streamDiv.addClass('col s12 m4 stream');
+
+        var card = $('<div>');
+        card.addClass('card hoverable');
+        streamDiv.append(card);
+
+        var image = $('<div>');
+        image.addClass('card-image waves-effect waves-block waves-light');
+        card.append(image);
+
+        image.append('<a href="#"><img src="' + stream.preview + '"/></a>');
+
+        var contentDiv = $('<div>');
+        contentDiv.addClass('card-content grey-text');
+        card.append(contentDiv);
+
+        var detailsUL = $('<ul>');
+        detailsUL.addClass('collection details');
+        contentDiv.append(detailsUL);
+
+        var detailsLI = $('<li>');
+        detailsLI.addClass('collection-item card-black avatar');
+        detailsUL.append(detailsLI);
+
+        var streamLogo = $('<img src="' + stream.logo + '" class="circle">');
+        detailsLI.append(streamLogo);
+
+        var streamName = $('<p class="title white-text">' + stream.display_name + '</p>');
+        detailsLI.append(streamName);
+
+        var views = stream.viewers;
+        var streamViews = $('<span class="views"><i class="tiny material-icons">visibility</i>' + views + '</span>');
+        detailsLI.append(streamViews);
+
+        var streamPlatform = $('<span class="platform"><i class="tiny material-icons">stay_primary_landscape</i> TWITCH.TV</span>');
+        detailsLI.append(streamPlatform);
+
+        var streamLanguage = $('<span class="language"><i class="tiny material-icons">translate</i>' + stream.language + '</span>')
+        detailsLI.append(streamLanguage);
+
+        $('#streams').append(streamDiv);
+    }
 }
 
 $(document).ready(function() {
-	currentSearch = $('#stream_search input').val();
-	currentGameID = $('#game_filter a.active').attr('data-game-id');
+    var handler = new DiscoverHandler();
+    handler.init({
+        streamSearchID: 'stream_search',
+        gameFilterID: 'game_filter',
+        loadMoreID: 'load_more',
+        addStreamsCallback: addStreamsCallback
+    });
 
-	$('#game_filter a').click(function(e) {
-		var gameID = $(this).attr('data-game-id');
-		if (gameID == currentGameID) {
-			return;
-		}
 
-		currentGameID = gameID;
-		getStreams(gameID, currentSearch);
-	});
-
-	$('#stream_search label').click(function(e) {
-		var search = $('#stream_search input').val();
-		if (search == currentSearch) {
-			return;
-		}
-
-		currentSearch = search;
-		getStreams(currentGameID, search);
-	});
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() == $(document).height()) {
+            $('#load_more').click();
+        }
+    });
 });

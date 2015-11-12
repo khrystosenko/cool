@@ -3,6 +3,13 @@ String.prototype.rsplit = function(sep, maxsplit) {
     return maxsplit ? [split.slice(0, -maxsplit).join(sep)].concat(split.slice(-maxsplit)) : split;
 }
 
+function preloadImage(url) {
+    try {
+        var _img = new Image();
+        _img.src = url;
+    } catch (e) { }
+}
+
 function getHoverImagePath(currentSource) {
     var file = currentSource.rsplit('.');
     return file[0] + '_hover.' + file[1];
