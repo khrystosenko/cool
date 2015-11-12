@@ -1,6 +1,6 @@
 function updateHeaderHeight() {
     var windowHeight = $(window).height();
-    $('#header-banner').height(windowHeight + 100);
+    $('#header-banner').height(windowHeight - 108);
 
     return windowHeight
 }

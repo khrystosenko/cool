@@ -1,10 +1,13 @@
+body,html{
+    background-color: #2a2a2a;
+}
 .header-transparent {
     background-color: transparent !important;
     box-shadow: none;
 }
 
-header .container {
-    width: 75% !important;
+header .container, .container.header {
+    width: 95% !important;
 }
 
 header .main-menu a {
@@ -12,17 +15,19 @@ header .main-menu a {
 }
 
 header .main-menu a {
-    font-size: 13px;
+    color:#9e9e9e;
+    font-size: 14px;
 }
 
 header .main-menu a:hover{
-    color: #FF5722;
+    color: #fff;
 }
 
 header .get-premium {
     background-color: transparent;
     border: 1px solid #FF5722;
     color: #FF5722;
+    margin-left: 15px;
 }
 
 header .get-premium:hover {
@@ -45,18 +50,18 @@ header .get-premium:hover {
 }
 
 .header-with-dot h3 .roomit-dot {
-    margin-left: -6px;
-    height: 6px;
-    width: 6px;
-    border-radius: 50%;
+    height: 8px;
+    width: 8px;
+    margin-left: -12px !important;
 }
 
 .header-with-dot span .roomit-dot {
-    margin-left: 2px;
+    margin-left: 5px;
+    width: 5px;
+    height: 5px;
 }
 
 #header-banner {
-    height: 100vh !important;
     margin: 0;
     padding: 0;
     background: url('/img/header1.png') 50% 50% no-repeat;
@@ -69,48 +74,65 @@ header .get-premium:hover {
 
 #header-banner .container.scroll {
     position: relative;
-    bottom: 50px;
+    height: 40px;
+    background:url('/img/scroll.png') 50% 100% no-repeat;
+    bottom: 60px;
 }
+#header-banner .container.scroll a{
 
-#support-header .container img {
-    margin: 5px 10px;
+    color: #757575;
+    font-size: 12px;
+}
+#header-banner .container.scroll:hover a{
+    color: #fff !important;
+}
+#header-banner .container.scroll:hover{
+    background:url('/img/scroll_hover_2.png') 50% 100% no-repeat;
+}
+   #support-header .container img {
+    margin-right: 60px;
+}
+#support-header .container img:first-child{
+    margin-left: 60px;
 }
 
 .supportBackground {
+    height: 108px;
     background-color: #2a2a2a;
 }
 
 .section.main {
-    padding-top: 45px;
-    /*height: 420px;*/
+
+    height: 70vh;
+    min-height: 450px;
 }
 
 .section.main .header {
-    font-size: 28px;
-}
-
-.section.main .first-row{
-    padding-top: 45px;
+    font-size: 36px;
+    margin-bottom: 65px;
 }
 
 #benefits .roomit-dot {
 display: inline-block;
 }
-
+.row{
+    margin:0;
+}
 .benefits-row p {
+    padding: 0 35px;
     margin-top: 17px;
     margin-bottom: 17px;
 }
 
 .benefits-row .description {
-    font-size: 16px;
-    color: #f5f5f5;
+    font-size: 14px;
+    color: #ffffff;
 }
 
 .benefit-title {
-    font-size: 18px;
+    font-size: 24px;
     color: #f5f5f5;
-    font-weight: 500;
+    font-weight: bold;
 }
 
 .benefitsBackground {
@@ -118,7 +140,9 @@ display: inline-block;
 }
 
 #discover {
-    padding: 45px 0px;
+    overflow: hidden;
+    height: 100vh;
+    min-height: 1300px;
 }
 
 .stream .card-content {
@@ -173,13 +197,19 @@ display: inline-block;
 .discover-more-btn {
     background-color: #FF5722 !important;
     margin-top: 25px;
+    padding: 25px 15px;
+    border-radius: 0;
+    font-size: 18px;
+    line-height: 0;
 }
 
 #create-room {
-    /*padding: 100px 0px;*/
-    background-color: #333333;
+    padding: 0;
+    height: 50vh;
+    min-height: 300px;
+    background-color: #2a2a2a;
     background: url('/img/support/bg.png') 50% 50% no-repeat;
-    /*background-size: cover;*/
+    background-size: cover;
 }
 
 #create-room .header-with-dot {
@@ -195,9 +225,11 @@ display: inline-block;
 }
 
 #create-room-btn {
-    font-size: 13px;
-    margin-left: 40px;
-    padding: 0 1.5rem;
+    font-size: 14px;
+    margin-top: 15px;
+    padding: 12px 17px;
+    line-height: 14px;
+    border-radius: 0;
 }
 
 .centerDiscover {
@@ -221,24 +253,27 @@ footer .roomit-logo-wrapper {
 
 footer .roomit-logo-wrapper span {
     line-height: 7px;
-    font-size: 9px;
+    font-size: 10px;
+    color: #757575;
     font-weight: 400;
     display: block;
 }
 
 footer .links {
+    height: 30px;
     text-align: center;
 }
 
 footer .links a {
+    vertical-align: middle;
     margin-right: 20px;
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 500;
-    color: #9E9E9E;
+    color: #757575;
 }
 
 footer .links a:hover {
-    color: #333333;
+    color: #ffffff;
 }
 
 footer .social {
@@ -257,12 +292,23 @@ footer .social a {
 }
 .header_h4{
     position: absolute; 
-    right:0; 
-    top: 30px;
+    right:1px; 
+    top: 70px;
     text-transform: uppercase;
     color: #797e80;
-    font-size: 15px;
+    font-size: 18px;
 }
 .create-room-btn{
-    padding: 0 15px 15px;
+    margin-top: 45px;
+    padding: 17px 17px;
+    font-size: 18px;
+    line-height: 18px;
+    border-radius: 0;
+    height: auto;
+}
+.h_text{
+    font-size: 72px;
+}
+.navbar-fixed nav{
+    height: 60px;
 }

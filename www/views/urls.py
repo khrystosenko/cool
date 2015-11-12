@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 basepatterns = patterns('views.views',
-    url(r'^$', 'prerelease', name='prerelease'),
+    url(r'^$', 'index', name='index'),
 )
 
 urlpatterns = basepatterns + patterns('',

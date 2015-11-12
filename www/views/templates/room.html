@@ -1,0 +1,61 @@
+        {% extends 'page.html' %}
+
+{% block add_scripts %}
+    <script>
+        var noCameraSrc = "{{ static('img/room/nocamera.png') }}";
+    </script>
+    <script type="text/javascript" src="{{ static('scripts/lib/peer.js') }}"></script>
+    <script type="text/javascript" src="{{ static('scripts/lib/network.js') }}"></script>
+    <script type="text/javascript" src="{{ static('scripts/room.js') }}"></script>
+{% endblock %}
+
+{% block add_styles %}
+    <link type="text/css" rel="stylesheet" href="{{ static('styles/room.css') }}" />
+{% endblock %}
+
+{% block content %}
+    <div class="row wrapper">
+
+        <div class="col s8" id="room_control">
+            <div id="info_content" class="col s12">Test 1</div>
+            <div id="roommates_content" class="col s12">
+                <div id="local_stream" class="stream local_stream">
+                    <video autoplay="" width="60" height="60" muted="muted">
+                    </video>
+
+                    <div id="local_stream_controls"></div>
+                </div>
+            </div>
+            <div id="settings_content" class="col s12">Test 3</div>
+            <div class="col s12 controls">
+              <ul class="tabs">
+                <li class="tab col s3 disabled"><a href="#info_content">INFO</a></li>
+                <li class="tab col s3"><a class="active" href="#roommates_content">ROOMMATES</a></li>
+                <li class="tab col s3 disabled"><a href="#settings_content">SETTINGS</a></li>
+              </ul>
+            </div>
+        </div>
+        <div class="col s4" id="chat">
+            <div class="col s12 controls">
+              <ul class="tabs">
+                <li class="tab col s6"><a class="active" href="#local_chat">ROOM</a></li>
+                <li class="tab col s6"><a href="#platform_chat">CHAT</a></li>
+              </ul>
+            </div>
+            <div id="local_chat" class="col s12">
+                <div id="chat_content"></div>
+                <div id="chat_inputs">
+                    <div id="username_input" style="display: block;">
+                        <input placeholder="How should we call you?" type="text" />
+                        <span class="submit">OK</span>
+                    </div>
+                    <div id="message_input" style="display: none;">
+                        <input placeholder="Your message..." type="text" />
+                        <i class="material-icons submit">send</i>
+                    </div>
+                </div>
+            </div>
+            <div id="platform_chat" class="col s12"></div>
+        </div>
+    </div>
+{% endblock %}
