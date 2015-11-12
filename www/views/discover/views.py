@@ -1,11 +1,14 @@
+from django.conf import settings
 from django.template.response import TemplateResponse
 
 from ..utils import search
 
 
 def index(req):
-    games = search.get_top_games({'limit': '5'}).get('games', [])
-    services = search.get_top_platforms({'limit': '5'}).get('platforms', [])
-    top_streams = search.filter_by_params({'limit': '6'})
+    games = settings.DISCOVER_FILTER_GAMES
+    game_ids = search.get_game_ids([game['name'] for game in games])
 
-    return TemplateResponse(req, 'discover.html', {'games': games, 'services': services, 'streams': top_streams['data']})
+    for game in games:
+        game['id'] = game_ids[game['name']]
+
+    return TemplateResponse(req, 'discover.html', {'games': games})

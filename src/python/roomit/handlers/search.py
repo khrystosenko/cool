@@ -15,3 +15,6 @@ def get_top_platforms(limit):
 def get_games_like(text, limit):
     data = search.get_games_like(text, limit)
     return {'games': data}
+
+def get_game_ids(games):
+	return search.get_game_ids(games)

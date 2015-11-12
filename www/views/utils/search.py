@@ -88,3 +88,15 @@ def get_games_like(params):
         return utils.validation_error('text')
 
     return search.get_games_like(text, limit)
+
+def get_game_ids(games):
+    if not isinstance(games, list):
+        games = [games]
+
+    data = search.get_game_ids(games)
+
+    result = {}
+    for item in data:
+        result[item['name']] = item['id']
+
+    return result

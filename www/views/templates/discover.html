@@ -1,34 +1,6 @@
 {% extends 'page.html' %}
 
 {% block add_scripts %}
-    <script>
-        var games = [];
-
-        {% for game in games %}
-            games.push({
-                'name': '{{ game.name }}',
-                'id': {{ game.id }}
-            })
-        {% endfor %}
-
-        var services = [];
-
-        {% for service in services %}
-            services.push({
-                'name': '{{ service.name }}',
-                'id': {{ service.id }}
-            })
-        {% endfor %}
-
-        var streams = [];
-
-        {% for stream in streams %}
-            streams.push({
-                'name': '{{ stream.name }}'
-            })
-        {% endfor %}
-
-        </script>
     <script type="text/javascript" src="{{ static('scripts/discover.js') }}"></script>
 {% endblock %}
 
@@ -41,9 +13,9 @@
         <div class="header_container">
             <div class="discover_search">
                 <form>
-                    <div class="search_field">
-                        <input id="disc_search" type="search" placeholder="Search by name or game">
-                        <label for="search"><i class="material-icons">search</i></label><!-- 
+                    <div class="search_field" id="stream_search">
+                        <input type="search" placeholder="Search by stream">
+                        <label for="search"><i class="material-icons">search</i></label><!--
                         <i class="material-icons">close</i> -->
                     </div>
                 </form>
@@ -53,15 +25,12 @@
                 <div class="discover_game">
 					<div class="row">
                     <div class="col s12">
-                              <ul class="tabs">
-                                <li class="tab col s1"><a class="active" href="#test1">All games</a></li>
-                                <li class="tab col s1"><a href="#">Dota 2</a></li>
-                                <li class="tab col s1"><a href="#">Lol</a></li>
-                                <li class="tab col s1"><a href="#">Hearthstone</a></li>
-                                <li class="tab col s1"><a href="#">CS:GO</a></li>
-                                <li class="tab col s1"><a href="#">HotS</a></li>
-                                <li class="tab col s1"><a href="#">Others</a></li>
-                              </ul>
+                      <ul class="tabs" id="game_filter">
+                        <li class="tab col s1" ><a data-game-id="0" href="#">All games</a></li>
+                        {% for game in games %}
+                            <li class="tab col s1"><a data-game-id="{{ game.id }}" href="#">{{ game.short }}</a></li>
+                        {% endfor %}
+                      </ul>
                     </div>
                     </div>
                 </div>

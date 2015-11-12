@@ -106,3 +106,21 @@ def get_games_like(cursor, text, limit):
         data = [data]
 
     return data
+
+@dbcp.roomit
+def get_game_ids(cursor, games):
+    fields = ['id', 'name']
+
+    where_query = 'WHERE name IN ({})'.format(', '.join(['%%s' for _ in range(len(games))]))
+
+    query = """ SELECT `%s`
+                FROM games
+            """ + where_query
+    query %= ('`, `'.join(fields))
+
+    cursor.execute(query, games)
+    data = dbcp.tuple2dict(cursor.fetchall(), fields)
+    if isinstance(data, dict):
+        data = [data]
+
+    return data
