@@ -19,8 +19,5 @@ CREATE TABLE streams (
     FOREIGN KEY (service_id) REFERENCES services(id),
     FOREIGN KEY (game_id) REFERENCES games(id),
 
-    INDEX service_index (service_id),
-    INDEX game_index (game_id),
-    INDEX display_name_index (display_name),
-    INDEX name_index (name)
+    INDEX search_index (`online`, `viewers`, `game_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
