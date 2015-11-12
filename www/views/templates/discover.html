@@ -14,9 +14,8 @@
             <div class="discover_search">
                 <form>
                     <div class="search_field" id="stream_search">
-                        <input type="search" placeholder="Search by stream">
-                        <label for="search"><i class="material-icons">search</i></label><!--
-                        <i class="material-icons">close</i> -->
+                        <input type="search" id="srch" placeholder="Search by stream">
+                        <label for="search"><i class="material-icons" id="icon_status">search</i></label>
                     </div>
                 </form>
             </div>
@@ -24,7 +23,7 @@
             <div class="discover_selection">
                 <div class="discover_game">
 					<div class="row">
-                    <div class="col s12">
+                    <div class="col s6">
                       <ul class="tabs" id="game_filter">
                         <li class="tab col s1" ><a data-game-id="0" href="#">All games</a></li>
                         {% for game in games %}
@@ -39,6 +38,6 @@
 
 {% block content %}
 	<div class="streams" id="streams"></div>
-
+    <div class="shadow"></div>
   <a href="#" id="load_more" class="btn waves-effect waves-light deep-orange">Load More</a>
 {% endblock %}

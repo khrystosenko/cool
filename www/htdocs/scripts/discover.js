@@ -162,3 +162,20 @@ $(document).ready(function() {
         }
     });
 });
+
+
+ //  $('input').keypress(function(e) {
+ //        if(e.which == 13) {
+ //            $(this).blur();
+ //            $('#srch').focus().click();
+ //        }
+ //    });
+
+ $(document).ready(function() {
+    $('input').blur(function(){
+        $("#icon_status").html("search");
+    })
+    .focus(function() {
+        $("#icon_status").html("close");
+      });
+  });
