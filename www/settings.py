@@ -146,7 +146,7 @@ DISCOVER_FILTER_GAMES = [{
   'name': 'Hearthstone: Heroes of Warcraft',
   'short': 'Hearthstone'
 }, {
-  'name': 'CSGO',
+  'name': 'Counter-Strike: Global Offensive',
   'short': 'CS:GO'
 }, {
   'name': 'Heroes of the Storm',
