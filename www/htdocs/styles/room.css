@@ -85,7 +85,6 @@ width: 50px;
 
 .poss{
 	position: relative;
-	width: 5%;
 }
 #chat {
 	height: 100%;
@@ -141,7 +140,6 @@ object{
 }
 #local_stream{
 	max-height: 60px;
-	padding: 15px;
 }
 #username_input{
 	position: relative;
@@ -165,12 +163,12 @@ object{
 .voice{
 	position: absolute;
 	top: 0;
-	right: 0;
+	right: -15px;
 }
 .video{
 	position: absolute;
 	bottom: 0;
-	right: 0;
+	right: -17px;
 }
 
 .chat-message,
@@ -182,3 +180,10 @@ object{
 	color: #F5F5F5;
 	margin-left: 3px;
 }
+.stream{
+	display: inline-block;
+	margin-top: 20px;
+	margin-left: 10px;
+}
+.stream:not(:first-child){
+	margin-left: 25px;}
