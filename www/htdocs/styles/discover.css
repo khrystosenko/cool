@@ -137,7 +137,6 @@ padding-bottom: 15px;
 	height: 100%;
 	z-index: 20000;
 	background: url('/img/stream_hover.png') 50% 50% no-repeat;
-	transition: 1s ease-out;
 
 }
 .card .card-image:hover:before{
