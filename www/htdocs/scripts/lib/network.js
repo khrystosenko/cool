@@ -250,6 +250,7 @@ function NetworkHandler(roomID, host, port, path) {
     this.toggleLocalStream = function(audio, video) {
         this.setupLocalMedia((function(self) {
             return function(reconnect) {
+                self.socket.emit('stream-update', self.audio, self.video);
                 if (!reconnect) return;
 
                 for (socketID in self.peers) {
@@ -259,6 +260,7 @@ function NetworkHandler(roomID, host, port, path) {
                 } 
             }
         })(this), audio, video);
+
 
         this.updateLocalStreamCallback(self.localMedia, self.audio, self.video);
     }

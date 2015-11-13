@@ -41,9 +41,14 @@
         for (var i in rooms[room_uuid]) {
           socket_id = rooms[room_uuid][i];
           sockets[socket_id].emit('peer-add', {socket_id: socket.id, create_offer: false});
-          socket.emit('peer-add', {socket_id: socket_id, create_offer: true, audio: false, audio: false});
+          socket.emit('peer-add', {socket_id: socket_id, create_offer: true, audio: sockets[socket_id].audio, video: sockets[socket_id].video});
         }
 
+      });
+
+      socket.on('stream-update', function(audio, video) {
+        socket.audio = audio;
+        socket.video = video;
       });
 
       socket.on('chat-join', function(data) {
