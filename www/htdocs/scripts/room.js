@@ -17,6 +17,9 @@ function getUsernameColor(username) {
 }
 
 $(document).ready(function() {
+
+    $('#chat_content').perfectScrollbar();
+    
     handler = new NetworkHandler(ROOM_UUID, SIGNALING_SERVER.HOST, SIGNALING_SERVER.PORT);
 
     handler.chatMessageCallback = function(data) {
