@@ -90,10 +90,10 @@ header .get-premium:hover {
     background:url('/img/scroll_hover_2.png') 50% 100% no-repeat;
 }
    #support-header .container img {
-    margin-right: 60px;
+    margin-right: 20px;
 }
 #support-header .container img:first-child{
-    margin-left: 60px;
+    margin-left: 20px;
 }
 
 .supportBackground {
@@ -142,7 +142,7 @@ display: inline-block;
 #discover {
     overflow: hidden;
     height: 100vh;
-    min-height: 1300px;
+    min-height: 1800px;
 }
 
 .stream .card-content {
@@ -239,7 +239,7 @@ display: inline-block;
 }
 
 footer .container {
-    width: 75% !important;
+    width: 95%;
     padding: 15px 0px;
 }
 
@@ -287,16 +287,19 @@ footer .social a {
 .footerBackground {
     background-color: #212121;
 }
+.section.main .valign, .section.main .valign .header.white-text{
+    width: 85%;
+}
 .valign, .valign .header.white-text{
     width: 100%;
 }
 .header_h4{
     position: absolute; 
     right:1px; 
-    top: 70px;
+    top: 50px;
     text-transform: uppercase;
     color: #797e80;
-    font-size: 18px;
+    font-size: 14px;
 }
 .create-room-btn{
     margin-top: 45px;
@@ -306,8 +309,34 @@ footer .social a {
     border-radius: 0;
     height: auto;
 }
+
+     .h_text{
+    font-size: 54px;
+}
+@media screen and (min-width: 1360px){
 .h_text{
     font-size: 72px;
+}
+
+.header_h4{
+    font-size: 18px;
+    top: 70px;
+}
+  #support-header .container img {
+    margin-right: 60px;
+}
+#support-header .container img:first-child{
+    margin-left: 60px;
+}
+#discover {
+    min-height: 1300px;
+}
+.section.main .valign, .section.main .valign .header.white-text{
+    width: 100%;
+}
+footer .container {
+    width: 75% !important;
+}
 }
 .navbar-fixed nav{
     height: 60px;

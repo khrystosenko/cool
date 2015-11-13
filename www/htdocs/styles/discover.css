@@ -113,11 +113,21 @@ padding:0;
 }
 .collection .collection-item.avatar {
 min-height: 0;
+padding-left: 60px;
+padding-top:15px;
+padding-bottom: 15px;
+}
+.stream .avatar .circle {
+    left: 0px !important;
+    width: 32px !important;
+    height: 32px !important;
+    margin-left: 15px;
+    margin-top: 2px;
 }
 .collection {
 	margin: 0;
 	border: 0;
-	padding: 15px 0;
+	padding: 0;
 }
 .card .card-image:before {
 	content:'';
