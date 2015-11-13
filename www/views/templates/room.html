@@ -1,8 +1,10 @@
 {% extends 'page.html' %}
+{% from 'utils.html' import get_service_frame, get_chat_frame %}
 
 {% block add_scripts %}
     <script>
         var noCameraSrc = "{{ static('img/room/nocamera.png') }}";
+        var ROOM_UUID = "{{ id }}";
     </script>
     <script type="text/javascript" src="{{ static('scripts/lib/socket.io-1.2.0.js') }}"></script>
     <script type="text/javascript" src="{{ static('scripts/lib/network.js') }}"></script>
@@ -14,6 +16,7 @@
 {% endblock %}
 
 {% block content %}
+    {{ get_service_frame(service, channel) }}
     <div class="row wrapper">
 
         <div class="col s8" id="room_control">
@@ -55,7 +58,10 @@
                     </div>
                 </div>
             </div>
-            <div id="platform_chat" class="col s12"></div>
+            <div id="platform_chat" class="col s12">
+
+                {{ get_chat_frame(service, channel) }}
+            </div>
         </div>
     </div>
 {% endblock %}

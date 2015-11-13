@@ -18,4 +18,4 @@ def view(req, room_name):
     if not data:
         return HttpResponseRedirect('/discover/')
 
-    return TemplateResponse(req, 'room.html')
+    return TemplateResponse(req, 'room.html', data)
