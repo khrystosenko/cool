@@ -51,7 +51,7 @@ function NetworkHandler(roomID, host, port) {
           'username': 'test',
           'credential': '1234'
         }
-    ]   
+    ]
 
     this.webRTCSupport = true;
 
@@ -74,7 +74,7 @@ function NetworkHandler(roomID, host, port) {
             for (socket_id in self.peers) {
                 self.peers[socket_id].close();
                 delete self.peers[socket_id];
-            } 
+            }
         }
     }
 
@@ -119,7 +119,7 @@ function NetworkHandler(roomID, host, port) {
                 return;
             }
 
-            var peerConnection = new navigator.RTCPeerConnection(                
+            var peerConnection = new navigator.RTCPeerConnection(
                 {iceServers: self.ICE_SERVERS},
                 {optional: [{DtlsSrtpKeyAgreement: true}]}
             );
@@ -140,7 +140,7 @@ function NetworkHandler(roomID, host, port) {
             if (data.create_offer) {
                 self.__createOffer(socketID, data.audio, data.video);
             }
-        }    
+        }
     }
 
     this.sessionDescriptionCallback = function(self) {
@@ -160,8 +160,8 @@ function NetworkHandler(roomID, host, port) {
                             self.peers[socketID].createAnswer(function(localDescription) {
                                 console.log('Answer description is: ', localDescription);
                                 self.peers[socketID].setLocalDescription(localDescription,
-                                    function() { 
-                                        self.socket.emit('session_description-relay', 
+                                    function() {
+                                        self.socket.emit('session_description-relay',
                                             {'socket_id': socketID, 'session_description': localDescription});
                                         console.log('Answer setLocalDescription succeeded');
                                     },
@@ -180,7 +180,7 @@ function NetworkHandler(roomID, host, port) {
                 }
             );
             console.log('Description Object: ', desc);
-        } 
+        }
     }
 
     this.ICECandidateCallback = function(self) {
@@ -214,7 +214,7 @@ function NetworkHandler(roomID, host, port) {
         this.socket = io.connect(this.host + ':' + this.port);
 
         this.socket.emit('initialize', self.roomID);
-        
+
         this.socket.on('connect', this.socketConnectedCallback(this));
         this.socket.on('error', this.socketError(this));
         this.socket.on('disconnect', this.socketDisconnectedCallback(this));
@@ -257,7 +257,7 @@ function NetworkHandler(roomID, host, port) {
                     if (self.streams[socketID]) self.peers[socketID].removeStream(self.localMedia);
                     self.peers[socketID].addStream(self.localMedia);
                     self.__createOffer(socketID);
-                } 
+                }
             }
         })(this), audio, video);
 
@@ -300,16 +300,18 @@ function NetworkHandler(roomID, host, port) {
                     callback(true);
                 }
             })(this),
-            function() {
-                if (audio) {
-                    self.setupLocalMedia(callback, false, video);   
-                } else if (video) {
-                    self.setupLocalMedia(callback, audio, false);
-                } else {
-                    console.log("Access denied for audio/video");
-                    callback(true);
+            (function(self) {
+                return function() {
+                    if (audio) {
+                        self.setupLocalMedia(callback, false, video);
+                    } else if (video) {
+                        self.setupLocalMedia(callback, audio, false);
+                    } else {
+                        console.log("Access denied for audio/video");
+                        callback(true);
+                    }
                 }
-            });
+            })(this));
     }
 
     this.__createOffer = function(socketID, audio, video) {
@@ -317,14 +319,14 @@ function NetworkHandler(roomID, host, port) {
 
         this.peers[socketID].createOffer(
             (function(self, socketID) {
-                return function (localDescription) { 
+                return function (localDescription) {
                     console.log('Local offer description is: ', localDescription);
                     self.peers[socketID].setLocalDescription(localDescription,
-                        function() { 
-                            self.socket.emit('session_description-relay', 
+                        function() {
+                            self.socket.emit('session_description-relay',
                                 {'socket_id': socketID, 'session_description': localDescription});
 
-                            console.log('Offer setLocalDescription succeeded'); 
+                            console.log('Offer setLocalDescription succeeded');
                         },
                         function() { console.log('Offer setLocalDescription failed!'); }
                     );
@@ -334,7 +336,7 @@ function NetworkHandler(roomID, host, port) {
                 return function (error) {
                     console.log('Error sending offer: ', error);
                 }
-            })(this, socketID), 
+            })(this, socketID),
             {
                 'optional': [],
                 'mandatory': {
@@ -349,7 +351,7 @@ function NetworkHandler(roomID, host, port) {
         return function(event) {
             if (event.candidate) {
                 self.socket.emit('ice_candidate-relay', {
-                    'socket_id': socketID, 
+                    'socket_id': socketID,
                     'ice_candidate': {
                         'sdpMLineIndex': event.candidate.sdpMLineIndex,
                         'candidate': event.candidate.candidate
@@ -410,14 +412,14 @@ function NetworkHandler(roomID, host, port) {
           if (!webkitMediaStream.prototype.getVideoTracks) {
               webkitMediaStream.prototype.getVideoTracks = function() {
               return this.videoTracks;
-            } 
-          } 
-          
+            }
+          }
+
           if (!webkitMediaStream.prototype.getAudioTracks) {
               webkitMediaStream.prototype.getAudioTracks = function() {
               return this.audioTracks;
             }
-          } 
+          }
         } else {
           this.webRTCSupport = false;
           this.webRTCNotSupportedCallback();
