@@ -16,36 +16,36 @@
 {% endblock %}
 
 {% block content %}
-    {{ get_service_frame(service, channel) }}
-    <div class="row wrapper">
-
-        <div class="col s8" id="room_control">
-            <div id="info_content" class="col s12">Test 1</div>
-            <div id="roommates_content" class="col s12">
+<div id="twitch_frame">
+         {{ get_service_frame(service, channel) }}
+         <div id="room_control">
+         <div id="local_stream" class="stream local_stream">
+             <video autoplay="" mix-width="10px" min-height="10px" muted="muted"></video>
+        </div>
+        <!-- <div id="room_control">
+            
+            <div id="roommates_content">
                 <div id="local_stream" class="stream local_stream">
-                    <video autoplay="" width="60" height="60" muted="muted">
+                    <video autoplay="" width="50" height="50" muted="muted">
                     </video>
 
                     <div id="local_stream_controls"></div>
+
+                <div class="controls"><a class="active">ROOMMATES</a></div>
                 </div>
             </div>
-            <div id="settings_content" class="col s12">Test 3</div>
-            <div class="col s12 controls">
-              <ul class="tabs">
-                <li class="tab col s3 disabled"><a href="#info_content">INFO</a></li>
-                <li class="tab col s3"><a class="active" href="#roommates_content">ROOMMATES</a></li>
-                <li class="tab col s3 disabled"><a href="#settings_content">SETTINGS</a></li>
-              </ul>
-            </div>
-        </div>
-        <div class="col s4" id="chat">
+ </div> -->
+ </div>
+ </div>
+</div>
+    <div id="chat" class="right">
             <div class="col s12 controls">
               <ul class="tabs">
                 <li class="tab col s6"><a class="active" href="#local_chat">ROOM</a></li>
                 <li class="tab col s6"><a href="#platform_chat">CHAT</a></li>
               </ul>
             </div>
-            <div id="local_chat" class="col s12">
+            <div id="local_chat">
                 <div id="chat_content"></div>
                 <div id="chat_inputs">
                     <div id="username_input" style="display: block;">
@@ -58,10 +58,10 @@
                     </div>
                 </div>
             </div>
-            <div id="platform_chat" class="col s12">
+            <div id="platform_chat">
 
                 {{ get_chat_frame(service, channel) }}
             </div>
-        </div>
-    </div>
+ </div>
+
 {% endblock %}
