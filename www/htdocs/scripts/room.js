@@ -17,19 +17,19 @@ $(document).ready(function() {
     handler.updateLocalStreamCallback = function(stream, audio, video) {
         var mic, camera;
         if (audio) {
-            mic = $('<span>Turn off mic</span>');
+            mic = $('<span class="voice"><img src="/img/voice_off.png" alt="Turn off mic" /></span>');
             mic.click(function() {handler.toggleLocalStream(false, video)});
         } else {
-            mic = $('<span>Turn on mic</span>')
+            mic = $('<span class="voice"><img src="/img/voice_on.png" alt="Turn on mic" /></span>')
             mic.click(function() {handler.toggleLocalStream(true, video)});;
         }
 
 
         if (video) {
-            camera = $('<span>Turn off video</span>');
+            camera = $('<span class="video"><img src="/img/camera_off.png" alt="Turn off video" /></span>');
             camera.click(function() {handler.toggleLocalStream(audio, false)});
         } else {
-            camera = $('<span>Turn on video</span>')
+            camera = $('<span class="video"><img src="/img/camera_on.png" alt="Turn on video"</span>')
             camera.click(function() {handler.toggleLocalStream(audio, true)});;
         }
 
