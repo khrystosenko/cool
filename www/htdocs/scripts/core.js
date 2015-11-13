@@ -3,6 +3,12 @@ String.prototype.rsplit = function(sep, maxsplit) {
     return maxsplit ? [split.slice(0, -maxsplit).join(sep)].concat(split.slice(-maxsplit)) : split;
 }
 
+function checkDevice(){
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+ window.location.href = '/prerelease/';
+    }
+};
+
 function preloadImage(url) {
     try {
         var _img = new Image();

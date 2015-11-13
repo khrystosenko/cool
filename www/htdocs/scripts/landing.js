@@ -14,7 +14,6 @@ function updateHeaderColor(height) {
     }
 }
 
-
 $(document).ready(function() {
 
     headerCurrentHeight = updateHeaderHeight();

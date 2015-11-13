@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block additional_scripts %}
+<script type="text/javascript">checkDevice();</script>
 	<script type="text/javascript" src="{{ static('scripts/page.js') }}"></script>
 	{% block add_scripts %}{% endblock %}
 {% endblock %}
