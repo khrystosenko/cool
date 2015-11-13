@@ -213,7 +213,7 @@ function NetworkHandler(roomID, host, port) {
 
         this.socket = io.connect(this.host + ':' + this.port);
 
-        this.socket.emit('initialize', self.roomID);
+        this.socket.emit('initialize', this.roomID);
 
         this.socket.on('connect', this.socketConnectedCallback(this));
         this.socket.on('error', this.socketError(this));
