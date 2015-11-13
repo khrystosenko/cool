@@ -1,4 +1,4 @@
-function NetworkHandler(roomID, host, port, path) {
+function NetworkHandler(roomID, host, port) {
     this.host = host || '127.0.0.1';
     this.port = port || 8888;
     this.roomID = roomID;

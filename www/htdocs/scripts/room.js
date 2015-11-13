@@ -1,6 +1,6 @@
 var handler;
 $(document).ready(function() {
-    handler = new NetworkHandler('room_id');
+    handler = new NetworkHandler('room_id', SIGNALING_SERVER.HOST, SIGNALING_SERVER.PORT);
 
     handler.chatMessageCallback = function(data) {
         $('#chat_content').append('<p>' + data.username + ' said: ' + data.message + '</p>');
