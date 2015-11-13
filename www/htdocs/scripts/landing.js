@@ -67,15 +67,12 @@ $(document).ready(function() {
             },
             success: function(data) {
                 console.log(data);
-                if (data.error) {
-                    
-                } else {
+                if (data.error) {} else {
                     window.location.href = '/room/' + data.name; 
                 }
-            }, error: function() {
-                
-            }
+            }, error: function() {}
         });
+
     });
 
 });

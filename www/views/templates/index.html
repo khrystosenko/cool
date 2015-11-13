@@ -93,7 +93,7 @@
         {% for stream in streams %}
             <div class="col s12 m4 stream" style="min-width: 422.5px;">
               <div class="card hoverable">
-                <div class="card-image waves-effect waves-block waves-light">
+                <div class="card-image waves-effect waves-block waves-light" data-stream-url='http://twitch.tv/{{stream.name}}'>
                   <a href="#"><img src="{{ stream.preview.replace('{width}', '400').replace('{height}', '224') }}"></a>
                 </div>
                 <div class="card-content grey-text">
@@ -124,8 +124,8 @@
 <div class="section main valign-wrapper" id="create-room">
     <div class="container center valign">
         <div class="header-with-dot">
-            <span class="header white-text" style="margin-bottom: 10%;">Get <span style="font-weight: bold;">pleasure</span> from watching right now<div class="roomit-dot"
-            ></div></span>
+            <span class="header white-text" style="margin-bottom: 10%;">Get <span style="font-weight: bold">pleasure</span> from watching right now<span class="roomit-dot"
+            ></span></span>
         </div>
         <div>
         <input placeholder="Insert link of stream here" id="stream-link" type="text" class="validate">
