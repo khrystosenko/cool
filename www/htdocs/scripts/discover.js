@@ -110,6 +110,30 @@ function addStreamsCallback(streams, loadMore) {
 
         var image = $('<div>');
         image.addClass('card-image waves-effect waves-block waves-light');
+        image.attr('data-stream-url', 'http://twitch.tv/' + stream.name);
+        image.click(function(e) {
+            e.preventDefault();
+
+            var link = $(this).attr('data-stream-url');
+            $.ajax({
+                type: 'POST',
+                url: '/room/create/',
+                data: {
+                    link: link
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data.error) {
+                        
+                    } else {
+                        window.location.href = '/room/' + data.name; 
+                    }
+                }, error: function() {
+                    
+                }
+            });
+        });
+        
         card.append(image);
 
         image.append('<a href="#"><img src="' + stream.preview + '"/></a>');

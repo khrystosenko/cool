@@ -28,4 +28,54 @@ $(document).ready(function() {
         updateHeaderColor(headerCurrentHeight);
     });
 
+    $('#create-room-btn').click(function(e) {
+        e.preventDefault();
+        $(this).addClass('disabled');
+        var link = $('#stream-link').val().trim();
+
+        $.ajax({
+            type: 'POST',
+            url: '/room/create/',
+            data: {
+                link: link
+            },
+            success: function(data) {
+                console.log(data);
+                if (data.error) {
+                    $('#stream-link').addClass('invalid');
+                    $('#create-room-btn').removeClass('disabled');
+                } else {
+                    $('#stream-link').removeClass('invalid');
+                    $('#create-room-btn').removeClass('disabled');
+                    window.location.href = '/room/' + data.name; 
+                }
+            }, error: function() {
+                
+            }
+        });
+    });
+
+    $('.card-image').click(function(e) {
+        e.preventDefault();
+
+        var link = $(this).attr('data-stream-url');
+        $.ajax({
+            type: 'POST',
+            url: '/room/create/',
+            data: {
+                link: link
+            },
+            success: function(data) {
+                console.log(data);
+                if (data.error) {
+                    
+                } else {
+                    window.location.href = '/room/' + data.name; 
+                }
+            }, error: function() {
+                
+            }
+        });
+    });
+
 });
