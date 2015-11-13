@@ -1,7 +1,6 @@
 var handler;
 $(document).ready(function() {
-    handler = new PeerHandler('room_id');
-    handler.init();
+    handler = new NetworkHandler('room_id');
 
     handler.chatMessageCallback = function(data) {
         $('#chat_content').append('<p>' + data.username + ' said: ' + data.message + '</p>');
@@ -19,19 +18,19 @@ $(document).ready(function() {
         var mic, camera;
         if (audio) {
             mic = $('<span>Turn off mic</span>');
-            mic.click(function() {handler.call(false, video)});
+            mic.click(function() {handler.toggleLocalStream(false, video)});
         } else {
             mic = $('<span>Turn on mic</span>')
-            mic.click(function() {handler.call(true, video)});;
+            mic.click(function() {handler.toggleLocalStream(true, video)});;
         }
 
 
         if (video) {
             camera = $('<span>Turn off video</span>');
-            camera.click(function() {handler.call(audio, false)});
+            camera.click(function() {handler.toggleLocalStream(audio, false)});
         } else {
             camera = $('<span>Turn on video</span>')
-            camera.click(function() {handler.call(audio, true)});;
+            camera.click(function() {handler.toggleLocalStream(audio, true)});;
         }
 
         $('#local_stream_controls').html('');
@@ -84,10 +83,6 @@ $(document).ready(function() {
     }
 
     $('#username_input .submit').click(function() {
-        if (handler.username) {
-          return;
-        }
-
         var username = $('#username_input input').val().trim();
         if (username === '') {
           return;
@@ -100,10 +95,6 @@ $(document).ready(function() {
     });
 
     $('#message_input .submit').click(function() {
-        if (!handler.username) {
-          return;
-        }
-
         var msg = $('#message_input input').val().trim();
         if (msg === '') {
           return;
@@ -113,4 +104,7 @@ $(document).ready(function() {
 
         handler.sendChatMessage(msg);
     });
+
+    
+    handler.init();
 });

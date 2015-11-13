@@ -1,10 +1,20 @@
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+function NetworkHandler(roomID, host, port, path) {
+    this.host = host || '127.0.0.1';
+    this.port = port || 8888;
+    this.roomID = roomID;
 
-function PeerHandler(room_id, host, port, path) {
-    this.host = host || '127.0.0.0';
-    this.port = port || 9000;
-    this.path = path || '/';
-    this.room_id = room_id;
+    this.socket = null;
+    this.localMedia = null;
+    this.connected = false;
+
+    this.audio = false;
+    this.video = false;
+
+    this.audioTry = false;
+    this.videoTry = false;
+
+    this.peers = {};
+    this.streams = {};
 
     this.ERROR = {
         FULL_ROOM: 401
@@ -19,266 +29,338 @@ function PeerHandler(room_id, host, port, path) {
     }
 
     this.LOG_LEVEL = this.LOG_LEVELS.DEBUG;
-    this.DATA_TRANSFER_TYPES = {
-        CHAT: 1,
-        CALL_ME_BACK: 2,
-        USERNAME_SET: 3,
-        GET_USERNAME: 4
-    };
+
     this.DEFAULT = {
         MEDIA: {
             AUDIO: true,
-            VIDEO: true
+            VIDEO: true,
+            VOLUME: 30
+        },
+        CHAT: {
+            FADE: 150,
+            TYPING_TIMER: 400,
         }
-    };
-
-    this.peer = undefined;
-    this.username = undefined;
-    this.localStream = undefined;
-    this.audio = false;
-    this.video = false;
-    this.peers = {};
-    this.streams = {};
-
-    this.init = function() {
-        this.__log('Start initialization');
-        this.peer = new Peer(room_id + '_' + this.__makeID(), {
-            host: SIGNALING_SERVER.HOST,
-            port: SIGNALING_SERVER.PORT,
-            path: SIGNALING_SERVER.PATH,
-            config: {
-                iceServers: [
-                    { url: 'stun:stun.l.google.com:19302' },
-                    { url: 'turn:185.65.245.105:3478', credential: '1234', username: 'test'}
-                ]
-            }
-        });
-
-        this.peer.on('error', this.errorHandler(this));
-        this.peer.on('open', (function(self) {
-            return function(id, data) {
-                self.__log('Connection is established.');
-                if (data.room.length == 1) {
-                    self.connectedToRoom();
-                    return;
-                }
-
-                for (var i in data.room) {
-                    var peer_id = data.room[i];
-                    if (peer_id == id) {
-                        continue;
-                    }
-
-                    self.__debug('Connecting to ' + peer_id);
-                    self.peers[peer_id] = self.peer.connect(peer_id);
-
-                    self.peers[peer_id].on('open', (function(peer_id) {
-                        return function() {
-                            self.__debug('Connection to ' + peer_id + ' is established.');
-                            self.tellMeYourUsername(peer_id);
-                            connected = true;
-                            for (var i in data.room) {
-                                var pid = data.room[i];
-                                connected &= id == pid || (self.peers[pid] && self.peers[pid].open);
-                            }
-
-                            if (connected) {
-                                self.connectedToRoom();
-                            }
-                        }
-                    })(peer_id));
-                    self.peers[peer_id].on('data', self.dataHandler(self, peer_id));
-                    self.peers[peer_id].on('close', self.connectionClosed(self, peer_id));
-                }
-            }
-        })(this));
-        this.peer.on('connection', this.connectionHandler(this));
-        this.peer.on('call', this.callHandler(this));
     }
 
-    this.connectedToRoom = function() {
-        this.call();
+    this.ICE_SERVERS = [
+        {
+          'url': 'stun:stun.l.google.com:19302'
+        },
+        {
+          'url': 'turn:185.65.245.105:3478',
+          'username': 'test',
+          'credential': '1234'
+        }
+    ]   
+
+    this.webRTCSupport = true;
+
+    this.socketConnectedCallback = function(self) {
+        return function() {
+            console.log('Socket connected.');
+        }
     }
 
-    this.updateLocalMedia = function(data, callback) {
-        if (this.localStream) {
+    this.socketError = function(self) {
+        return function(data) {
+            console.log(data.msg);
+        }
+    }
 
-            var audioTrack = this.localStream.getAudioTracks()[0],
-                videoTrack = this.localStream.getVideoTracks()[0];
+    this.socketDisconnectedCallback = function(self) {
+        return function() {
+           console.log('Socket disconnected.');
 
-            if (audioTrack && videoTrack) {
-                audioTrack.enabled = data.audio;
-                videoTrack.enabled = data.video;
+            for (socket_id in self.peers) {
+                self.peers[socket_id].close();
+                delete self.peers[socket_id];
+            } 
+        }
+    }
 
-                this.audio = data.audio;
-                this.video = data.video;
+    this.socketLoginCallback = function(self) {
+        return function(data) {
+            self.connected = true;
+        }
+    }
 
-                callback(this);
+    this.userJoinedCallback = function(self) {
+        return function(data) {
+            self.socket.id = data.socket_id;
+            console.log('JOINED', data);
+        }
+    }
+
+    this.userLeftCallback = function(self) {
+        return function(data) {}
+    }
+
+    this.chatUpdateCallback = function(self) {
+        return function(data) {
+            self.chatMessageCallback(data);
+        }
+    }
+
+    this.typingCallback = function(self) {
+        return function(data) {}
+    }
+
+    this.typingStopCallback = function(self) {
+        return function(data) {}
+    }
+
+    this.peerAddCallback = function(self) {
+        return function(data) {
+            console.log('Signaling server said to add peer:', data);
+
+            var socketID = data.socket_id;
+            if (socketID in self.peers) {
+                console.log('Already connected to peer ', socketID);
                 return;
             }
-        }
 
-        if (!data.audio && !data.video) {
-            self.audio = false;
-            self.video = false;
-            callback(this);
-            return;
-        }
+            var peerConnection = new navigator.RTCPeerConnection(                
+                {iceServers: self.ICE_SERVERS},
+                {optional: [{DtlsSrtpKeyAgreement: true}]}
+            );
 
-        navigator.getUserMedia(data, (function(self) {
-            return function(stream) {
-                self.localStream = stream;
-                self.audio = self.localStream.getAudioTracks().length == 1;
-                self.video = self.localStream.getVideoTracks().length == 1;
+            self.peers[socketID] = peerConnection;
 
-                callback(self);
+            if (self.socket.id != socketID) {
+                self.updateRemoteStreamCallback(event.stream, socketID);
             }
-        })(this), (function(self) {
-            return function(error) {
-                if (data.video) {
-                    self.updateLocalMedia({audio: data.audio, video: false}, callback);
-                } else if (data.audio) {
-                    self.updateLocalMedia({audio: false, video: data.video}, callback);
-                } else {
-                    callback(self);
-                }
+
+            peerConnection.onicecandidate = self.__onICECandidate(self, socketID);
+            peerConnection.onaddstream = self.__onAddStream(self, socketID);
+
+            if (self.localMedia) {
+                peerConnection.addStream(self.localMedia);
             }
-        })(this));
+
+            if (data.create_offer) {
+                self.__createOffer(socketID, data.audio, data.video);
+            }
+        }    
     }
 
-    this.errorHandler = function(self) {
-        return function(error) {
-            switch(error.code) {
-                case self.ERROR.FULL_ROOM:
-                    self.roomFullCallback();
-                    break;
-                default:
-                    alert(error);
-            }
-        }
-    }
-
-    this.connectionHandler = function(self) {
-        return function (conn) {
-            self.__log('Connection to ' + conn.peer + ' is established.');
-            self.peers[conn.peer] = conn;
-
-            self.peers[conn.peer].on('data', self.dataHandler(self, conn.peer));
-            self.peers[conn.peer].on('close', self.connectionClosed(self, conn.peer));
-        }
-    }
-
-    this.dataHandler = function(self, peer_id) {
+    this.sessionDescriptionCallback = function(self) {
         return function(data) {
-            if (data.type == self.DATA_TRANSFER_TYPES.CHAT) {
-                self.chatMessageCallback({
-                    message: data.payload.message,
-                    username: self.peers[data.payload.peer].username
-                });
-            } else if (data.type == self.DATA_TRANSFER_TYPES.CALL_ME_BACK && self.localStream) {
-                self.streams[peer_id] = self.peer.call(peer_id, self.localStream);
-            } else if (data.type == self.DATA_TRANSFER_TYPES.USERNAME_SET) {
-                self.peers[peer_id].username = data.payload.username;
-            } else if (data.type == self.DATA_TRANSFER_TYPES.GET_USERNAME) {
-                self.sendUsernameTo(peer_id);
+            console.log('Remote description received: ', data);
+            var socketID = data.socket_id;
+            var remoteDescription = data.session_description;
+            console.log(remoteDescription);
+
+            var desc = new navigator.RTCSessionDescription(remoteDescription);
+            self.peers[socketID].setRemoteDescription(desc,
+                (function(self, socketID, remoteDescription) {
+                    return function() {
+                        console.log('setRemoteDescription succeeded');
+                        if (remoteDescription.type == "offer") {
+                            console.log("Creating answer");
+                            self.peers[socketID].createAnswer(function(localDescription) {
+                                console.log('Answer description is: ', localDescription);
+                                self.peers[socketID].setLocalDescription(localDescription,
+                                    function() { 
+                                        self.socket.emit('session_description-relay', 
+                                            {'socket_id': socketID, 'session_description': localDescription});
+                                        console.log('Answer setLocalDescription succeeded');
+                                    },
+                                    function() { console.log('Answer setLocalDescription failed!'); }
+                                );
+                            },
+                            function(error) {
+                                console.log('Error creating answer: ', error);
+                                console.log(peer);
+                            });
+                        }
+                }
+                })(self, socketID, remoteDescription),
+                function(error) {
+                    console.log('setRemoteDescription error: ', error);
+                }
+            );
+            console.log('Description Object: ', desc);
+        } 
+    }
+
+    this.ICECandidateCallback = function(self) {
+        return function(data) {
+            var iceCandidate = data.ice_candidate;
+            self.peers[data.socket_id].addIceCandidate(new navigator.RTCIceCandidate(iceCandidate));
+        }
+    }
+
+    this.peerRemovedCallback = function(self) {
+        return function(data) {
+            console.log('Signaling server said to remove peer:', data);
+            var socketID = data.socket_id;
+            self.connectionClosedCallback(socketID);
+            if (socketID in self.peers) {
+                self.peers[socketID].close();
+                delete self.peers[socketID];
             }
         }
     }
 
-    this.callHandler = function(self) {
-        return function(call) {
-            call.answer(self.localStream);
-            call.on('stream', self.remoteStreamHandler(self, call.peer));
-        }
-    }
+    this.init = function() {
+        this.__pre_config();
 
-    this.remoteStreamHandler = function(self, peer_id) {
-        return function(stream) {
-            self.updateRemoteStreamCallback(stream, peer_id);
-        }
-    }
-
-    this.connectionClosed = function(self, peer_id) {
-        return function() {
-            self.__log('Connection to ' + peer_id + ' was closed.');
-            delete self.peers[peer_id];
-
-            self.connectionClosedCallback(peer_id);
-        }
-    }
-
-    this.sendChatMessage = function(msg) {
-        if (!this.username) {
+        if (!this.webRTCSupport) {
             return;
         }
 
-        var payload = {
-            message: msg,
-            peer: this.peer.id
-        };
-        for (var i in this.peers) {
-            this.__debug('Sending message: "' + msg + '" to ' + this.peers[i].peer);
-            this.peers[i].send({
-                type: this.DATA_TRANSFER_TYPES.CHAT,
-                payload: payload
-            });
-        }
+        this.updateLocalStreamCallback(null, false, false);
+
+        this.socket = io.connect(this.host + ':' + this.port);
+
+        this.socket.emit('initialize', self.roomID);
         
-        this.chatMessageCallback({
-            message: msg,
-            username: this.username
-        });
-    }
+        this.socket.on('connect', this.socketConnectedCallback(this));
+        this.socket.on('error', this.socketError(this));
+        this.socket.on('disconnect', this.socketDisconnectedCallback(this));
+        this.socket.on('login', this.socketLoginCallback(this));
 
-    this.call = function(audio, video) {
-        audio = audio == undefined ? this.DEFAULT.MEDIA.AUDIO : audio;
-        video = video == undefined ? this.DEFAULT.MEDIA.VIDEO : video;
+        this.socket.on('user-joined', this.userJoinedCallback(this));
+        this.socket.on('user-left', this.userLeftCallback(this));
 
-        this.updateLocalMedia({audio: audio, video: video}, function(self) {
-            self.updateLocalStreamCallback(self.localStream, self.audio, self.video);
+        this.socket.on('chat-update', this.chatUpdateCallback(this));
 
-            for (var peer_id in self.peers) {
-                var peer = self.peers[peer_id];
+        this.socket.on('typing', this.typingCallback(this));
+        this.socket.on('typing-stop', this.typingStopCallback(this));
 
-                if (self.streams[peer_id]) {
-                    continue;
-                }
+        this.socket.on('peer-add', this.peerAddCallback(this));
+        this.socket.on('peer-remove', this.peerRemovedCallback(this));
 
-                if (self.localStream) {
-                    self.streams[peer_id] = self.peer.call(peer_id, self.localStream);
-                    self.streams[peer_id].on('stream', self.remoteStreamHandler(self, peer_id));
-                } else {
-                    self.peers[peer_id].send({
-                        type: self.DATA_TRANSFER_TYPES.CALL_ME_BACK
-                    })
-                }
-            }
-        });
+        this.socket.on('session_description', this.sessionDescriptionCallback(this));
+
+        this.socket.on('ice_candidate', this.ICECandidateCallback(this));
+
     }
 
     this.setUsername = function(username) {
-        this.username = username;
-        for (var peer_id in this.peers) {
-            this.sendUsernameTo(peer_id);
+        this.socket.emit('chat-join', {username: username})
+    }
+
+    this.sendChatMessage = function(message) {
+        if (message && this.connected) {
+            this.socket.emit('chat-send', message);
         }
     }
 
-    this.sendUsernameTo = function(peer_id) {
-        if (peer_id && this.username) {
-            this.peers[peer_id].send({
-                type: this.DATA_TRANSFER_TYPES.USERNAME_SET,
-                payload: {
-                    username: this.username
+    this.toggleLocalStream = function(audio, video) {
+        this.setupLocalMedia((function(self) {
+            return function(reconnect) {
+                if (!reconnect) return;
+
+                for (socketID in self.peers) {
+                    if (self.streams[socketID]) self.peers[socketID].removeStream(self.localMedia);
+                    self.peers[socketID].addStream(self.localMedia);
+                    self.__createOffer(socketID);
+                } 
+            }
+        })(this), audio, video);
+
+        this.updateLocalStreamCallback(self.localMedia, self.audio, self.video);
+    }
+
+    this.setupLocalMedia = function(callback, audio, video) {
+        if (this.localMedia) {
+            var audioAvailable = this.localMedia.getAudioTracks().length != 0;
+            var videoAvailable = this.localMedia.getVideoTracks().length != 0;
+
+            if (audioAvailable) {
+                this.localMedia.getAudioTracks()[0].enabled = audio;
+                this.audio = audio;
+            }
+
+            if (videoAvailable) {
+                this.localMedia.getVideoTracks()[0].enabled = video;
+                this.video = video;
+            }
+
+            callback(false);
+        }
+
+        if (!audio && !video) {
+            callback(false);
+            return;
+        }
+
+        navigator.getUserMedia({'audio': audio, 'video': video},
+            (function(self) {
+                return function(stream) {
+                    console.log("Access granted to audio/video");
+                    self.localMedia = stream;
+                    self.audio = self.localMedia.getAudioTracks().length != 0;
+                    self.video = self.localMedia.getVideoTracks().length != 0;
+
+                    self.updateLocalStreamCallback(self.localMedia, self.audio, self.video);
+                    callback(true);
+                }
+            })(this),
+            function() {
+                if (audio) {
+                    self.setupLocalMedia(callback, false, video);   
+                } else if (video) {
+                    self.setupLocalMedia(callback, audio, false);
+                } else {
+                    console.log("Access denied for audio/video");
+                    callback(true);
                 }
             });
+    }
+
+    this.__createOffer = function(socketID, audio, video) {
+        console.log('Creating RTC offer to ', socketID);
+
+        this.peers[socketID].createOffer(
+            (function(self, socketID) {
+                return function (localDescription) { 
+                    console.log('Local offer description is: ', localDescription);
+                    self.peers[socketID].setLocalDescription(localDescription,
+                        function() { 
+                            self.socket.emit('session_description-relay', 
+                                {'socket_id': socketID, 'session_description': localDescription});
+
+                            console.log('Offer setLocalDescription succeeded'); 
+                        },
+                        function() { console.log('Offer setLocalDescription failed!'); }
+                    );
+                }
+            })(this, socketID),
+            (function(self, socketID) {
+                return function (error) {
+                    console.log('Error sending offer: ', error);
+                }
+            })(this, socketID), 
+            {
+                'optional': [],
+                'mandatory': {
+                    'OfferToReceiveAudio': audio,
+                    'OfferToReceiveVideo': video
+                }
+            }
+        );
+    }
+
+    this.__onICECandidate = function(self, socketID) {
+        return function(event) {
+            if (event.candidate) {
+                self.socket.emit('ice_candidate-relay', {
+                    'socket_id': socketID, 
+                    'ice_candidate': {
+                        'sdpMLineIndex': event.candidate.sdpMLineIndex,
+                        'candidate': event.candidate.candidate
+                    }
+                });
+            }
         }
     }
 
-    this.tellMeYourUsername = function(peer_id) {
-        if (peer_id) {
-            this.peers[peer_id].send({
-                type: this.DATA_TRANSFER_TYPES.GET_USERNAME
-            })
+    this.__onAddStream = function(self, socketID) {
+        return function(event) {
+            self.streams[socketID] = event.stream;
+            self.updateRemoteStreamCallback(event.stream, socketID);
         }
     }
 
@@ -303,12 +385,42 @@ function PeerHandler(room_id, host, port, path) {
         this.__log(msg, this.LOG_LEVELS.DEBUG);
     }
 
+    this.__pre_config = function() {
+        if (navigator.mozGetUserMedia) {
+          navigator.RTCPeerConnection = mozRTCPeerConnection;
+          navigator.RTCSessionDescription = mozRTCSessionDescription;
+          navigator.RTCIceCandidate = mozRTCIceCandidate;
+          navigator.getUserMedia = navigator.mozGetUserMedia.bind(navigator);
+          navigator.attachMediaStream = function(element, stream) {
+            console.log("Attaching media stream");
+            element.mozSrcObject = stream;
+            element.play();
+          };
+        } else if (navigator.webkitGetUserMedia) {
+          navigator.RTCPeerConnection = webkitRTCPeerConnection;
+          navigator.RTCSessionDescription = RTCSessionDescription;
+          navigator.RTCIceCandidate = RTCIceCandidate;
+          navigator.getUserMedia = navigator.webkitGetUserMedia.bind(navigator);
+          navigator.attachMediaStream = function(element, stream) {
+            element.src = webkitURL.createObjectURL(stream);
+          };
 
-    this.__trigger_event = function(event_name, data) {
-        var event = new CustomEvent(event_name, {data: data});
-        this.dispatchEvent(event);
+          if (!webkitMediaStream.prototype.getVideoTracks) {
+              webkitMediaStream.prototype.getVideoTracks = function() {
+              return this.videoTracks;
+            } 
+          } 
+          
+          if (!webkitMediaStream.prototype.getAudioTracks) {
+              webkitMediaStream.prototype.getAudioTracks = function() {
+              return this.audioTracks;
+            }
+          } 
+        } else {
+          this.webRTCSupport = false;
+          this.webRTCNotSupportedCallback();
+        }
     }
-
 
     this.roomFullCallback = function() {};
     this.webRTCNotSupportedCallback = function() {};
