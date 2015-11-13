@@ -16,6 +16,7 @@ urlpatterns = basepatterns + patterns('',
     url(r'^feedback/', include('views.feedback.urls', 'feedback')),
     url(r'^search/', include('views.search.urls', 'search')),
     url(r'^discover/', include('views.discover.urls', 'discover')),
+    url(r'^prerelease/', include('views.prerelease.urls', 'prerelease')),
 )
 
 if getattr(settings, 'DJANGO_DEV_SERVER', False):
