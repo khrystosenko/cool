@@ -45,6 +45,7 @@ main {
 }
 
 .tabs .indicator {
+	width: 49%;
 	background-color: #D14D23;
 }
 
@@ -62,7 +63,7 @@ main {
 	width: 5%;
 }
 #chat {
-	height: 100vh;
+	height: 100%;
 	width: 25%;
 	display: inline-block;
 	background-color: #212121;
@@ -123,7 +124,7 @@ object{
     /*padding-bottom: 56.25%;
     padding-top: 35px;
     height: 0;*/
-    height: 93%;
+    height: 90%;
     overflow: hidden;
 }
 .chat-container iframe {
