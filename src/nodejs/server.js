@@ -33,11 +33,11 @@
         sockets[socket.id] = socket;
 
         socket.join(socket.room_uuid);
-      
+
         rooms[room_uuid].push(socket.id);
         socket.emit('user-joined', {numUsers: rooms[socket.room_uuid].length, socket_id: socket.id});
         socket.broadcast.to(socket.room_uuid).emit('chat-update', {username: 'SERVER', message: 'New user has connected to this room.'});
-      
+
         for (var i in rooms[room_uuid]) {
           socket_id = rooms[room_uuid][i];
           sockets[socket_id].emit('peer-add', {socket_id: socket.id, create_offer: false});
@@ -99,7 +99,9 @@
         var index = rooms[socket.room_uuid].indexOf(socket.id);
         rooms[socket.room_uuid] = rooms[socket.room_uuid].slice(0, index).concat(rooms[socket.room_uuid].slice(index + 1));
 
-        socket.broadcast.to(socket.room_uuid).emit('chat-update', {username: 'SERVER', message: socket.username + ' left.'});
+        if (socket.username) {
+          socket.broadcast.to(socket.room_uuid).emit('chat-update', {username: 'SERVER', message: socket.username + ' left.'});
+        }
         socket.broadcast.to(socket.room_uuid).emit('user-left', {username: socket.username, numUsers: rooms[socket.room_uuid].length});
 
         for (var i in rooms[socket.room_uuid]) {

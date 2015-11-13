@@ -1,9 +1,33 @@
 var handler;
+var COLORS = [
+    '#e21400', '#91580f', '#f8a700', '#f78b00',
+    '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
+    '#3b88eb', '#3824ee', '#a700ff', '#d300e7'
+];
+
+function getUsernameColor(username) {
+    // Compute hash code
+    var hash = 7;
+    for (var i = 0; i < username.length; i++) {
+        hash = username.charCodeAt(i) + (hash << 5) - hash;
+    }
+    // Calculate color
+    var index = Math.abs(hash % COLORS.length);
+    return COLORS[index];
+}
+
 $(document).ready(function() {
     handler = new NetworkHandler(ROOM_UUID, SIGNALING_SERVER.HOST, SIGNALING_SERVER.PORT);
 
     handler.chatMessageCallback = function(data) {
-        $('#chat_content').append('<p>' + data.username + ' said: ' + data.message + '</p>');
+        var message = $('<span>');
+        message.append('<span class="chat-username" style="color: ' + getUsernameColor(data.username) + '">' + data.username + ':</span>');
+        message.append('<span class="chat-message">' + data.message + '</span>');
+        message.append('<br />');
+
+        $('#chat_content').append(message);
+
+        $('#chat_content').scrollTop($('#chat_content')[0].scrollHeight);
     }
 
     handler.roomFullCallback = function() {
@@ -67,7 +91,7 @@ $(document).ready(function() {
 
             wrapper.append(mediaTag);
         } else {
-            mediaTag = $('#' + streamID + ' video');        
+            mediaTag = $('#' + streamID + ' video');
         }
 
 
@@ -81,6 +105,20 @@ $(document).ready(function() {
     handler.connectionClosedCallback = function(peer_id) {
         $('#stream_' + peer_id).remove();
     }
+
+    $('#username_input input').keypress(function(e) {
+        if(e.which == 13) {
+            e.preventDefault();
+            $('#username_input .submit').click();
+        }
+    });
+
+    $('#message_input input').keypress(function(e) {
+        if(e.which == 13) {
+            e.preventDefault();
+            $('#message_input .submit').click();
+        }
+    });
 
     $('#username_input .submit').click(function() {
         var username = $('#username_input input').val().trim();
@@ -105,8 +143,8 @@ $(document).ready(function() {
         handler.sendChatMessage(msg);
     });
 
-    
+
     handler.init();
 });
 
-    
+
