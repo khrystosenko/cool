@@ -82,7 +82,7 @@ $(document).ready(function() {
                 id: 'stream_' + peer_id,
                 class: 'stream'
             });
-            $('#roommates_content').append(wrapper);
+            $('#room_control').append(wrapper);
 
             mediaTag = $('<video width="60" height="60">');
             mediaTag.attr('id', peer_id);
