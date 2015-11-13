@@ -124,16 +124,16 @@ function addStreamsCallback(streams, loadMore) {
                 success: function(data) {
                     console.log(data);
                     if (data.error) {
-                        
+
                     } else {
-                        window.location.href = '/room/' + data.name; 
+                        window.location.href = '/room/' + data.name;
                     }
                 }, error: function() {
-                    
+
                 }
             });
         });
-        
+
         card.append(image);
 
         image.append('<a href="#"><img src="' + stream.preview + '"/></a>');
@@ -185,23 +185,14 @@ $(document).ready(function() {
             $('#load_more').click();
         }
     });
+
+    $('#srch').keypress(function(e) {
+        if(e.which == 13) {
+            e.preventDefault();
+            $('#stream_search label').click();
+        }
+    });
 });
 
 
- //  $('input').keypress(function(e) {
- //        if(e.which == 13) {
- //            $(this).blur();
- //            $('#srch').focus().click();
- //        }
- //    });
 
- $(document).ready(function() {
-    $('input').blur(function(){
-        $("#icon_status").html("search");
-    })
-    .focus(function() {
-        $("#icon_status").html("close");
-      });
-  });
-
- 

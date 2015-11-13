@@ -30,6 +30,10 @@ input[type=search]:focus:not([readonly])+label{
 	transform: translateY(11px);
 }
 
+#stream_search label{
+	cursor: pointer;
+}
+
 #game_filter.tabs{
 	background-color: inherit;
 	height: 60px;
