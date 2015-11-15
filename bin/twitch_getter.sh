@@ -1,4 +1,4 @@
 #!/bin/sh
-export PYTHONPATH=$PYTHONPATH:/home/vovaminof/roomit/src/python/:/home/vovaminof/roomit/www/
+export PYTHONPATH=$PYTHONPATH:/var/www/cool/src/python/:/var/www/cool/www/
 export DJANGO_SETTINGS_MODULE=settings
-python -W ignore /home/vovaminof/roomit/src/python/roomit/bin/twitch_getter.py
+python -W ignore /var/www/cool/src/python/roomit/bin/twitch_getter.py
