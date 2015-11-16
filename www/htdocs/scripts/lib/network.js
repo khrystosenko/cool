@@ -262,25 +262,25 @@ function NetworkHandler(roomID, host, port) {
         })(this), audio, video);
 
 
-        this.updateLocalStreamCallback(self.localMedia, self.audio, self.video);
+        this.updateLocalStreamCallback(this.localMedia, this.audio, this.video);
     }
 
     this.setupLocalMedia = function(callback, audio, video) {
         if (this.localMedia) {
-            var audioAvailable = this.localMedia.getAudioTracks().length != 0;
-            var videoAvailable = this.localMedia.getVideoTracks().length != 0;
-
-            if (audioAvailable) {
-                this.localMedia.getAudioTracks()[0].enabled = audio;
+            if (this.audioTry) {
                 this.audio = audio;
+                this.localMedia.getAudioTracks()[0].enabled = audio;
             }
 
-            if (videoAvailable) {
-                this.localMedia.getVideoTracks()[0].enabled = video;
+            if (this.videoTry) {
                 this.video = video;
+                this.localMedia.getVideoTracks()[0].enabled = video;
             }
 
-            callback(false);
+            if ((!video || this.videoTry) && (!audio || this.audioTry)) {
+                callback(false);
+                return;
+            }
         }
 
         if (!audio && !video) {
@@ -288,13 +288,25 @@ function NetworkHandler(roomID, host, port) {
             return;
         }
 
-        navigator.getUserMedia({'audio': audio, 'video': video},
+        navigator.getUserMedia({'audio': audio || this.audioTry, 'video': video || this.videoTry},
             (function(self) {
                 return function(stream) {
                     console.log("Access granted to audio/video");
                     self.localMedia = stream;
-                    self.audio = self.localMedia.getAudioTracks().length != 0;
-                    self.video = self.localMedia.getVideoTracks().length != 0;
+
+                    if (self.localMedia.getAudioTracks().length) {
+                        self.audio = audio;
+                        self.audioTry = true;
+
+                        self.localMedia.getAudioTracks()[0].enabled = audio;
+                    }
+
+                    if (self.localMedia.getVideoTracks().length) {
+                        self.video = video;
+                        self.videoTry = true;
+
+                        self.localMedia.getVideoTracks()[0].enabled = video;
+                    }
 
                     self.updateLocalStreamCallback(self.localMedia, self.audio, self.video);
                     callback(true);
