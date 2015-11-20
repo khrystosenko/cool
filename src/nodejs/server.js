@@ -8,6 +8,7 @@
 
   function setUpServer() {
     var rooms = {},
+        history = {},
         sockets = {};
     var io = require('socket.io').listen(ROOMIT.config.port);
     console.log('Server is running...');
@@ -19,6 +20,7 @@
         console.log('User ' + socket.id + ' is added.');
         socket.room_uuid = room_uuid;
         rooms[room_uuid] = rooms[room_uuid] || [];
+        history[room_uuid] = history[room_uuid] || {emptyChat: true};
 
         if (rooms[room_uuid].indexOf(socket.id) != -1) {
           console.log('[' + socket.id + '] ERROR: already joined.');
@@ -35,8 +37,7 @@
         socket.join(socket.room_uuid);
 
         rooms[room_uuid].push(socket.id);
-        socket.emit('user-joined', {numUsers: rooms[socket.room_uuid].length, socket_id: socket.id});
-        socket.broadcast.to(socket.room_uuid).emit('chat-update', {username: 'SERVER', message: 'New user has connected to this room.'});
+        socket.emit('user-joined', {numUsers: rooms[socket.room_uuid].length, socket_id: socket.id, empty: history[room_uuid].emptyChat});
 
         for (var i in rooms[room_uuid]) {
           socket_id = rooms[room_uuid][i];
@@ -57,6 +58,7 @@
       });
 
       socket.on('chat-send', function (data) {
+        history[socket.room_uuid].emptyChat = false;
         io.sockets.in(socket.room_uuid).emit('chat-update', {username: socket.username, message: data});
       });
 
@@ -112,6 +114,10 @@
 
         if (socket.id in sockets) {
           delete sockets[socket.id];
+        }
+
+        if (rooms[socket.room_uuid].length == 0) {
+          history[socket.room_uuid].emptyChat = true;
         }
       });
 

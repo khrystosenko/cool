@@ -6,6 +6,7 @@ function NetworkHandler(roomID, host, port) {
     this.socket = null;
     this.localMedia = null;
     this.connected = false;
+    this.emptyChat = true;
 
     this.audio = false;
     this.video = false;
@@ -87,7 +88,8 @@ function NetworkHandler(roomID, host, port) {
     this.userJoinedCallback = function(self) {
         return function(data) {
             self.socket.id = data.socket_id;
-            console.log('JOINED', data);
+            self.emptyChat = data.empty;
+            self.userInitializedCallback();
         }
     }
 
@@ -97,6 +99,7 @@ function NetworkHandler(roomID, host, port) {
 
     this.chatUpdateCallback = function(self) {
         return function(data) {
+            self.emptyChat = false;
             self.chatMessageCallback(data);
         }
     }
@@ -440,6 +443,8 @@ function NetworkHandler(roomID, host, port) {
 
     this.roomFullCallback = function() {};
     this.webRTCNotSupportedCallback = function() {};
+
+    this.userInitializedCallback = function() {};
 
     this.chatMessageCallback = function(data) {};
     this.updateLocalStreamCallback = function(stream, audio, video) {};
