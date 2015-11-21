@@ -15,12 +15,19 @@ function getUsernameColor(username) {
     return COLORS[index];
 }
 
+function updateParticipantMessage() {
+    var msg = (handler.participants > 1 ? handler.participants - 1 : 'NO');
+    msg += handler.participants - 1 == 1 ? ' ROOMMATE' : ' ROOMMATES';
+    $('#roommates').text(msg);
+}
+
 $(document).ready(function() {
     $('#chat_content').perfectScrollbar();
     
     handler = new NetworkHandler(ROOM_UUID, SIGNALING_SERVER.HOST, SIGNALING_SERVER.PORT);
 
     handler.chatMessageCallback = function(data) {
+        $('.img_nochat').hide();
         var message = $('<span>');
         message.append('<span class="chat-username" style="color: ' + getUsernameColor(data.username) + '">' + data.username + ':</span>');
         message.append('<span class="chat-message">' + data.message + '</span>');
@@ -38,6 +45,21 @@ $(document).ready(function() {
 
     handler.webRTCNotSupportedCallback = function() {
         alert('WebRTC is not supported by your browser.')
+    }
+
+    handler.userInitializedCallback = function() {
+        if (handler.emptyChat) {
+            $('.img_nochat').show();
+        }        
+        updateParticipantMessage();
+    };
+
+    handler.participantLeftCallback = function() {
+        updateParticipantMessage();
+    };
+
+    handler.participantAddCallback = function() {
+        updateParticipantMessage();
     }
 
     handler.updateLocalStreamCallback = function(stream, audio, video) {

@@ -7,6 +7,7 @@ function NetworkHandler(roomID, host, port) {
     this.localMedia = null;
     this.connected = false;
     this.emptyChat = true;
+    this.participants = 0;
 
     this.audio = false;
     this.video = false;
@@ -70,7 +71,7 @@ function NetworkHandler(roomID, host, port) {
 
     this.socketDisconnectedCallback = function(self) {
         return function() {
-           console.log('Socket disconnected.');
+            console.log('Socket disconnected.');
 
             for (socket_id in self.peers) {
                 self.peers[socket_id].close();
@@ -89,12 +90,16 @@ function NetworkHandler(roomID, host, port) {
         return function(data) {
             self.socket.id = data.socket_id;
             self.emptyChat = data.empty;
+            self.participants = data.numUsers;
             self.userInitializedCallback();
         }
     }
 
     this.userLeftCallback = function(self) {
-        return function(data) {}
+        return function(data) {
+            self.participants = data.numUsers;
+            self.participantLeftCallback();
+        }
     }
 
     this.chatUpdateCallback = function(self) {
@@ -121,6 +126,9 @@ function NetworkHandler(roomID, host, port) {
                 console.log('Already connected to peer ', socketID);
                 return;
             }
+
+            self.participants = data.numUsers;
+            self.participantAddCallback();
 
             var peerConnection = new navigator.RTCPeerConnection(
                 {iceServers: self.ICE_SERVERS},
@@ -445,6 +453,9 @@ function NetworkHandler(roomID, host, port) {
     this.webRTCNotSupportedCallback = function() {};
 
     this.userInitializedCallback = function() {};
+
+    this.participantLeftCallback = function() {};
+    this.participantAddCallback = function() {};
 
     this.chatMessageCallback = function(data) {};
     this.updateLocalStreamCallback = function(stream, audio, video) {};
