@@ -368,8 +368,8 @@ function NetworkHandler(roomID, host, port) {
             {
                 'optional': [],
                 'mandatory': {
-                    'OfferToReceiveAudio': audio,
-                    'OfferToReceiveVideo': video
+                    'OfferToReceiveAudio': true,
+                    'OfferToReceiveVideo': true
                 }
             }
         );
