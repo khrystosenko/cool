@@ -17,38 +17,43 @@
 {% endblock %}
 
 {% block content %}
-<div id="twitch_frame">
-         {{ get_service_frame(service, channel) }}
-         <div id="room_control">
-         <div id="local_stream" class="stream local_stream">
-             <div class="poss"><video autoplay="" mix-width="10px" min-height="10px" muted="muted"></video>
-             <div id="local_stream_controls"></div></div>
+<div class="main_container row">
+    <div class="video_area col s9 pull-s3">
+        <div class="twitch" id="twitch_frame">
+             {{ get_service_frame(service, channel) }}
         </div>
-        <!-- <div id="room_control">
-            
-            <div id="roommates_content">
-                <div id="local_stream" class="stream local_stream">
-                    <video autoplay="" width="50" height="50" muted="muted">
-                    </video>
-
-                    <div id="local_stream_controls"></div>
-
-                <div class="controls"><a class="active">ROOMMATES</a></div>
-                </div>
+        <div class="controls">
+        <div class="info_video" id="room_control">
+                <span class="poss">
+                    <div id="local_stream">
+                        <video autoplay="" muted="muted"></video>
+                        <div id="local_stream_controls"></div>
+                    </div>
+                <span>
             </div>
- </div> -->
- </div>
- </div>
-</div>
-    <div id="chat" class="right">
-            <div class="col s12 controls">
+            <div class="controls_info">
+            <div class="col s6">
+                <ul class="tabs">
+                    <li class="tab col s2 disabled"><a href="#info_stream">INFO</a></li>
+                    <li class="tab col s2"><a class="active"  href="#room_control" id="roommates"></a></li>
+                    <li class="tab col s2 disabled"><a href="#info_settings">SETTINGS</a></li>
+              </ul>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="room_chat col s3 push-s9" id="chat">
+    <span id="chat_toggle"></span>
+        <div class="controls col s12">
               <ul class="tabs">
                 <li class="tab col s6"><a class="active" href="#local_chat">ROOM</a></li>
                 <li class="tab col s6"><a href="#platform_chat">CHAT</a></li>
               </ul>
             </div>
-            <div id="local_chat" style="height: 90%;">
-                <div id="chat_content"></div>
+            <div id="local_chat">
+                <div id="chat_content">
+                <div class="img_nochat"><img src="{{ static('/img/chat_no_message.png') }}"></div>
+                </div>
                 <div id="chat_inputs">
                     <div id="username_input" style="display: block;">
                         <input placeholder="How should we call you?" type="text" />
@@ -56,7 +61,7 @@
                     </div>
                     <div id="message_input" style="display: none;">
                         <input placeholder="Your message..." type="text" />
-                        <i class="material-icons submit">send</i>
+                        <span class="material-icons submit">send</span>
                     </div>
                 </div>
             </div>
@@ -64,6 +69,6 @@
 
                 {{ get_chat_frame(service, channel) }}
             </div>
- </div>
-
+    </div>
+</div>
 {% endblock %}

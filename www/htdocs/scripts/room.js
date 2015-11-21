@@ -4,7 +4,6 @@ var COLORS = [
     '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
     '#3b88eb', '#3824ee', '#a700ff', '#d300e7'
 ];
-
 function getUsernameColor(username) {
     // Compute hash code
     var hash = 7;
@@ -17,7 +16,6 @@ function getUsernameColor(username) {
 }
 
 $(document).ready(function() {
-
     $('#chat_content').perfectScrollbar();
     
     handler = new NetworkHandler(ROOM_UUID, SIGNALING_SERVER.HOST, SIGNALING_SERVER.PORT);
@@ -33,6 +31,7 @@ $(document).ready(function() {
         $('#chat_content').scrollTop($('#chat_content')[0].scrollHeight);
     }
 
+
     handler.roomFullCallback = function() {
         alert('This room is already full');
     }
@@ -45,19 +44,23 @@ $(document).ready(function() {
         var mic, camera;
         if (audio) {
             mic = $('<span class="voice"><img src="/img/voice_off.png" alt="Turn off mic" /></span>');
+            mic.hover(function() {$( this ).append( $( '<span class="voice" style="left: 0;"><img src="/img/voice_off_hover.png" alt="Turn off mic" /></span>' ) );}, function() {$( this ).find( "span:last" ).remove();});
             mic.click(function() {handler.toggleLocalStream(false, video)});
         } else {
             mic = $('<span class="voice"><img src="/img/voice_on.png" alt="Turn on mic" /></span>')
-            mic.click(function() {handler.toggleLocalStream(true, video)});;
+            mic.hover(function() {$( this ).append( $( '<span class="voice" style="left: 0;"><img src="/img/voice_on_hover.png" alt="Turn off mic" /></span>' ) );}, function() {$( this ).find( "span:last" ).remove();});
+            mic.click(function() {handler.toggleLocalStream(true, video)});
         }
 
 
         if (video) {
             camera = $('<span class="video"><img src="/img/camera_off.png" alt="Turn off video" /></span>');
+            camera.hover(function() {$( this ).append( $( '<span class="video" style="left: 0;top: 0;"><img src="/img/camera_off_hover.png" alt="Turn off mic" /></span>' ) );}, function() {$( this ).find( "span:last" ).remove();});
             camera.click(function() {handler.toggleLocalStream(audio, false)});
         } else {
-            camera = $('<span class="video"><img src="/img/camera_on.png" alt="Turn on video"</span>')
-            camera.click(function() {handler.toggleLocalStream(audio, true)});;
+            camera = $('<span class="video"><img src="/img/camera_on.png" alt="Turn on video"</span>');
+            camera.hover(function() {$( this ).append( $( '<span class="video" style="left: 0;top: 0;"><img src="/img/camera_on_hover.png" alt="Turn off mic" /></span>' ) );}, function() {$( this ).find( "span:last" ).remove();});
+            camera.click(function() {handler.toggleLocalStream(audio, true)});
         }
 
         $('#local_stream_controls').html('');
@@ -86,12 +89,10 @@ $(document).ready(function() {
                 class: 'stream'
             });
             $('#room_control').append(wrapper);
-
             mediaTag = $('<video width="60" height="60">');
             mediaTag.attr('id', peer_id);
             mediaTag.attr('autoplay', 'autoplay');
             mediaTag.attr('poster', noCameraSrc);
-
             wrapper.append(mediaTag);
         } else {
             mediaTag = $('#' + streamID + ' video');
@@ -108,6 +109,7 @@ $(document).ready(function() {
     handler.connectionClosedCallback = function(peer_id) {
         $('#stream_' + peer_id).remove();
     }
+
 
     $('#username_input input').keypress(function(e) {
         if(e.which == 13) {

@@ -2,12 +2,12 @@ function updateHeaderHeight() {
     var windowHeight = $(window).height();
     $('#header-banner').height(windowHeight - 108);
 
-    return windowHeight
+    return windowHeight;
 }
 
 function updateHeaderColor(height) {
     var scrollPos = $(document).scrollTop();
-    if (scrollPos > height / 3) {
+    if (scrollPos > ((height / 3)-60)) {
         $('#menu nav').attr('class', 'grey darken-3');
     } else {
         $('#menu nav').attr('class', 'header-transparent');
