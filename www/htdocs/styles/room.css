@@ -166,10 +166,9 @@ main {
     width: 100%;
     padding-top: 50px;
 }
-.img_nochat{
-	display: none;
-}
 .img_nochat img{
-	width: 75%;
-	transform: translate(15%,125%);
+	position: absolute;
+	width: 70%;
+	top: 35%;
+	transform: translateX(10%);
 }
