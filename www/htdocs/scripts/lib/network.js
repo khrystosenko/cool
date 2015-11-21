@@ -267,9 +267,10 @@ function NetworkHandler(roomID, host, port) {
         this.setupLocalMedia((function(self) {
             return function(reconnect) {
                 self.socket.emit('stream-update', self.audio, self.video);
-                if (!reconnect) return;
 
                 for (socketID in self.peers) {
+                    if (self.streams[socketID] && !reconnect) continue;
+                    
                     if (self.streams[socketID]) self.peers[socketID].removeStream(self.localMedia);
                     self.peers[socketID].addStream(self.localMedia);
                     self.__createOffer(socketID, self.audio, self.video);
@@ -368,8 +369,8 @@ function NetworkHandler(roomID, host, port) {
             {
                 'optional': [],
                 'mandatory': {
-                    'OfferToReceiveAudio': true,
-                    'OfferToReceiveVideo': true
+                    'OfferToReceiveAudio': audio,
+                    'OfferToReceiveVideo': video
                 }
             }
         );
