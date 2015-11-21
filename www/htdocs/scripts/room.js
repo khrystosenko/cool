@@ -170,6 +170,8 @@ $(document).ready(function() {
         handler.sendChatMessage(msg);
     });
 
+    $(window).focus(function() { handler.notifications = false; });
+    $(window).blur(function() { handler.notifications = true; });
 
     handler.init();
 });

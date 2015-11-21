@@ -15,6 +15,8 @@ function NetworkHandler(roomID, host, port) {
     this.audioTry = false;
     this.videoTry = false;
 
+    this.notifications = true;
+
     this.peers = {};
     this.streams = {};
 
@@ -104,6 +106,9 @@ function NetworkHandler(roomID, host, port) {
 
     this.chatUpdateCallback = function(self) {
         return function(data) {
+            if (data.socket_id != self.socket.id && self.notifications && data.username != 'SERVER') {
+              ion.sound.play("button_click");
+            }
             self.emptyChat = false;
             self.chatMessageCallback(data);
         }
@@ -447,6 +452,17 @@ function NetworkHandler(roomID, host, port) {
           this.webRTCSupport = false;
           this.webRTCNotSupportedCallback();
         }
+
+        ion.sound({
+          sounds: [
+            {name: "button_click"}
+          ],
+
+          path: "/scripts/lib/sounds/",
+          preload: true,
+          multiplay: true,
+          volume: 0.1
+        });
     }
 
     this.roomFullCallback = function() {};

@@ -60,7 +60,7 @@
 
       socket.on('chat-send', function (data) {
         history[socket.room_uuid].emptyChat = false;
-        io.sockets.in(socket.room_uuid).emit('chat-update', {username: socket.username, message: data});
+        io.sockets.in(socket.room_uuid).emit('chat-update', {socket_id: socket.id, username: socket.username, message: data});
       });
 
       socket.on('typing', function () {
