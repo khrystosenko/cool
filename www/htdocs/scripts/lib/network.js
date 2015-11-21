@@ -272,7 +272,7 @@ function NetworkHandler(roomID, host, port) {
                 for (socketID in self.peers) {
                     if (self.streams[socketID]) self.peers[socketID].removeStream(self.localMedia);
                     self.peers[socketID].addStream(self.localMedia);
-                    self.__createOffer(socketID);
+                    self.__createOffer(socketID, self.audio, self.video);
                 }
             }
         })(this), audio, video);
@@ -461,7 +461,7 @@ function NetworkHandler(roomID, host, port) {
           path: "/scripts/lib/sounds/",
           preload: true,
           multiplay: true,
-          volume: 0.1
+          volume: 0.3
         });
     }
 
