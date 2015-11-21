@@ -10,7 +10,7 @@ function DiscoverHandler() {
     this.searchElement = null;
     this.gameFilterElement = null;
 
-    this.getStreams = function(loadMore) {
+    this.getStreams = function(loadMore, afterCallback) {
         data = {
             offset: this.offset,
             limit: this.limit,
@@ -25,8 +25,8 @@ function DiscoverHandler() {
             type: 'GET',
             data: data,
             url: this.searchURL,
-            success: this.__streamSuccessCallback(this, loadMore),
-            error: this.__streamErrorCallback(this)
+            success: this.__streamSuccessCallback(this, loadMore, afterCallback),
+            error: this.__streamErrorCallback(this, afterCallback)
         });
 
     }
@@ -65,7 +65,8 @@ function DiscoverHandler() {
             }
         })(this));
         this.loadMoreElement.click((function(self) {
-            return function() {
+            return function(e) {
+                e.preventDefault();
                 self.getStreams(true);
             }
         })(this));
@@ -73,7 +74,7 @@ function DiscoverHandler() {
         this.getStreams();
     }
 
-    this.__streamSuccessCallback = function(self, loadMore) {
+    this.__streamSuccessCallback = function(self, loadMore, afterCallback) {
         return function(data) {
             for (var i in data.data) {
                 data.data[i].preview = data.data[i].preview.replace(/{width}/, self.streamWidth)
@@ -83,12 +84,14 @@ function DiscoverHandler() {
 
             }
             self.addStreamsCallback(data.data, loadMore);
+            if (afterCallback) afterCallback();
         }
     }
 
-    this.__streamErrorCallback = function(self) {
+    this.__streamErrorCallback = function(self, afterCallback) {
         return function(error) {
             console.log(error);
+            if (afterCallback) afterCallback();
         }
     }
 
