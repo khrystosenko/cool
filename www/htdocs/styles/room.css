@@ -166,7 +166,7 @@ main {
     padding-top: 50px;
 }
 .img_nochat{
-	display: block;
+	display: none;
 }
 .img_nochat img{
 	width: 75%;
