@@ -139,7 +139,7 @@ function addStreamsCallback(streams, loadMore) {
 
         card.append(image);
 
-        image.append('<a href="#"><img src="' + stream.preview + '"/></a>');
+        image.append('<a href="#"><img src="' + stream.preview + '" alt="' + stream.display_name + '" title="' + stream.display_name + '"/></a>');
 
         var contentDiv = $('<div>');
         contentDiv.addClass('card-content grey-text');
@@ -153,7 +153,7 @@ function addStreamsCallback(streams, loadMore) {
         detailsLI.addClass('collection-item card-black avatar');
         detailsUL.append(detailsLI);
 
-        var streamLogo = $('<img src="' + stream.logo + '" class="circle">');
+        var streamLogo = $('<img src="' + stream.logo + '" alt="' + stream.display_name + '" title="' + stream.display_name + '" class="circle">');
         detailsLI.append(streamLogo);
 
         var streamName = $('<p class="title white-text">' + stream.display_name + '</p>');

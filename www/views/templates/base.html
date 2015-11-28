@@ -2,17 +2,17 @@
 <html>
 
 <head>
-    <title>{% block title %}Roomit.tv - new way to watch eSports together {% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
 
     <!-- Meta data -->
     <meta name="msvalidate.01" content="3B3AFB4340ADCD6F611E864027D0A3F3" />
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <meta name="author" content="roomit.tv" />
-    <meta name="description" content="Roomit.tv is the best platform for watching esports. Private rooms with text chat and voice video group calls allow You to enjoy watching streams with friends." />
+    {% block description %}{% endblock %}
     <!-- Meta data end -->
 
-    <link rel="shortcut icon" href="{{ static('img/roomit_circle.png') }}">
+    <link rel="shortcut icon" href="{{ static('img/fav.ico') }}">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="//cdn.optimizely.com/js/3756904607.js"></script>
     {% block styles %}
