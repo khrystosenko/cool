@@ -1,0 +1,19 @@
+{% from 'utils.html' import get_service_frame %}
+
+<html>
+  <head>
+    <title>{{ stream.title or 'Roomit.tv - new way to watch eSports together' }}</title>
+    <script type="text/javascript" src="{{ static('scripts/lib/jquery-2.1.4.js') }}"></script>
+    <script type="text/javascript" src="{{ static('scripts/staticad.js') }}"></script>
+    <script>
+      var PLATFORM = '{{ stream.platform }}',
+          CHANNEL = '{{ stream.channel }}';
+    </script>
+    <link type="text/css" rel="stylesheet" href="{{ static('styles/staticad.css') }}" />
+  </head>
+  <body>
+    <div class="stream">
+      {{ get_service_frame(stream.platform, stream.channel) }}
+    </div>
+  </body>
+</html>

@@ -8,25 +8,25 @@ from django.conf import settings
 
 
 def generate_room(params):
+    channel = params.get('channel', '')
+    service = params.get('service', '')    
     link = params.get('link', '')
-    if not link:
-        return utils.validation_error('link', field='link')
 
-    service = None
-    channel = None
-    for item in settings.REGEXP['link']:
-    	match = re.match(item['pattern'], link)
-    	if match:
-    		service = item['service']
-    		channel = match.group(5)
+    if not link and not (channel and service):
+        return utils.validation_error('link')
 
-    print(channel)
+    if link:
+        for item in settings.REGEXP['link']:
+            match = re.match(item['pattern'], link)
+            if match:
+                service = item['service']
+                channel = match.group(5)
 
     if not service:
-    	return {'error': 'Unknown service.', 'field': 'link'}
+        return {'error': 'Unknown service.', 'field': 'link'}
 
     if not channel:
-    	return {'error': 'Unknown channel.', 'field': 'link'}
+        return {'error': 'Unknown channel.', 'field': 'link'}
 
     name = params.get('name', '')
     if name and not utils.validate_regexp('room_name', name):

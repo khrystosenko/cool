@@ -36,7 +36,7 @@ f=false,d=document;return{use_existing_jquery:function(){return use_existing_jqu
 </head>
     <body>
         {% block header %}{% endblock %}
-        <main>{% block content %}{% endblock %}</main>
+        {% block wrapper %}<main>{% block content %}{% endblock %}</main>{% endblock %}
         {% block footer %}{% endblock %}
         {% block scripts %}
             <script type="text/javascript" src="{{ static('scripts/lib/jquery-2.1.4.js') }}"></script>
