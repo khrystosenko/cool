@@ -4,11 +4,11 @@ body {
 }
 
 .stream .insideFrame {
-  -webkit-filter: blur(2px);
-  -moz-filter: blur(2px);
-  -o-filter: blur(2px);
-  -ms-filter: blur(2px);
-  filter: blur(2px);
+  -webkit-filter: blur(1px);
+  -moz-filter: blur(1px);
+  -o-filter: blur(1px);
+  -ms-filter: blur(1px);
+  filter: blur(1px);
 
   pointer-events: none;
 }
@@ -27,9 +27,30 @@ body {
   width: 100%;
   height: 100%;
   z-index: 20000;
-  background: url('/img/stream_hover.png') 50% 50% no-repeat;
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) );
+  /*background: url('/img/stream_hover.png') 50% 50% no-repeat;*/
 }
 
 .stream:hover:before{
-  display: block;
+  display: block;  
+  /*background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) );*/
+}
+/*
+.stream{
+  content:'';
+  display: none;
+  position: absolute;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  z-index: 20000;
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) );
+}*/
+
+.creation {
+  z-index: 22000;
+  position: absolute;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
 }

@@ -3,16 +3,23 @@
 <html>
   <head>
     <title>{{ stream.title or 'Roomit.tv - new way to watch eSports together' }}</title>
+    <link rel="shortcut icon" href="{{ static('img/fav.ico') }}">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="{{ static('scripts/lib/jquery-2.1.4.js') }}"></script>
     <script type="text/javascript" src="{{ static('scripts/staticad.js') }}"></script>
     <script>
       var PLATFORM = '{{ stream.platform }}',
           CHANNEL = '{{ stream.channel }}';
     </script>
+        <link type="text/css" rel="stylesheet" href="{{ static('styles/core.css') }}" />
+        <link type="text/css" rel="stylesheet" href="{{ static('styles/lib/materialize.min.css') }}" media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="{{ static('styles/staticad.css') }}" />
+    <link type="text/css" rel="stylesheet" href="{{ static('styles/landing.css') }}" />
   </head>
   <body>
     <div class="stream">
+    <div class="center creation valign-wrapper">
+            <div class="valign"><a href="#" class="btn waves-effect waves-light deep-orange scrollable-link create-room-btn" style="margin-top:0px;">Create room</a></div></div>
       {{ get_service_frame(stream.platform, stream.channel) }}
     </div>
   </body>
