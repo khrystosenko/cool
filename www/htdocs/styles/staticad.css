@@ -21,31 +21,18 @@ body {
 
 .stream:before {
   content:'';
-  display: none;
+  display: block;
   position: absolute;
   cursor: pointer;
   width: 100%;
   height: 100%;
   z-index: 20000;
   background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) );
-  /*background: url('/img/stream_hover.png') 50% 50% no-repeat;*/
 }
 
 .stream:hover:before{
   display: block;  
-  /*background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) );*/
 }
-/*
-.stream{
-  content:'';
-  display: none;
-  position: absolute;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  z-index: 20000;
-  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) );
-}*/
 
 .creation {
   z-index: 22000;
