@@ -163,7 +163,7 @@ function addStreamsCallback(streams, loadMore) {
         var streamViews = $('<span class="views"><i class="tiny material-icons">visibility</i>' + views + '</span>');
         detailsLI.append(streamViews);
 
-        var streamPlatform = $('<span class="platform"><i class="tiny material-icons">stay_primary_landscape</i> TWITCH.TV</span>');
+        var streamPlatform = $('<span class="platform"><i class="tiny material-icons"><!--googleoff: index-->stay_primary_landscape<!--googleon: index--></i> TWITCH.TV</span>');
         detailsLI.append(streamPlatform);
 
         var streamLanguage = $('<span class="language"><i class="tiny material-icons">translate</i>' + stream.language + '</span>')
