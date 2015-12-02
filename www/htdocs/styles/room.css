@@ -132,6 +132,8 @@ main {
 	position: relative;
 	padding: 5px 20px 15px;
 	height: 100%;
+	overflow-x: hidden;
+	word-wrap: break-word;
 }
 #username_input, 
 #message_input{

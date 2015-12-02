@@ -43,7 +43,9 @@
 {% endblock %}
 
 {% block content %}
-	<div class="streams" id="streams"></div>
+    <div class="streams" id="streams"></div>
     <div class="shadow"></div>
-  <a href="#" id="load_more" class="btn waves-effect waves-light deep-orange">Load More</a>
+    <span style="position: relative">
+    <a href="#" id="load_more" class="btn waves-effect waves-light deep-orange">Load More</a>
+    <span id="spinner"><img src="{{ static('img/spinner.gif') }}" /></span>
 {% endblock %}

@@ -68,6 +68,10 @@ function DiscoverHandler() {
             return function(e) {
                 e.preventDefault();
                 self.getStreams(true);
+                $('#spinner').show();
+                $("#load_more").hide();
+                $('#spinner').delay(1000).hide(0);
+                $("#load_more").delay(1000).show(0);
             }
         })(this));
 
