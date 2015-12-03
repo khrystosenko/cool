@@ -2,19 +2,21 @@
 
 <div class="insideFrame">
 {% if service == 'twitch' %}
-	<object type="application/x-shockwave-flash" class="frame" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{ channel }}" bgcolor="#000000">
+	<!-- <object type="application/x-shockwave-flash" class="frame" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{ channel }}" bgcolor="#000000">
 	    <param name="allowFullScreen" value="true" />
 	    <param name="allowScriptAccess" value="always" />
 	    <param name="allowNetworking" value="all" />
 	    <param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" />
 	    <param name="flashvars" value="hostname=www.twitch.tv&channel={{ channel }}&auto_play=true&start_volume=25" />
-	</object>
+	</object> -->
+	<iframe class="insideFrame" src="http://player.twitch.tv/?channel={{ channel }}" frameborder="0" scrolling="no"></iframe>        
 {% endif %}
 {% if service == 'hitbox' %}
-<iframe class="frame" src="http://www.hitbox.tv/embed/{{ channel }}" frameborder="0" allowfullscreen></iframe>
+<iframe class="insideFrame" src="http://www.hitbox.tv/embed/{{ channel }}" frameborder="0" scrolling="no"></iframe>
 {% endif %}
 {% if service == 'azubu' %}
-<iframe src="http://www.azubu.tv/azubulink/embed={{ channel }}" class="frame" frameborder="0" allowfullscreen></iframe>
+<iframe class="insideFrame" src='http://embed.azubu.tv/{{ channel }}' frameborder='0' allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+<!-- <iframe src="http://www.azubu.tv/azubulink/embed={{ channel }}" class="frame" frameborder="0" allowfullscreen></iframe> -->
 {% endif %}
 {% if service == 'dailymotion' %}
 <iframe frameborder="0" class="frame" src="http://www.dailymotion.com/embed/video/{{ channel }}" allowfullscreen ></iframe>
@@ -38,7 +40,7 @@
 <iframe style="float: right; display: inline-block;" frameborder="0" scrolling="no" src="http://twitch.tv/{{ channel }}/chat" class="frame"></iframe>
 {% endif %}
 {% if service == 'hitbox' %}
-<iframe src="http://www.hitbox.tv/embedchat/{{ channel }}" frameborder="0" allowfullscreen class="frame"></iframe>
+<iframe style="float: right; display: inline-block;" src="http://www.hitbox.tv/embedchat/{{ channel }}" scrolling="no" frameborder="0" allowfullscreen class="frame"></iframe>
 {% endif %}
 {% if service == 'azubu' %}
 <iframe frameborder="0" src="http://www.azubu.tv/{{ channel }}/chatpopup" allowfullscreen class="frame"></iframe>
