@@ -88,17 +88,23 @@ main{
 	width: ;
 	right: 0;
 }
-#load_more,
-#spinner{
-	position:fixed;
-	bottom: 20px;
-	right: 20px;
-	z-index: 100000;
-	border-radius: 0;
+.spinner{
+	width: 100%; 
+	position:fixed; 
+	bottom: 20px; 
+	right:0; 
+	z-index:20000;
 }
-#spinner{
+.progress{
 	display: none;
-	right: 62px;
+	width: 500px;
+	margin: 0 auto;
+}
+.progress .indeterminate {
+    background-color: #ff5722;
+}
+.progress{
+	background-color: #9e9e9e;
 }
 .shadow{
 	z-index: 10000;
