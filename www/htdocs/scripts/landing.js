@@ -28,29 +28,56 @@ $(document).ready(function() {
         updateHeaderColor(headerCurrentHeight);
     });
 
+    // $('#create-room-btn').click(function(e) {
+    //     e.preventDefault();
+    //     $(this).addClass('disabled');
+    //     var link = $('#stream-link').val().trim();
+
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/room/create/',
+    //         data: {
+    //             link: link
+    //         },
+    //         success: function(data) {
+    //             console.log(data);
+    //             if (data.error) {
+    //                 $('#stream-link').addClass('invalid');
+    //                 $('#create-room-btn').removeClass('disabled');
+    //             } else {
+    //                 $('#stream-link').removeClass('invalid');
+    //                 $('#create-room-btn').removeClass('disabled');
+    //                 window.location.href = '/room/' + data.name; 
+    //             }
+    //         }, error: function() {
+                
+    //         }
+    //     });
+    // });
     $('#create-room-btn').click(function(e) {
         e.preventDefault();
+
+        var email = $('#stream-link').val().trim();
         $(this).addClass('disabled');
-        var link = $('#stream-link').val().trim();
 
         $.ajax({
             type: 'POST',
-            url: '/room/create/',
+            url: '/feedback/',
             data: {
-                link: link
+                username: 'prerelease',
+                email: $('#stream-link').val(),
+                text: 'Subscribe'
             },
             success: function(data) {
-                console.log(data);
-                if (data.error) {
-                    $('#stream-link').addClass('invalid');
-                    $('#create-room-btn').removeClass('disabled');
-                } else {
-                    $('#stream-link').removeClass('invalid');
-                    $('#create-room-btn').removeClass('disabled');
-                    window.location.href = '/room/' + data.name; 
+                $('#create-room-btn').removeClass('disabled');
+                if (data.error_code == 406) {
+                    return;
                 }
-            }, error: function() {
-                
+
+                $('#stream-link').val('');
+            },
+            error: function() {
+                $('#create-room-btn').removeClass('disabled');
             }
         });
     });
