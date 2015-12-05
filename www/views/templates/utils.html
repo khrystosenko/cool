@@ -12,10 +12,10 @@
 	<iframe class="insideFrame" src="http://player.twitch.tv/?channel={{ channel }}" frameborder="0" scrolling="no"></iframe>        
 {% endif %}
 {% if service == 'hitbox' %}
-<iframe class="insideFrame" src="http://www.hitbox.tv/embed/{{ channel }}" frameborder="0" scrolling="no"></iframe>
+<iframe class="insideFrame" src="http://www.hitbox.tv/embed/{{ channel }}?autoplay=true" frameborder="0" scrolling="no"></iframe>
 {% endif %}
 {% if service == 'azubu' %}
-<iframe class="insideFrame" src='http://embed.azubu.tv/{{ channel }}' frameborder='0' allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+<iframe class="insideFrame" src='http://embed.azubu.tv/{{ channel }}?autoplay=true' frameborder='0' allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
 <!-- <iframe src="http://www.azubu.tv/azubulink/embed={{ channel }}" class="frame" frameborder="0" allowfullscreen></iframe> -->
 {% endif %}
 {% if service == 'dailymotion' %}
