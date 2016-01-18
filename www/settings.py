@@ -86,8 +86,6 @@ INSTALLED_APPS = (
     'django_jinja',
 )
 
-DATABASES_INFO_PATH = rel('..', 'db')
-
 DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.html'
 
 ALLOWED_HOSTS = ['*']

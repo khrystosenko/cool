@@ -14,7 +14,7 @@ def store_room(cursor, service, channel, name):
     cursor.execute(query, [service, channel, name,
                            time.time() + settings.ROOM_EXP_TIME])
 
-@dbcp.roomit
+@dbcp.roomit_readonly
 def get_room(cursor, room_name):
     fields = ('id', 'service', 'channel', 'exp_time')
     query = """ SELECT `%s`

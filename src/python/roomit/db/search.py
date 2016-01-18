@@ -5,7 +5,7 @@ from django.conf import settings
 from roomit.db import dbcp
 
 
-@dbcp.roomit
+@dbcp.roomit_readonly
 def get_by_params(cursor, game, platform, stream, only_online, offset, limit):
     fields = ('online', 'viewers', 'mature', 'language', 'display_name', 'name', 'preview', 'logo')
     filter_query = []
@@ -49,7 +49,7 @@ def get_by_params(cursor, game, platform, stream, only_online, offset, limit):
 
     return data
 
-@dbcp.roomit
+@dbcp.roomit_readonly
 def get_top_games(cursor, limit):
     fields = ['id', 'name']
     query = """ SELECT %s, SUM(viewers) as total_viewers
@@ -69,7 +69,7 @@ def get_top_games(cursor, limit):
 
     return data
 
-@dbcp.roomit
+@dbcp.roomit_readonly
 def get_top_platforms(cursor, limit):
     fields = ['id', 'name']
     query = """ SELECT %s, SUM(viewers) as total_viewers
@@ -89,7 +89,7 @@ def get_top_platforms(cursor, limit):
 
     return data
 
-@dbcp.roomit
+@dbcp.roomit_readonly
 def get_games_like(cursor, text, limit):
     fields = ['id', 'name']
     text =  '%%%s%%' % (text,)
@@ -107,7 +107,7 @@ def get_games_like(cursor, text, limit):
 
     return data
 
-@dbcp.roomit
+@dbcp.roomit_readonly
 def get_game_ids(cursor, games):
     fields = ['id', 'name']
 

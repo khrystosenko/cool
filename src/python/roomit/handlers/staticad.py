@@ -1,10 +1,14 @@
 import xml.etree.ElementTree as ET
 
-from django.conf import settings
+from roomit import config
+
+_config = config.get_config()
 
 
 def get_data(slug):
-    tree = ET.parse(settings.STATIC_PAGES_XML)
+    global _config
+
+    tree = ET.parse(_config.get('roomit', 'static_pages'))
     root = tree.getroot()
 
     for child in root:

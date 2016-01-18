@@ -8,6 +8,16 @@ port={db_port}
 name={db_name}
 username={db_username}
 password={db_password}
+charset={db_charset}
+
+[ro_db]
+host={ro_db_host}
+port={ro_db_port}
+name={ro_db_name}
+username={ro_db_username}
+password={ro_db_password}
+charset={ro_db_charset}
+
 
 [roomit]
 static_pages={roomit_static_pages}

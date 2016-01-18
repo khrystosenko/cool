@@ -7,7 +7,8 @@ TEMPLATE_EXTENSION = '.template'
 
 def process(variables_path, skip_default=False, force=False):
     # Parse variables file.
-    DIR_NAME = os.path.dirname(variables_path)
+    ETC_DIR_PATH = os.path.dirname(variables_path)
+    BIN_DIR_PATH = os.path.join(os.path.dirname(ETC_DIR_PATH), 'bin')
 
     variables = {}
     try:
@@ -59,11 +60,10 @@ def process(variables_path, skip_default=False, force=False):
             data[field] = answer
 
     # Generate config files
-    for path in os.listdir(DIR_NAME):
-        if not path.endswith(TEMPLATE_EXTENSION):
-            continue
 
-        path = os.path.join(DIR_NAME, path)
+    etc_templates = [os.path.join(ETC_DIR_PATH, path) for path in os.listdir(ETC_DIR_PATH) if path.endswith(TEMPLATE_EXTENSION)]
+    bin_templates = [os.path.join(BIN_DIR_PATH, path) for path in os.listdir(BIN_DIR_PATH) if path.endswith(TEMPLATE_EXTENSION)]
+    for path in etc_templates + bin_templates:
         config_path = path[:-len(TEMPLATE_EXTENSION)]
         if os.path.exists(config_path) and not force:
             answer = raw_input('%s exists, it will be overwritten. Type in Y if you want to proceed: ' % (config_path,))
