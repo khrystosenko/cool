@@ -1,5 +1,0 @@
-CREATE TABLE rooms_history (
-  `room_id` INT NOT NULL,
-  `participants` INT NOT NULL,
-  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;

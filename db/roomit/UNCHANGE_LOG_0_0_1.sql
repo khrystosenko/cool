@@ -1,4 +1,0 @@
-DELETE FROM `rooms`;
-ALTER TABLE `rooms` DROP COLUMN `service`;
-ALTER TABLE `rooms` DROP COLUMN `channel`;
-ALTER TABLE `rooms` ADD COLUMN `link` VARCHAR(256) NOT NULL;

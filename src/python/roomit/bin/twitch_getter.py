@@ -3,20 +3,20 @@ import time
 import requests
 
 # Uncomment to run locally
-# import sys, os
-# 
-# sys.path.insert(1, os.getcwd() + '\\..\\..')
-# sys.path.insert(1, os.getcwd() + '\\..\\..\\..\\..\\www')
+import sys, os
+
+sys.path.insert(1, os.getcwd() + '\\..\\..')
+sys.path.insert(1, os.getcwd() + '\\..\\..\\..\\..\\www')
 # or
 # sys.path.insert(1, os.getcwd() + '/../..')
 # sys.path.insert(1, os.getcwd() + '/../../../../www')
 #
 # and
-# os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
+os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
 
 from django.conf import settings
 
-from roomit.handlers import twitch
+from roomit.handlers import platforms
 
 
 def collect_data(link, result=[]):
@@ -42,7 +42,7 @@ def main():
 	data = collect_data('https://api.twitch.tv/kraken/streams?limit=100')
 	print 'Total: ' + str(len(data)) + ' streams. Time:' + str(time.time() - start) + ' s.'
 	print 'Updating data.'
-	twitch.update_streams(data)
+	platforms.update_twitch(data)
 
 	print 'Time:' + str(time.time() - start) + ' s.'
 

@@ -1,3 +1,0 @@
-DELETE FROM `rooms`;
-ALTER TABLE `rooms` DROP COLUMN `id`;
-ALTER TABLE `rooms` ADD COLUMN `room_uuid` VARCHAR(36) NOT NULL;

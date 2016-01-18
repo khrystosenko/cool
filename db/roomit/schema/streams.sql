@@ -1,6 +1,6 @@
 CREATE TABLE streams (
     id INT NOT NULL AUTO_INCREMENT,
-    service_id INT NOT NULL,
+    platform_id INT NOT NULL,
     game_id INT NOT NULL,
     channel_id VARCHAR(32) NOT NULL,
 
@@ -15,9 +15,12 @@ CREATE TABLE streams (
     logo VARCHAR(256) DEFAULT NULL,
 
     PRIMARY KEY (id),
-    UNIQUE(service_id, channel_id),
-    FOREIGN KEY (service_id) REFERENCES services(id),
+    UNIQUE(platform_id, channel_id),
+    FOREIGN KEY (platform_id) REFERENCES platforms(id),
     FOREIGN KEY (game_id) REFERENCES games(id),
 
-    INDEX search_index (`online`, `viewers`, `game_id`)
+    INDEX platform_index (`platform_id`, `viewers`, `online`),
+    INDEX game_index (`game_id`, `viewers`, `online`),
+    INDEX platform_game_index(`platform_id`, `game_id`, `viewers`, `online`),
+    INDEX name_index (`display_name`, `name`, `viewers`, `online`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -16,7 +16,7 @@ def get_by_params(cursor, game, platform, stream, only_online, offset, limit):
 
     if platform:
         params.append(platform)
-        filter_query.append('`service_id` = %s')
+        filter_query.append('`platform_id` = %s')
 
     if only_online:
         filter_query.append('`online` = 1')
@@ -74,10 +74,10 @@ def get_top_platforms(cursor, limit):
     fields = ['id', 'name']
     query = """ SELECT %s, SUM(viewers) as total_viewers
                 FROM streams s
-                JOIN services p
-                  ON s.service_id = p.id
+                JOIN platforms p
+                  ON s.platform_id = p.id
                 WHERE online = 1
-                GROUP BY s.service_id
+                GROUP BY s.platform_id
                 ORDER BY total_viewers DESC
                 LIMIT %%s
             """ % (', '.join(['p.' + field for field in fields]))
