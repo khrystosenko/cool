@@ -1,0 +1,13 @@
+[general]
+product_path={product_path}
+python_path={product_path}/src/python/
+
+[db]
+host={db_host}
+port={db_port}
+name={db_name}
+username={db_username}
+password={db_password}
+
+[roomit]
+static_pages={roomit_static_pages}

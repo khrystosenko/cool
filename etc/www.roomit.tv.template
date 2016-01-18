@@ -1,0 +1,26 @@
+<VirtualHost *:80>
+
+  Alias /img {product_path}/www/htdocs/img
+  Alias /scripts {product_path}/www/htdocs/scripts
+  Alias /styles {product_path}/www/htdocs/styles
+  Alias /font-awesome {product_path}/www/htdocs/font-awesome
+  Alias /fonts {product_path}/www/htdocs/fonts
+  Alias /favicon.ico {product_path}/www/htdocs/img/favicon.ico
+
+  <Directory "{product_path}/www">
+    Options -Indexes
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  WSGIScriptAlias / {product_path}/www/wsgi.py
+
+  ErrorLog ${{APACHE_LOG_DIR}}/error.log
+
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel debug
+
+  CustomLog ${{APACHE_LOG_DIR}}/access.log combined
+
+</Virtualhost>
