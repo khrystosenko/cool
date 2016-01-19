@@ -29,31 +29,34 @@ def collect_data(link, offset=0, result=[]):
     except ValueError:
         return result
 
-    for stream in data['data']:
-        if stream['category'].get('title') is None:
+    for stream in data.get('livestream', []):
+        if stream.get('category_name') is None:
             continue
 
-        game_name = stream['category'].pop('title').strip().lower()
+        game_name = stream.pop('category_name').strip().lower()
         for game in settings.GAMES:
             if game_name == game['name'].lower():
-                stream['category']['title'] = game['name']
+                stream['category_name'] = game['name']
 
-        if stream['category'].get('title') is None:
+        if stream.get('category_name') is None:
             continue
 
         result.append(stream)
 
-    if data['data']:
-        return collect_data(link, offset + 100)
+    if len(result) % 1000 == 0:
+        print 'Fetched ' + str(len(result)) + ' streams.'
+
+    if data.get('livestream', []):
+        return collect_data(link, offset + 250)
 
     return result
 
 def main():
     start = time.time()
-    data = collect_data(_config.get('roomit', 'azubu_api_url'))
+    data = collect_data(_config.get('roomit', 'hitbox_api_url'))
     print 'Total: ' + str(len(data)) + ' streams. Time:' + str(time.time() - start) + ' s.'
     print 'Updating data.'
-    platforms.update_azubu(data)
+    platforms.update_hitbox(data)
 
     print 'Time:' + str(time.time() - start) + ' s.'
 

@@ -17,6 +17,9 @@ import requests
 from django.conf import settings
 
 from roomit.handlers import platforms
+from roomit import config
+
+_config = config.get_config()
 
 
 def collect_data(link, result=[]):
@@ -51,7 +54,7 @@ def collect_data(link, result=[]):
 
 def main():
     start = time.time()
-    data = collect_data('https://api.twitch.tv/kraken/streams?limit=100')
+    data = collect_data(_config.get('roomit', 'twitch_api_url'))
     print 'Total: ' + str(len(data)) + ' streams. Time:' + str(time.time() - start) + ' s.'
     print 'Updating data.'
     platforms.update_twitch(data)

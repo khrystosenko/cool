@@ -23,7 +23,7 @@ def process(variables_path, skip_default=False, force=False):
                         'field': line[1:-1]
                     }
                 if '=' in line:
-                    key, value = line.split('=')
+                    key, value = line.split('=', 1)
                     block[key] = value
                 elif line == '' and block is not None:
                     # End of the block
@@ -34,6 +34,7 @@ def process(variables_path, skip_default=False, force=False):
         exit()
     except Exception as e:
         print 'Variables file is malformed. Terminating...'
+        print e
         exit()
 
     data = {}

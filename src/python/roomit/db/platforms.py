@@ -1,4 +1,8 @@
 from roomit.db import dbcp
+from roomit import config
+
+_config = config.get_config()
+
 
 @dbcp.roomit_readonly
 def __get_games(cursor):
@@ -122,7 +126,30 @@ def format_azubu_streams(cursor, platform_id, games, streams):
 
     return prepared_data
 
+def format_hitbox_streams(cursor, platform_id, games, streams):
+    prepared_data = []
+    for stream in streams:
+        game_name = stream['category_name']
+        game_id = games.get(game_name)
+
+        if not stream['media_display_name']:
+            stream['media_display_name'] = stream['media_name']
+
+        if not game_id:
+            game_id = __get_game_id(cursor, game_name)
+            games[stream['category_name']] = game_id
+
+        prepared_data.append((platform_id, game_id, stream['media_user_id'], 1, stream['media_views'],
+                              stream['media_mature'] or 0,
+                              '' if not stream['media_countries'] else stream['media_countries'][0].lower(),
+                              stream['media_display_name'], stream['media_name'],
+                              _config.get('roomit', 'hitbox_static_url') % (stream['media_thumbnail_large'],),
+                              _config.get('roomit', 'hitbox_static_url') % (stream['channel']['user_logo_small'],)))
+
+    return prepared_data
+
 FORMATERS = {
     'twitch': format_twitch_streams,
-    'azubu': format_azubu_streams
+    'azubu': format_azubu_streams,
+    'hitbox': format_hitbox_streams
 }

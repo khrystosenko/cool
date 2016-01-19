@@ -18,6 +18,10 @@ username={ro_db_username}
 password={ro_db_password}
 charset={ro_db_charset}
 
-
 [roomit]
 static_pages={roomit_static_pages}
+twitch_api_url={twitch_api_url}
+hitbox_api_url={hitbox_api_url}
+hitbox_static_url={hitbox_static_url}
+azubu_api_url={azubu_api_url}
+
