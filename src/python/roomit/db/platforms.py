@@ -1,6 +1,6 @@
 from roomit.db import dbcp
 
-@dbcp.roomit
+@dbcp.roomit_readonly
 def __get_games(cursor):
     query = """ SELECT `id`, `name`
                 FROM `games`
@@ -12,7 +12,6 @@ def __get_games(cursor):
 
     return data
 
-@dbcp.roomit
 def __get_platform_id(cursor, value):
     query = """ SELECT `id`
                 FROM `platforms`
@@ -31,7 +30,6 @@ def __get_platform_id(cursor, value):
 
     return platform_id
 
-@dbcp.roomit
 def __get_game_id(cursor, value):
     query = """ SELECT `id`
                 FROM `games`
@@ -59,31 +57,14 @@ def __reset_streams(cursor, platform_id):
     cursor.execute(query, [platform_id])
 
 @dbcp.roomit
-def update_streams(cursor, platform, streams):
-    platform_id = __get_platform_id(platform)
+def update_streams(cursor, platform, data):
+    platform_id = __get_platform_id(cursor, platform)
+    games = __get_games()
+
+    prepared_data = FORMATERS[platform](cursor, platform_id, games, data)
     __reset_streams(cursor, platform_id)
 
-    prepared_data = []
-    games = __get_games()
-    for stream in streams:
-        if not stream['channel']['name'] or stream['game'] is None or len(stream['game'].strip()) > 192:
-            continue
-
-        game_name = stream['game'].strip()
-        if not stream['channel']['display_name']:
-            stream['channel']['display_name'] = stream['channel']['name']
-
-        game_id = games.get(game_name)
-        if not game_id:
-            game_id = __get_game_id(game_name)
-            games[stream['game']] = game_id
-
-        prepared_data.append((platform_id, game_id, stream['channel']['_id'], 1, stream['viewers'],
-                              stream['channel'].get('mature') or 0, stream['channel'].get('language') or '',
-                              stream['channel']['display_name'], stream['channel']['name'],
-                              stream['preview'].get('template'), stream['channel'].get('logo')))
-
-    fields = ['platform_id', 'game_id', 'channel_id', 'online', 'viewers', 'mature', 
+    fields = ['platform_id', 'game_id', 'channel_id', 'online', 'viewers', 'mature',
               'language', 'display_name', 'name', 'preview', 'logo']
 
     query = """ INSERT INTO `streams` (`%s`)
@@ -101,3 +82,25 @@ def update_streams(cursor, platform, streams):
             """ % ('`, `'.join(fields),)
 
     cursor.executemany(query, prepared_data)
+
+def format_twitch_streams(cursor, platform_id, games, streams):
+    prepared_data = []
+    for stream in streams:
+        game_name = stream['game'].strip()
+        if not stream['channel']['display_name']:
+            stream['channel']['display_name'] = stream['channel']['name']
+
+        game_id = games.get(game_name)
+        if not game_id:
+            game_id = __get_game_id(cursor, game_name)
+            games[stream['game']] = game_id
+
+        prepared_data.append((platform_id, game_id, stream['channel']['_id'], 1, stream['viewers'],
+                              stream['channel'].get('mature') or 0, stream['channel'].get('language') or '',
+                              stream['channel']['display_name'], stream['channel']['name'],
+                              stream['preview'].get('template'), stream['channel'].get('logo')))
+    return prepared_data
+
+FORMATERS = {
+    'twitch': format_twitch_streams
+}

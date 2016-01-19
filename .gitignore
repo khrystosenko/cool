@@ -1,2 +1,5 @@
 *.pyc
 www/local_settings.py
+bin/twitch_getter.sh
+etc/config.ini
+etc/www.roomit.tv
