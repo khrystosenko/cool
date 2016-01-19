@@ -19,42 +19,38 @@ from django.conf import settings
 from roomit.handlers import platforms
 
 
-def collect_data(link, result=[]):
-    response = requests.get(link, verify=False)
+def collect_data(link, offset=0, result=[]):
+    response = requests.get(link % (offset,), verify=False)
     try:
         data = json.loads(response.content)
     except ValueError:
         return result
 
-    for stream in data['streams']:
-        if not stream['channel']['name'] or stream['game'] is None:
+    for stream in data['data']:
+        if stream['category']['name'] is None:
             continue
 
-        game_name = stream.pop('game').strip().lower()
+        game_name = stream['category'].pop('title').strip().lower()
         for game in settings.GAMES:
             if game_name == game['name'].lower():
-                stream['game'] = game['name']
+                stream['category']['title'] = game['name']
 
-        if stream.get('game') is None:
+        if stream['category'].get('title') is None:
             continue
 
         result.append(stream)
 
-    if len(result) % 1000 == 0:
-        print 'Fetched ' + str(len(result)) + ' streams.'
-
-    if data['streams']:
-        next_link = data['_links']['next']
-        return collect_data(next_link)
+    if data['data']:
+        return collect_data(link, offset + 100)
 
     return result
 
 def main():
     start = time.time()
-    data = collect_data('https://api.twitch.tv/kraken/streams?limit=100')
+    data = collect_data('http://api.azubu.tv/public/channel/live/list?limit=100&offset=%s')
     print 'Total: ' + str(len(data)) + ' streams. Time:' + str(time.time() - start) + ' s.'
     print 'Updating data.'
-    platforms.update_twitch(data)
+    platforms.update_azubu(data)
 
     print 'Time:' + str(time.time() - start) + ' s.'
 

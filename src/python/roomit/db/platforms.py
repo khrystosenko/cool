@@ -86,11 +86,12 @@ def update_streams(cursor, platform, data):
 def format_twitch_streams(cursor, platform_id, games, streams):
     prepared_data = []
     for stream in streams:
-        game_name = stream['game'].strip()
+        game_name = stream['game']
+        game_id = games.get(game_name)
+
         if not stream['channel']['display_name']:
             stream['channel']['display_name'] = stream['channel']['name']
 
-        game_id = games.get(game_name)
         if not game_id:
             game_id = __get_game_id(cursor, game_name)
             games[stream['game']] = game_id
@@ -101,6 +102,27 @@ def format_twitch_streams(cursor, platform_id, games, streams):
                               stream['preview'].get('template'), stream['channel'].get('logo')))
     return prepared_data
 
+def format_azubu_streams(cursor, platform_id, games, streams):
+    prepared_data = []
+    for stream in streams:
+        game_name = stream['category']['title']
+        game_id = games.get(game_name)
+
+        if not stream['user']['display_name']:
+            stream['user']['display_name'] = stream['user']['username']
+
+        if not game_id:
+            game_id = __get_game_id(cursor, game_name)
+            games[stream['category']['title']] = game_id
+
+        prepared_data.append((platform_id, game_id, stream['user']['id'], 1, stream['view_count'],
+                              0, stream.get('language') or '', stream['user']['display_name'],
+                              stream['user']['username'], stream['url_thumbnail'],
+                              stream['user']['profile']['url_photo_small']))
+
+    return prepared_data
+
 FORMATERS = {
-    'twitch': format_twitch_streams
+    'twitch': format_twitch_streams,
+    'azubu': format_azubu_streams
 }

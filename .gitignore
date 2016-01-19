@@ -1,5 +1,6 @@
 *.pyc
 www/local_settings.py
 bin/twitch_getter.sh
+bin/azubu_getter.sh
 etc/config.ini
 etc/www.roomit.tv
