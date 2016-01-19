@@ -32,8 +32,8 @@ def collect_data(link, result=[]):
 
         game_name = stream.pop('game').strip().lower()
         for game in settings.GAMES:
-            if game_name in game['names']:
-                stream['game'] = game['db_name']
+            if game_name in game['name'].lower():
+                stream['game'] = game['name']
 
         if stream.get('game') is None:
             continue

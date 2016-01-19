@@ -5,8 +5,8 @@ from ..utils import search
 
 
 def index(req):
-    games = settings.DISCOVER_FILTER_GAMES
-    game_ids = search.get_game_ids([game['name'] for game in games])
+    games = settings.GAMES
+    game_ids = search.get_game_ids([game['name'] for game in games if game.get('discover', False)])
 
     for game in games:
         game['id'] = game_ids[game['name']]
