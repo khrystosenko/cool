@@ -22,7 +22,9 @@ from roomit import config
 _config = config.get_config()
 
 
-def collect_data(link, result=[]):
+def collect_data(link, game_db_name, result=None):
+    result = result or []
+
     response = requests.get(link, verify=False)
     try:
         data = json.loads(response.content)
@@ -30,36 +32,36 @@ def collect_data(link, result=[]):
         return result
 
     for stream in data['streams']:
-        if not stream['channel']['name'] or stream['game'] is None:
+        if not stream['channel']['name']:
             continue
 
-        game_name = stream.pop('game').strip().lower()
-        for game in settings.GAMES:
-            if game_name == game['name'].lower():
-                stream['game'] = game['name']
-
-        if stream.get('game') is None:
-            continue
-
+        stream['game'] = game_db_name
         result.append(stream)
-
-    if len(result) % 1000 == 0:
-        print 'Fetched ' + str(len(result)) + ' streams.'
 
     if data['streams']:
         next_link = data['_links']['next']
-        return collect_data(next_link)
+        return collect_data(next_link, game_db_name, result)
 
     return result
 
 def main():
+    api = _config.get('roomit', 'twitch_api_url')
     start = time.time()
-    data = collect_data(_config.get('roomit', 'twitch_api_url'))
-    print 'Total: ' + str(len(data)) + ' streams. Time:' + str(time.time() - start) + ' s.'
-    print 'Updating data.'
-    platforms.update_twitch(data)
 
-    print 'Time:' + str(time.time() - start) + ' s.'
+    streams = []
+    for game in settings.GAMES:
+        game_time = time.time()
+        data = collect_data(api % (game['name'],), game['name'])
+        print 'Total for {}: {} streams. Time: {}s'.format(game['name'], str(len(data)), int(time.time() - game_time))
+        streams.extend(data)
+
+    print 'Total: {}. Time: {}s.'.format(len(streams), int(time.time() - start))
+    print 'Updating data.'
+
+    platforms.update_twitch(streams)
+
+    print 'Done. Time: {}s'.format(int(time.time() - start))
+
 
 if __name__ == '__main__':
     main()
