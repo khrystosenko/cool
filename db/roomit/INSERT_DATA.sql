@@ -1,0 +1,1 @@
+INSERT INTO `auth_providers` (`name`) VALUES ('roomit'), ('facebook');
