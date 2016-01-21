@@ -149,7 +149,7 @@ def format_hitbox_streams(cursor, platform_id, games, streams):
     return prepared_data
 
 FORMATERS = {
-    'twitch': format_twitch_streams,
+    'twitch.tv': format_twitch_streams,
     'azubu': format_azubu_streams,
     'hitbox': format_hitbox_streams
 }

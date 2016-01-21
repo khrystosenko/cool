@@ -5,7 +5,7 @@ function DiscoverHandler() {
     this.streamHeight = 224;
 
     this.offset = 0;
-    this.limit = 9;
+    this.limit = 20;
 
     this.searchElement = null;
     this.gameFilterElement = null;
@@ -115,7 +115,7 @@ function addStreamsCallback(streams, loadMore) {
 
         var image = $('<div>');
         image.addClass('card-image waves-effect waves-block waves-light');
-        image.attr('data-stream-url', 'http://twitch.tv/' + stream.name);
+        image.attr('data-stream-url', stream.url);
         image.click(function(e) {
             e.preventDefault();
 
@@ -165,11 +165,13 @@ function addStreamsCallback(streams, loadMore) {
         var streamViews = $('<span class="views"><i class="tiny material-icons">visibility</i>' + views + '</span>');
         detailsLI.append(streamViews);
 
-        var streamPlatform = $('<span class="platform"><i class="tiny material-icons"><!--googleoff: index-->stay_primary_landscape<!--googleon: index--></i> TWITCH.TV</span>');
+        var streamPlatform = $('<span class="platform"><i class="tiny material-icons"><!--googleoff: index-->stay_primary_landscape<!--googleon: index--></i> ' + stream.platform + '</span>');
         detailsLI.append(streamPlatform);
 
-        var streamLanguage = $('<span class="language"><i class="tiny material-icons">translate</i>' + stream.language + '</span>')
-        detailsLI.append(streamLanguage);
+        if (stream.language) {
+            var streamLanguage = $('<span class="language"><i class="tiny material-icons">translate</i>' + stream.language + '</span>')
+            detailsLI.append(streamLanguage);
+        }
 
         $('#streams').append(streamDiv);
     }

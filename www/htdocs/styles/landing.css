@@ -190,7 +190,8 @@ display: inline-block;
     font-weight: 500;
 }
 
-.stream .details .language {
+.stream .details .language,
+.stream .details .platform {
     text-transform: uppercase;
 }
 
@@ -294,8 +295,8 @@ footer .social a {
     width: 100%;
 }
 .header_h4{
-    position: absolute; 
-    right:1px; 
+    position: absolute;
+    right:1px;
     top: 50px;
     text-transform: uppercase;
     color: #797e80;

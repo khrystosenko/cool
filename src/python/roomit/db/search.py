@@ -29,10 +29,12 @@ def get_by_params(cursor, game, platform, stream, only_online, offset, limit):
     if filter_query:
         filter_query = 'WHERE ' + filter_query
 
-    query = """ SELECT %s, g.name
+    query = """ SELECT %s, g.name, p.name
                 FROM `streams` s
                 JOIN `games` g
                 ON g.id = s.game_id
+                JOIN `platforms` p
+                ON p.id = s.platform_id
                 %s
                 ORDER BY `viewers` DESC
                 LIMIT %%s
@@ -43,7 +45,7 @@ def get_by_params(cursor, game, platform, stream, only_online, offset, limit):
     params.append(offset)
 
     cursor.execute(query, params)
-    data = dbcp.tuple2dict(cursor.fetchall(), fields + ('game',))
+    data = dbcp.tuple2dict(cursor.fetchall(), fields + ('game', 'platform'))
     if isinstance(data, dict):
         data = [data]
 

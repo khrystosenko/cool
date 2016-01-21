@@ -42,6 +42,9 @@ def filter_by_params(params):
 
     data = search.filter_by_params(game, platform, stream, only_online, offset, limit)
     pattern = re.compile('[\W]+')
+
+    platforms = dict((platform['name'], platform['url'])for platform in settings.PLATFORMS)
+
     for item in data['data']:
         language = settings.ROOMIT_LANG_CODE.get(item['language'])
         if language is None:
@@ -54,7 +57,9 @@ def filter_by_params(params):
             language = item['language']
 
         item['language'] = language
+        item['logo'] = item['logo'] or ''
         item['game_canonical'] = pattern.sub('', item['game']).lower()
+        item['url'] = platforms[item['platform']] + item['name']
 
     return data
 
