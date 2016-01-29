@@ -1,1 +1,1 @@
-INSERT INTO `auth_providers` (`name`) VALUES ('roomit'), ('facebook');
+INSERT INTO `social_networks` (`name`) VALUES ('twitch'), ('facebook');
