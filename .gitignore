@@ -5,3 +5,4 @@ bin/azubu_getter.sh
 bin/hitbox_getter.sh
 etc/config.ini
 etc/www.roomit.tv
+etc/variables.ans
