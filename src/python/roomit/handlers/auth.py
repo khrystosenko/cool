@@ -1,6 +1,8 @@
 import time
 
-from hashlib import sha1
+from hashlib import md5
+
+from mysql.connector.errors import IntegrityError
 
 from django.conf import settings
 
@@ -8,51 +10,36 @@ from roomit import utils
 from roomit.db import auth, users
 
 
-def _generate_session_id(username, password):
-    session_id = str(time.time()) + username + password
-    return sha1(session_id).hexdigest()
+def _generate_hash(text, salt='salt'):
+    return md5(md5(str(text)).hexdigest() + salt).hexdigest()
 
 
-def _generate_password(text):
-    return sha1(text + settings.SECRET_KEY).hexdigest()
+def get_user_by_email(email):
+    return auth.get_user_by_email(email)
 
 
-def signup(username, password, email):
-    user = users.get_user(username, email)
-    errors = []
-    if user:
-        if user['username'] == username:
-            errors.append({
-                'field': 'username', 
-                'text': 'This username is already taken.'
-            })
+def get_user_by_snid(network, network_user_id):
+    return auth.get_user_by_snid(network, network_user_id)
 
-        if user['email'] == email:
-            errors.append({
-                'field': 'email',
-                'text': 'This email is already taken.'
-            })
-    if errors:
-        return {'errors': errors}
 
-    password = _generate_password(password)
-    auth.signup(username, password, email)
+def create_user(email, password=None, name=None):
+    return auth.create_user(email, password, name)
 
-    return {'success': 'ok'}
 
-def login(username, password):
-    result = {'error': '', 'id': ''}
-    password = _generate_password(password)
-    user_data = auth.login(username, password)
-    if not user_data:
-        result['error'] = 'Either your username or password is incorrect.'
-    else:
-        session_id = _generate_session_id(username, password)
-        auth.set_user_session(user_data['id'], sha1(session_id).hexdigest())
-        result['id'] = session_id
+def link_social_network(network, user_id, network_user_id, access_token, expires_in):
+    try:
+        auth.link_social_network(network, user_id, network_user_id, access_token, expires_in)
+        return {'success': 'ok'}
+    except IntegrityError:
+        return {'error': 'Social network cannot be linked'}
 
-    return result
+
+def create_or_update_session_id(user_id, expires_in=settings.SESSION_EXP_TIME):
+    session_id = _generate_hash(user_id + time.time())
+    auth.create_or_update_session_id(user_id, _generate_hash(session_id), expires_in)
+
+    return session_id
 
 
 def validate_session_id(session_id):
-    return auth.validate_session_id(sha1(session_id).hexdigest())
+    return auth.validate_session_id(_generate_hash(session_id))

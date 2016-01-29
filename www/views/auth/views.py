@@ -5,31 +5,11 @@ from ..utils import auth, request, response
 from ..utils.views import JSONResponse
 
 
-def signup(req):
-    if req.method == 'POST':
-        data = auth.signup(request.get_params(req))
-        return JSONResponse(data, status=data.get('error_code', 200))
+def facebook(req):
+    session_hash, expiration = auth.facebook_login(req)
 
-    return TemplateResponse(request, 'auth/signup.html')
+    resp = TemplateResponse(req, 'login.html', {'success': True})
+    if session_hash:
+        response.set_cookie(resp, 'session_id', session_hash, exp=expiration)
 
-def login(req):
-    if auth.is_logged(req):
-        return redirect('index')
-
-    if req.method == 'POST':
-        username = req.POST.get('username', '')
-        password = req.POST.get('password', '')
-        data = auth.login(username, password)
-        resp = JSONResponse(data, status=data.get('error_code', 200))
-        if not data['error']:
-            response.set_cookie(resp, 'session_id', data['id'])
-
-        return resp
-        
-    return TemplateResponse(request, 'auth/login.html')
-
-def logout(request):
-    return TemplateResponse(request, 'index.html')
-
-def profile(request):
-    return TemplateResponse(request, 'auth/profile.html')
+    return resp

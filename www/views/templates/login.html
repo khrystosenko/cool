@@ -1,0 +1,15 @@
+<html>
+<head>
+	<script type="text/javascript">
+		{% if success %}
+			window.opener.loggedIn(true);
+		{% else %}
+			window.opener.loggedIn(false);
+		{% endif %}
+		
+		close();
+	</script>
+</head>
+<body>
+</body>
+</html>

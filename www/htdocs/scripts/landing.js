@@ -14,7 +14,15 @@ function updateHeaderColor(height) {
     }
 }
 
+function loggedIn(value) {
+    alert(value);
+}
+
 $(document).ready(function() {
+
+    $('#facebook_login').click(function() {
+        window.open('https://www.facebook.com/dialog/oauth?client_id=546767205384783&redirect_uri=http://localhost:8000/auth/facebook/&scope=email', '_blank', 'toolbar=0,location=0,menubar=0');
+    })
 
     headerCurrentHeight = updateHeaderHeight();
     updateHeaderColor(headerCurrentHeight);

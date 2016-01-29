@@ -1,5 +1,11 @@
+import time
+import requests
+
 from roomit import utils
+from roomit.config import get_config
 from roomit.handlers import auth
+
+_config = get_config()
 
 
 def login_required(func):
@@ -15,7 +21,7 @@ def login_required(func):
                     'msg': 'Your session is expired, please reload the page.'}
                 return JSONResponse({'error': error})
             else:
-                return TemplateResponse(request, 'login.html')
+                return TemplateResponse(request, 'index.html')
 
     return wrapper
 
@@ -25,37 +31,37 @@ def is_logged(request):
     return session_id and auth.validate_session_id(session_id)
 
 
-def signup(params):
-    username = params.get('username', '')
-    if not username:
-        return utils.validation_error('username')
+def facebook_login(request):
+    if request.GET.get('error_code') or not request.GET.get('code'):
+        return None, 0
 
-    if len(username) > 15 or len(username) < 4:
-        return utils.validation_error('username')
+    payload = {
+        'client_id': _config.get('facebook', 'client_id'),
+        'client_secret': _config.get('facebook', 'client_secret'),
+        'redirect_uri': _config.get('facebook', 'redirect_uri'),
+        'code': request.GET['code'],
+        'scope': 'email'
+    }
 
-    if not utils.validate_regexp('username', username):
-        return utils.validation_error('username')
+    response = requests.get(_config.get('facebook', 'access_token_url'), params=payload).json()
+    if response.get('error'):
+        return None, 0
 
-    password = params.get('password', '')
-    if not password:
-        return utils.validation_error('password')
+    access_token = response['access_token']
+    time_to_expire = response['expires_in']
+    expires_in = int(time.time() + time_to_expire)
 
-    if len(password) < 5 or len(password) > 50:
-        return utils.validation_error('password')
+    response = requests.get(_config.get('facebook', 'me_url'), params={'access_token': access_token})
+    data = response.json()
 
-    repassword = params.get('repassword', '')
-    if password != repassword:
-        return utils.validation_error('repassword')
+    user_id = auth.get_user_by_email(data['email'])
+    if user_id is None:
+        user_id = auth.get_user_by_snid('facebook', data['id'])
 
-    email = params.get('email')
-    if not email:
-        return utils.validation_error('email')
+    if user_id is None:
+        user_id = auth.create_user(email=data['email'], name=data['name'])
 
-    if not utils.validate_regexp('email', email):
-        return utils.validation_error('email')
+    session_id = auth.create_or_update_session_id(user_id, expires_in=expires_in)
+    auth.link_social_network('facebook', user_id, data['id'], access_token, expires_in)
 
-    return auth.signup(username, password, email)
-
-
-def login(username, password):
-    return auth.login(username, password)
+    return session_id, time_to_expire
