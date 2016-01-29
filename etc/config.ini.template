@@ -1,6 +1,7 @@
 [general]
 product_path={product_path}
 python_path={product_path}/src/python/
+base_url={product_base_url}
 
 [db]
 host={db_host}
@@ -25,3 +26,10 @@ hitbox_api_url={hitbox_api_url}
 hitbox_static_url={hitbox_static_url}
 azubu_api_url={azubu_api_url}
 
+[facebook]
+client_id={facebook_client_id}
+client_secret={facebook_client_secret}
+redirect_uri={product_base_url}/{facebook_redirect_slug}
+access_token_url={facebook_access_token_url}
+me_url={facebook_me_url}
+login_url={facebook_login_url}

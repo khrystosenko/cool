@@ -37,10 +37,22 @@ def process(variables_path, skip_default=False, force=False):
         print e
         exit()
 
+    answers = {}
+    ans_filepath = variables_path.rsplit('.', 1)[0] + '.ans'
+    if os.path.isfile(ans_filepath):
+        with open(ans_filepath) as ans:
+            lines = ans.readlines()
+
+            for line in lines:
+                field, answer = line.split('=', 1)
+                answers[field.strip()] = answer.strip()
+
     data = {}
     for field, options in variables.iteritems():
-        if options.get('default') and skip_default:
-            data[field] = options.get('default')
+        if field in answers:
+            data[field] = answers[field]
+        elif options.get('default') and skip_default:
+            data[field] = options['default']
         else:
             question = options.get('help', '')
             if options.get('default'):
