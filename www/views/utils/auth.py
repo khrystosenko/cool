@@ -65,3 +65,10 @@ def facebook_login(request):
     auth.link_social_network('facebook', user_id, data['id'], access_token, expires_in)
 
     return session_id, time_to_expire
+
+
+def remove_sid(request):
+    session_id = request.COOKIES.get('session_id')
+    user_id = request.user
+
+    return auth.remove_sid(session_id, user_id)

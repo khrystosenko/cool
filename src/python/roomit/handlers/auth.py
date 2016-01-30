@@ -43,3 +43,7 @@ def create_or_update_session_id(user_id, expires_in=settings.SESSION_EXP_TIME):
 
 def validate_session_id(session_id):
     return auth.validate_session_id(_generate_hash(session_id))
+
+
+def remove_sid(session_id, user_id):
+    return auth.remove_sid(_generate_hash(session_id), user_id)

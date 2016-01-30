@@ -108,3 +108,12 @@ def validate_session_id(cursor, session_hash):
         return
 
     return user_id
+
+
+@dbcp.roomit
+def remove_sid(cursor, session_hash, user_id):
+    query = """ DELETE FROM `user_sessions`
+                WHERE session_hash = %s
+                  AND user_id = %s
+            """
+    cursor.execute(query, [session_hash, user_id])

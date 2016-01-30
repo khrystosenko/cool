@@ -13,3 +13,10 @@ def facebook(req):
         response.set_cookie(resp, 'session_id', session_hash, exp=expiration)
 
     return resp
+
+
+@auth.login_required
+def logout(req):
+	auth.remove_sid(req)
+
+	return redirect('/')
