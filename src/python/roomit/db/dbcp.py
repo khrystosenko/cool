@@ -1,33 +1,26 @@
 import mysql.connector
 
+from contextlib import contextmanager
+
 from roomit import config
 
 _config = config.get_config()
-_connection = None
 
-class connection_pool():
 
-    def __init__(self, database):
-        global _connection
-        global _config
+@contextmanager
+def connection_pool(database):
+    connection = mysql.connector.connect(
+            user=_config.get(database, 'username'),
+            password=_config.get(database, 'password'),
+            host=_config.get(database, 'host'),
+            port=_config.getint(database, 'port'),
+            database=_config.get(database, 'name'),
+            charset=_config.get(database, 'charset')
+        )
 
-        if _connection is None:
-            _connection = mysql.connector.connect(
-                user=_config.get(database, 'username'),
-                password=_config.get(database, 'password'),
-                host=_config.get(database, 'host'),
-                port=_config.getint(database, 'port'),
-                database=_config.get(database, 'name'),
-                charset=_config.get(database, 'charset')
-            )
+    yield connection
 
-        self._connection = _connection
-
-    def __enter__(self):
-        return self._connection.cursor()
-
-    def __exit__(self, *args, **kwargs):
-        self._connection.commit()
+    connection.close()
 
 
 def tuple2dict(arr, fields):
@@ -53,14 +46,27 @@ def tuple2dict(arr, fields):
 
 def roomit_readonly(func):
     def wrapper(*args, **kwargs):
-        with connection_pool('ro_db') as cursor:
-            return func(cursor, *args, **kwargs)
+        with connection_pool('ro_db') as connection:
+            try:
+                result = func(connection.cursor(), *args, **kwargs)
+                connection.commit()
+                return result
+            except:
+                connection.rollback()
+                raise
 
     return wrapper
 
+
 def roomit(func):
     def wrapper(*args, **kwargs):
-        with connection_pool('db') as cursor:
-            return func(cursor, *args, **kwargs)
+        with connection_pool('db') as connection:
+            try:
+                result = func(connection.cursor(), *args, **kwargs)
+                connection.commit()
+                return result
+            except:
+                connection.rollback()
+                raise
 
     return wrapper
