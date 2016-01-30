@@ -3,10 +3,13 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.http import Http404
 
-from utils import search, staticad, auth
+from utils import search, staticad, auth, request
 
+
+@request.store_action
+@auth.is_logged
 def index(req):
-    if auth.is_logged(req):
+    if req.user:
         return redirect('/discover/')
 
     top_streams = search.filter_by_params({'limit': '9'})

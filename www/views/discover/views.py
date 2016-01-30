@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.template.response import TemplateResponse
 
-from ..utils import search
+from ..utils import search, request, auth
 
 
+@request.store_action
+@auth.is_logged
 def index(req):
     games = [game for game in settings.GAMES if game.get('discover', False)]
     game_ids = search.get_game_ids([game['name'] for game in games])

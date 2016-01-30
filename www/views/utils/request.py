@@ -1,4 +1,7 @@
+import time
+
 from roomit import utils
+from roomit.handlers import request
 
 def get(req, name, default=''):
     """ Get a param from Django request dictionary as byte str.
@@ -23,3 +26,25 @@ def get_params(req):
     for key in req.REQUEST:
         params[key] = get(req, key)
     return params
+
+
+def get_client_ip(req):
+    x_forwarded_for = req.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = req.META.get('REMOTE_ADDR')
+    return ip
+
+
+def store_action(func):
+    def wrapper(req, *args, **kwargs):
+        result = func(req, *args, **kwargs)
+        
+        user_id = getattr(req, 'user', None)
+        ip_address = get_client_ip(req)
+        request.store_action(user_id, ip_address, req.path, time.time())
+
+        return result
+
+    return wrapper

@@ -26,9 +26,13 @@ def login_required(func):
     return wrapper
 
 
-def is_logged(request):
-    session_id = request.COOKIES.get('session_id', '')
-    return session_id and auth.validate_session_id(session_id)
+def is_logged(func):
+    def wrapper(request, *args, **kwargs):
+        session_id = request.COOKIES.get('session_id', '')
+        request.user = (session_id or None) and auth.validate_session_id(session_id)
+        return func(request, *args, **kwargs)
+
+    return wrapper
 
 
 def facebook_login(request):

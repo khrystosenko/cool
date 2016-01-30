@@ -7,3 +7,4 @@ source schema/social_networks.sql;
 source schema/users.sql;
 source schema/social_connections.sql;
 source schema/user_sessions.sql;
+source schema/requests.sql;
