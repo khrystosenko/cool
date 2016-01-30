@@ -33,3 +33,11 @@ redirect_uri={product_base_url}/{facebook_redirect_slug}
 access_token_url={facebook_access_token_url}
 me_url={facebook_me_url}
 login_url={facebook_login_url}
+
+[twitch]
+client_id={twitch_client_id}
+client_secret={twitch_client_secret}
+redirect_uri={product_base_url}/{twitch_redirect_slug}
+access_token_url={twitch_access_token_url}
+me_url={twitch_me_url}
+login_url={twitch_login_url}

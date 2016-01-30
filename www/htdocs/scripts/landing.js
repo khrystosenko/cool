@@ -24,6 +24,10 @@ $(document).ready(function() {
         window.open('https://www.facebook.com/dialog/oauth?client_id=546767205384783&redirect_uri=http://localhost:8000/auth/facebook/&scope=email', '_blank', 'toolbar=0,location=0,menubar=0');
     })
 
+    $('#twitch_login').click(function() {
+        window.open('https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=rv1knu53dstfezpm5npvywetxbzgf9b&redirect_uri=http://localhost:8000/auth/twitch/&scope=user_read', '_blank', 'toolbar=0,location=0,menubar=0');
+    })
+
     headerCurrentHeight = updateHeaderHeight();
     updateHeaderColor(headerCurrentHeight);
 
