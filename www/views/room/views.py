@@ -2,14 +2,15 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 
-from ..utils import room, request
+from ..utils import room, request, auth
 from ..utils.views import JSONResponse
 
 
-def create(req):
+@auth.login_required
+def add(req):
     if req.method == 'POST':
-        resp = room.generate_room(request.get_params(req))
-        return JSONResponse(resp)
+        # resp = room.generate_room(request.get_params(req))
+        return JSONResponse({'success': 'ok'})
 
     return JSONResponse({})
 

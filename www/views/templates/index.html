@@ -102,7 +102,7 @@
         {% for stream in streams %}
             <div class="col s12 m4 stream" style="min-width: 422.5px;">
               <div class="card hoverable">
-                <div class="card-image waves-effect waves-block waves-light" data-stream-url='{{ stream.url }}'>
+                <div class="card-image waves-effect waves-block waves-light" data-stream-id='{{ stream.id }}'>
                   <a href="#"><img src="{{ stream.preview.replace('{width}', '400').replace('{height}', '224') }}" alt="{{ stream.display_name }}" title="{{ stream.display_name }}"></a>
                 </div>
                 <div class="card-content grey-text">

@@ -97,15 +97,14 @@ $(document).ready(function() {
     $('.card-image').click(function(e) {
         e.preventDefault();
 
-        var link = $(this).attr('data-stream-url');
+        var streamID = $(this).attr('data-stream-id');
         $.ajax({
             type: 'POST',
-            url: '/room/create/',
+            url: '/room/add/',
             data: {
-                link: link
+                stream_id: streamID
             },
             success: function(data) {
-                console.log(data);
                 if (data.error) {} else {
                     window.location.href = '/room/' + data.name; 
                 }

@@ -115,19 +115,18 @@ function addStreamsCallback(streams, loadMore) {
 
         var image = $('<div>');
         image.addClass('card-image waves-effect waves-block waves-light');
-        image.attr('data-stream-url', stream.url);
+        image.attr('data-stream-id', stream.id);
         image.click(function(e) {
             e.preventDefault();
 
-            var link = $(this).attr('data-stream-url');
+            var streamID = $(this).attr('data-stream-id');
             $.ajax({
                 type: 'POST',
-                url: '/room/create/',
+                url: '/room/add/',
                 data: {
-                    link: link
+                    stream_id: streamID
                 },
                 success: function(data) {
-                    console.log(data);
                     if (data.error) {
 
                     } else {

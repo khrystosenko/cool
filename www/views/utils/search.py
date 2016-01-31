@@ -58,8 +58,6 @@ def filter_by_params(params):
 
         item['language'] = language
         item['logo'] = item['logo'] or ''
-        item['game_canonical'] = pattern.sub('', item['game']).lower()
-        item['url'] = platforms[item['platform']] + item['name']
 
     return data
 

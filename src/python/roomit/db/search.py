@@ -7,7 +7,9 @@ from roomit.db import dbcp
 
 @dbcp.roomit_readonly
 def get_by_params(cursor, game, platform, stream, only_online, offset, limit):
-    fields = ('online', 'viewers', 'mature', 'language', 'display_name', 'name', 'preview', 'logo')
+    fields = ('id', 'online', 'viewers', 'mature', 'language', 
+        'display_name', 'name', 'preview', 'logo')
+    
     filter_query = []
     params = []
     if game:

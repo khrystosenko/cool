@@ -8,6 +8,8 @@ from roomit import utils
 from roomit.config import get_config
 from roomit.handlers import auth
 
+from views import JSONResponse
+
 _config = get_config()
 
 
