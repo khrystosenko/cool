@@ -23,14 +23,15 @@ header .main-menu a:hover{
     color: #fff;
 }
 
-header .get-premium {
+header .btn-header {
     background-color: transparent;
     border: 1px solid #FF5722;
-    color: #FF5722;
+    border-radius:0;
+    color: #FF5722 !important;
     margin-left: 15px;
 }
 
-header .get-premium:hover {
+header .btn-header:hover {
     background-color: #FF5722;
     color: #FFFFFF !important;
 }

@@ -22,8 +22,8 @@
             <div class="right main-menu hide-on-med-and-down">
                 <a href="#" data-scroll-to="benefits" class="scrollable-link">HOW IT WORKS</a>
                 <a href="/discover/">DISCOVER</a>
-                <a href="#" data-scroll-to="discover" class="waves-effect waves-light btn get-premium scrollable-link" style="color: #ff5722;border-radius:0;">CREATE ROOM</a>
-                <a href="javascript:PopUpShow('#popup_log','#popup_c')" id="login_b" class="waves-effect waves-light btn get-premium" style="color: #ff5722;border-radius:0;">LOG IN</a>
+                <a href="#" data-scroll-to="discover" class="waves-effect waves-light btn btn-header scrollable-link">CREATE ROOM</a>
+                <a href="javascript:PopUpShow('#popup_log','#popup_c')" id="login_b" class="waves-effect waves-light btn btn-header">LOG IN</a>
             </div>
         </div>
     </nav>
@@ -92,7 +92,7 @@
 
 <div class="b-popup" id="popup_log" style="display: none;">
     <div class="b-popup-content" id="popup_c">
-    <img src="/img/roomit_logo.png" alt="Roomit.tv logo" title="Roomit.tv logo" style="display: block;margin: 0 auto;">
+    <img src="{{ static('img/roomit_logo.png') }}" alt="Roomit.tv logo" title="Roomit.tv logo" class="logo-img">
     <a href="" id="facebook_b" class="facebook-button">Log in with Facebook</a>
     <a href="" id="twitch_b" class="twitch-button">Log in with Twitch</a>
     </div>

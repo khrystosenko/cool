@@ -74,12 +74,13 @@ $(document).ready(function() {
 
 function PopUpShow(popup_log, popup_content){
     $(popup_log).show();
-        $(document).mouseup(function (e) {
-            if (!$(popup_content).is(e.target) && $(popup_content).has(e.target).length == 0) {
-                PopUpHide(popup_log);
-                }
-            });
+    $(document).mouseup(function (e) {
+        if (!$(popup_content).is(e.target) && $(popup_content).has(e.target).length == 0) {
+            PopUpHide(popup_log);
+        }
+    });
 }
+
 function PopUpHide(popup_log){
-        $(popup_log).hide();
+    $(popup_log).hide();
 }
