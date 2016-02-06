@@ -1,7 +1,7 @@
 CREATE TABLE streams (
-    id INT NOT NULL AUTO_INCREMENT,
-    platform_id INT NOT NULL,
-    game_id INT NOT NULL,
+    id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    platform_id INT(10) UNSIGNED NOT NULL,
+    game_id INT(10) UNSIGNED NOT NULL,
     channel_id VARCHAR(32) NOT NULL,
 
     online BOOLEAN NOT NULL,
