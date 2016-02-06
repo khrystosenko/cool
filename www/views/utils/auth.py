@@ -3,6 +3,7 @@ import requests
 
 from django.conf import settings
 from django.template.response import TemplateResponse
+from django.shortcuts import redirect
 
 from roomit import utils
 from roomit.config import get_config
@@ -26,7 +27,7 @@ def login_required(func):
                     'msg': 'Your session is expired, please reload the page.'}
                 return JSONResponse({'error': error}, status=401)
             else:
-                return TemplateResponse(request, 'index.html')
+                return redirect('/')
 
     return wrapper
 
