@@ -40,32 +40,6 @@ $(document).ready(function() {
         updateHeaderColor(headerCurrentHeight);
     });
 
-    // $('#create-room-btn').click(function(e) {
-    //     e.preventDefault();
-    //     $(this).addClass('disabled');
-    //     var link = $('#stream-link').val().trim();
-
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: '/room/create/',
-    //         data: {
-    //             link: link
-    //         },
-    //         success: function(data) {
-    //             console.log(data);
-    //             if (data.error) {
-    //                 $('#stream-link').addClass('invalid');
-    //                 $('#create-room-btn').removeClass('disabled');
-    //             } else {
-    //                 $('#stream-link').removeClass('invalid');
-    //                 $('#create-room-btn').removeClass('disabled');
-    //                 window.location.href = '/room/' + data.name; 
-    //             }
-    //         }, error: function() {
-                
-    //         }
-    //     });
-    // });
     $('#create-room-btn').click(function(e) {
         e.preventDefault();
 
@@ -108,7 +82,11 @@ $(document).ready(function() {
                 if (data.error) {} else {
                     window.location.href = '/room/' + data.name; 
                 }
-            }, error: function() {}
+            }, error: function(data) {
+                if (data.status == 401) {
+                    console.log('User is not authenticated');
+                }
+            }
         });
 
     });

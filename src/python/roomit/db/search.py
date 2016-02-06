@@ -6,12 +6,16 @@ from roomit.db import dbcp
 
 
 @dbcp.roomit_readonly
-def get_by_params(cursor, game, platform, stream, only_online, offset, limit):
+def get_by_params(cursor, user_id, game, platform, stream, only_online, offset, limit):
     fields = ('id', 'online', 'viewers', 'mature', 'language', 
         'display_name', 'name', 'preview', 'logo')
     
     filter_query = []
     params = []
+
+    if user_id:
+        params.append(user_id)
+
     if game:
         params.append(game)
         filter_query.append('`game_id` = %s')
@@ -31,23 +35,28 @@ def get_by_params(cursor, game, platform, stream, only_online, offset, limit):
     if filter_query:
         filter_query = 'WHERE ' + filter_query
 
-    query = """ SELECT %s, g.name, p.name
+    query = """ SELECT %s, g.name, p.name, 
+                       (us.user_id is not NULL) as added
                 FROM `streams` s
                 JOIN `games` g
-                ON g.id = s.game_id
+                  ON g.id = s.game_id
                 JOIN `platforms` p
-                ON p.id = s.platform_id
+                  ON p.id = s.platform_id
+                LEFT JOIN `user_streams` us
+                  ON us.stream_id = s.id
+                 AND us.user_id %s
                 %s
                 ORDER BY `viewers` DESC
                 LIMIT %%s
                 OFFSET %%s
-            """ % (','.join(['s.%s' % (field,) for field in fields]), filter_query)
+            """ % (','.join(['s.%s' % (field,) for field in fields]), 
+                   'is NULL' if user_id is None else '= %s', filter_query)
 
     params.append(limit)
     params.append(offset)
 
     cursor.execute(query, params)
-    data = dbcp.tuple2dict(cursor.fetchall(), fields + ('game', 'platform'))
+    data = dbcp.tuple2dict(cursor.fetchall(), fields + ('game', 'platform', 'added'))
     if isinstance(data, dict):
         data = [data]
 

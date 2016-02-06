@@ -6,7 +6,7 @@ from django.template.response import TemplateResponse
 
 from roomit import utils
 from roomit.config import get_config
-from roomit.handlers import auth
+from roomit.handlers import auth, room
 
 from views import JSONResponse
 
@@ -24,9 +24,9 @@ def login_required(func):
             if request.is_ajax():
                 error = {'field': 'server',
                     'msg': 'Your session is expired, please reload the page.'}
-                return JSONResponse({'error': error})
+                return JSONResponse({'error': error}, status=401)
             else:
-                return TemplateResponse(req, 'index.html')
+                return TemplateResponse(request, 'index.html')
 
     return wrapper
 
@@ -68,6 +68,7 @@ def facebook_login(request):
 
     if user_id is None:
         user_id = auth.create_user(email=data['email'], name=data['name'])
+        room.create_room(user_id, data['name'].replace(' ', ''))
 
     session_id = auth.create_or_update_session_id(user_id, expires_in=expires_in)
     auth.link_social_network('facebook', user_id, data['id'], access_token, expires_in)
@@ -105,13 +106,22 @@ def twitch_login(request):
 
     if user_id is None:
         user_id = auth.create_user(email=data['email'], name=data['display_name'])
+        room.create_room(user_id, data['display_name'].replace(' ', ''))
 
     session_id = auth.create_or_update_session_id(user_id, expires_in=expires_in)
-    auth.link_social_network('twitch', user_id, data['_id'], access_token, expires_in)
+
+    if 'success' in auth.link_social_network('twitch', user_id, data['_id'], access_token, expires_in):
+        response = requests.get(_config.get('twitch', 'get_followed'), params={'oauth_token': access_token})
+        data = response.json()
+
+        channels_to_follow = []
+        for stream in data['streams']:
+            channels_to_follow.append(stream['channel']['_id'])
+
+        if channels_to_follow:
+            room.follow_channels(user_id, 'twitch.tv', channels_to_follow)
 
     return session_id, time_to_expire
-
-
 
 
 def remove_sid(request):

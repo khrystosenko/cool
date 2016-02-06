@@ -130,7 +130,7 @@ function addStreamsCallback(streams, loadMore) {
                     if (data.error) {
 
                     } else {
-                        window.location.href = '/room/' + data.name;
+                        // window.location.href = '/room/' + data.name;
                     }
                 }, error: function() {
 
@@ -171,6 +171,8 @@ function addStreamsCallback(streams, loadMore) {
             var streamLanguage = $('<span class="language"><i class="tiny material-icons">translate</i>' + stream.language + '</span>')
             detailsLI.append(streamLanguage);
         }
+
+        detailsLI.append('<span>Added: ' + stream.added + '</span>')
 
         $('#streams').append(streamDiv);
     }

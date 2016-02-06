@@ -12,7 +12,7 @@ def index(req):
     if req.user:
         return redirect('/discover/')
 
-    top_streams = search.filter_by_params({'limit': '9'})
+    top_streams = search.filter_by_params(req.user, {'limit': '9'})
     return TemplateResponse(req, 'index.html', {'streams': top_streams['data']})
 
 

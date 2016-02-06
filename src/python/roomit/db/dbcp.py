@@ -49,7 +49,6 @@ def roomit_readonly(func):
         with connection_pool('ro_db') as connection:
             try:
                 result = func(connection.cursor(), *args, **kwargs)
-                connection.commit()
                 return result
             except:
                 connection.rollback()

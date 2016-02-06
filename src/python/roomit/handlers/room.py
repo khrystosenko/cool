@@ -1,15 +1,36 @@
+import uuid
+
+from mysql.connector import IntegrityError
 from roomit.db import room
 
-class RoomExistsException(Exception):
-    pass
-    
 
-def generate_room(service, channel, name):
-    if room.get_room(name):
-        raise RoomExistsException()
+def follow_channels(user_id, platform, channels):
+    if not isinstance(channels, list):
+        channels = [channels]
+        
+    room.follow_channels(user_id, platform, channels)
 
-    room.store_room(service, channel, name)
 
-def get_room(room_name):
-    data = room.get_room(room_name)
+def follow_channels_by_ids(user_id, channels):
+    if not isinstance(channels, list):
+        channels = [channels]
+
+    room.follow_channels_by_ids(user_id, channels)
+
+
+def create_room(user_id, room_name):
+    try:
+        return room.create_room(user_id, room_name)
+    except IntegrityError as err:
+        room_name = str(uuid.uuid4())
+        return room.create_room(user_id, room_name)
+
+
+def get_user_streams(user_id, room_name):
+    room_owner_id = room.get_room(room_name) if room_name else user_id
+    data = {
+        'owner': room_owner_id == user_id,
+        'streams': room.get_user_streams(room_owner_id)
+    }
+
     return data

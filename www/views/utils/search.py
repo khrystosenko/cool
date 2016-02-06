@@ -7,7 +7,7 @@ from roomit import utils
 from roomit.handlers import search
 
 
-def filter_by_params(params):
+def filter_by_params(user_id, params):
     game = params.get('game', '0')
     if not game.isdigit():
         return utils.validation_error('game_id')
@@ -40,7 +40,7 @@ def filter_by_params(params):
 
     limit = min(100, int(limit))
 
-    data = search.filter_by_params(game, platform, stream, only_online, offset, limit)
+    data = search.filter_by_params(user_id, game, platform, stream, only_online, offset, limit)
     pattern = re.compile('[\W]+')
 
     platforms = dict((platform['name'], platform['url'])for platform in settings.PLATFORMS)

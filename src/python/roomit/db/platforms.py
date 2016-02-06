@@ -16,7 +16,7 @@ def __get_games(cursor):
 
     return data
 
-def __get_platform_id(cursor, value):
+def _get_platform_id(cursor, value):
     query = """ SELECT `id`
                 FROM `platforms`
                 WHERE `name` = %s
@@ -34,7 +34,7 @@ def __get_platform_id(cursor, value):
 
     return platform_id
 
-def __get_game_id(cursor, value):
+def _get_game_id(cursor, value):
     query = """ SELECT `id`
                 FROM `games`
                 WHERE `name` = %s
@@ -62,7 +62,7 @@ def __reset_streams(cursor, platform_id):
 
 @dbcp.roomit
 def update_streams(cursor, platform, data):
-    platform_id = __get_platform_id(cursor, platform)
+    platform_id = _get_platform_id(cursor, platform)
     games = __get_games()
 
     prepared_data = FORMATERS[platform](cursor, platform_id, games, data)
@@ -97,7 +97,7 @@ def format_twitch_streams(cursor, platform_id, games, streams):
             stream['channel']['display_name'] = stream['channel']['name']
 
         if not game_id:
-            game_id = __get_game_id(cursor, game_name)
+            game_id = _get_game_id(cursor, game_name)
             games[stream['game']] = game_id
 
         prepared_data.append((platform_id, game_id, stream['channel']['_id'], 1, stream['viewers'],
@@ -116,7 +116,7 @@ def format_azubu_streams(cursor, platform_id, games, streams):
             stream['user']['display_name'] = stream['user']['username']
 
         if not game_id:
-            game_id = __get_game_id(cursor, game_name)
+            game_id = _get_game_id(cursor, game_name)
             games[stream['category']['title']] = game_id
 
         prepared_data.append((platform_id, game_id, stream['user']['id'], 1, stream['view_count'],
@@ -136,7 +136,7 @@ def format_hitbox_streams(cursor, platform_id, games, streams):
             stream['media_display_name'] = stream['media_name']
 
         if not game_id:
-            game_id = __get_game_id(cursor, game_name)
+            game_id = _get_game_id(cursor, game_name)
             games[stream['category_name']] = game_id
 
         prepared_data.append((platform_id, game_id, stream['media_user_id'], 1, stream['media_views'],

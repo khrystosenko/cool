@@ -9,14 +9,22 @@ from ..utils.views import JSONResponse
 @auth.login_required
 def add(req):
     if req.method == 'POST':
-        # resp = room.generate_room(request.get_params(req))
+        room.add_stream(req.user, request.get_params(req))
         return JSONResponse({'success': 'ok'})
 
     return JSONResponse({})
 
-def view(req, room_name):
-    data = room.get_room(room_name)
-    if not data:
-        return HttpResponseRedirect('/discover/')
 
+@auth.login_required
+def delete(req):
+	if req.method == 'DELETE':
+		room.delete_stream(request.get_params(req))
+        return JSONResponse({'success': 'ok'})
+
+	return JSONResponse({})
+
+
+@auth.login_required
+def view(req, room_name):
+    data = room.get_user_streams(req.user, room_name.strip())
     return TemplateResponse(req, 'room.html', data)

@@ -20,6 +20,8 @@
 {% block content %}
 <div class="main_container row">
     <div class="video_area col s9 pull-s3">
+        Owner: {{ owner }}
+        Streams: {{ streams }}
         <div class="twitch" id="twitch_frame">
              {{ get_service_frame(service, channel) }}
         </div>
