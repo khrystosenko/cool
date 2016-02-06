@@ -56,6 +56,9 @@ def filter_by_params(user_id, params):
         if language is None:
             language = item['language']
 
+        if language:
+            language = language.split(';')[0]
+
         item['language'] = language
         item['logo'] = item['logo'] or ''
 
