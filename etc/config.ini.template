@@ -41,3 +41,4 @@ redirect_uri={product_base_url}/{twitch_redirect_slug}
 access_token_url={twitch_access_token_url}
 me_url={twitch_me_url}
 login_url={twitch_login_url}
+get_followed={twitch_get_followed}
