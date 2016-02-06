@@ -1,3 +1,4 @@
+import json
 import uuid
 
 from mysql.connector import IntegrityError
@@ -29,8 +30,8 @@ def create_room(user_id, room_name):
 def get_user_streams(user_id, room_name):
     room_owner_id = room.get_room(room_name) if room_name else user_id
     data = {
-        'owner': room_owner_id == user_id,
-        'streams': room.get_user_streams(room_owner_id)
+        'owner': json.dumps(room_owner_id == user_id),
+        'streams': json.dumps(room.get_user_streams(room_owner_id))
     }
 
     return data

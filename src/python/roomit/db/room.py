@@ -56,11 +56,11 @@ def get_room(cursor, room_name):
 
 @dbcp.roomit_readonly
 def get_user_streams(cursor, user_id):
-    fields = ('id', 'platform', 'game', 'online', 'display_name', 'logo')
+    fields = ('id', 'platform', 'game', 'online', 'display_name', 'name', 'logo')
 
     query = """ SELECT s.id, p.name, g.name,
                        s.online, s.display_name,
-                       s.logo
+                       s.name, s.logo
                 FROM `user_streams` us
                 JOIN `streams` s
                   ON s.id = us.stream_id

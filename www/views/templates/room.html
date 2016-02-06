@@ -4,13 +4,17 @@
 {% block add_scripts %}
     <script>
         var noCameraSrc = "{{ static('img/room/nocamera.png') }}";
-        var ROOM_UUID = "{{ id }}";
     </script>
     <script type="text/javascript" src="{{ static('scripts/lib/ion.sound.min.js') }}"></script>
     <script type="text/javascript" src="{{ static('scripts/lib/socket.io-1.2.0.js') }}"></script>
     <script type="text/javascript" src="{{ static('scripts/lib/network.js') }}"></script>
     <script type="text/javascript" src="{{ static('scripts/lib/perfect-scrollbar.jquery.js') }}"></script>
     <script type="text/javascript" src="{{ static('scripts/room.js') }}"></script>
+    <script type="text/javascript" src="{{ static('scripts/lib/stream.js') }}"></script>
+    <script type="text/javascript">
+        var handler = new StreamHandler('#dummy_switcher', '.insideFrame');
+        handler.init({{ streams|safe }}, {{ owner }});
+    </script>
 {% endblock %}
 
 {% block add_styles %}
@@ -20,10 +24,10 @@
 {% block content %}
 <div class="main_container row">
     <div class="video_area col s9 pull-s3">
-        Owner: {{ owner }}
-        Streams: {{ streams }}
+        <div id="dummy_switcher">
+        </div>
         <div class="twitch" id="twitch_frame">
-             {{ get_service_frame(service, channel) }}
+          <iframe class="insideFrame"></iframe>
         </div>
         <div class="controls">
         <div class="info_video" id="room_control">
