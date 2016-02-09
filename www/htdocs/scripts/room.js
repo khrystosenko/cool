@@ -10,7 +10,7 @@ function getUsernameColor(username) {
     for (var i = 0; i < username.length; i++) {
         hash = username.charCodeAt(i) + (hash << 5) - hash;
     }
-    // Calculate color
+    // Calculate colors
     var index = Math.abs(hash % COLORS.length);
     return COLORS[index];
 }
@@ -23,7 +23,12 @@ function updateParticipantMessage() {
 
 $(document).ready(function() {
     $('#chat_content').perfectScrollbar();
-    
+    handlers.streams.setSelectors({
+        frameBox: '.insideFrame'
+    }).init({
+        myRoom: myRoom
+    });
+
     handler = new NetworkHandler(ROOM_UUID, SIGNALING_SERVER.HOST, SIGNALING_SERVER.PORT);
 
     handler.chatMessageCallback = function(data) {

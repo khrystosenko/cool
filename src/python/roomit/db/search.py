@@ -137,3 +137,25 @@ def get_game_ids(cursor, games):
         data = [data]
 
     return data
+
+@dbcp.roomit_readonly
+def get_stream(cursor, stream_id):
+    fields = ('id', 'platform', 'game', 'online', 'display_name', 'name', 'logo')
+
+    query = """ SELECT s.id, p.name, g.name,
+                       s.online, s.display_name,
+                       s.name, s.logo
+                FROM `streams` s
+                JOIN `games` g
+                  ON g.id = s.game_id
+                JOIN `platforms` p
+                  ON p.id = s.platform_id
+                WHERE s.id = %s
+            """
+
+    cursor.execute(query, [stream_id])
+    data = dbcp.tuple2dict(cursor.fetchall(), fields)
+    if isinstance(data, dict):
+        data = [data]
+
+    return data

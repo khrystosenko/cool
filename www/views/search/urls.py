@@ -5,4 +5,5 @@ urlpatterns = patterns('views.search.views',
     url(r'^games/top/$', 'get_top_games', name='search-get_top_games'),
     url(r'^games/$', 'get_games_like', name='search-get_games_like'),
     url(r'^platforms/top/$', 'get_top_platforms', name='search-get_top_platforms'),
+    url(r'^stream/$', 'get_stream', name='search-get_stream'),
 )

@@ -1,104 +1,3 @@
-function DiscoverHandler() {
-    this.searchURL = '/search/'
-
-    this.streamWidth = 400;
-    this.streamHeight = 224;
-
-    this.offset = 0;
-    this.limit = 20;
-
-    this.searchElement = null;
-    this.gameFilterElement = null;
-
-    this.getStreams = function(loadMore, afterCallback) {
-        data = {
-            offset: this.offset,
-            limit: this.limit,
-            game: this.game
-        }
-
-        if (this.stream) {
-            data.stream = this.stream;
-        }
-
-        $.ajax({
-            type: 'GET',
-            data: data,
-            url: this.searchURL,
-            success: this.__streamSuccessCallback(this, loadMore, afterCallback),
-            error: this.__streamErrorCallback(this, afterCallback)
-        });
-
-    }
-
-    this.init = function(configs) {
-        this.searchElement = $('#' + configs.streamSearchID);
-        this.gameFilterElement = $('#' + configs.gameFilterID);
-        this.loadMoreElement = $('#' + configs.loadMoreID);
-
-        this.addStreamsCallback = configs.addStreamsCallback;
-
-        this.searchElement.find('label').click((function(self) {
-            return function() {
-                var searchValue = self.searchElement.find('input').val().trim();
-                if (searchValue == self.stream) {
-                    return;
-                }
-
-                self.offset = 0;
-                self.stream = searchValue;
-                self.getStreams(false);
-            }
-        })(this));
-        this.gameFilterElement.find('a').click((function(self) {
-            return function() {
-                var gameID = $(this).attr('data-game-id');
-                var stream = self.searchElement.find('input').val().trim();
-                if (gameID == self.game && stream == self.stream) {
-                    return;
-                }
-
-                self.offset = 0;
-                self.stream = stream;
-                self.game = gameID;
-                self.getStreams(false);
-            }
-        })(this));
-        this.loadMoreElement.click((function(self) {
-            return function(e) {
-                e.preventDefault();
-                self.getStreams(true);
-                $('.progress').show();
-                $('.progress').delay(1200).hide(0);
-            }
-        })(this));
-
-        this.getStreams();
-    }
-
-    this.__streamSuccessCallback = function(self, loadMore, afterCallback) {
-        return function(data) {
-            for (var i in data.data) {
-                data.data[i].preview = data.data[i].preview.replace(/{width}/, self.streamWidth)
-                                                           .replace(/{height}/, self.streamHeight);
-                preloadImage(data.data[i].preview);
-                self.offset += 1;
-
-            }
-            self.addStreamsCallback(data.data, loadMore);
-            if (afterCallback) afterCallback();
-        }
-    }
-
-    this.__streamErrorCallback = function(self, afterCallback) {
-        return function(error) {
-            console.log(error);
-            if (afterCallback) afterCallback();
-        }
-    }
-
-}
-
 function addStreamsCallback(streams, loadMore) {
     if (!loadMore) {
         $('#streams').html('');
@@ -179,27 +78,20 @@ function addStreamsCallback(streams, loadMore) {
 }
 
 $(document).ready(function() {
-    var handler = new DiscoverHandler();
-    handler.init({
-        streamSearchID: 'stream_search',
-        gameFilterID: 'game_filter',
-        loadMoreID: 'load_more',
-        addStreamsCallback: addStreamsCallback
-    });
+    handlers.discover = new DiscoverHandler();
+    handlers.discover.setSelectors({
+        streamSearch: '#stream_search',
+        gameFilter: '#game_filter',
+        loadMore: '#load_more',
+        progress: '.progress',
+        search: '#srch'
+    }).setEndpoints({
+        search: '/search/'
+    }).setCallbacks({
+        addStreams: addStreamsCallback
+    }).init();
 
-
-    $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() == $(document).height()) {
-            $('#load_more').click();
-        }
-    });
-
-    $('#srch').keypress(function(e) {
-        if(e.which == 13) {
-            e.preventDefault();
-            $('#stream_search label').click();
-        }
-    });
+    handlers.streams.init();
 });
 
 

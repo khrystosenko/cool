@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 
 from ..utils import room, request, auth
 from ..utils.views import JSONResponse
@@ -17,14 +17,22 @@ def add(req):
 
 @auth.login_required
 def delete(req):
-	if req.method == 'DELETE':
-		room.delete_stream(request.get_params(req))
+    if req.method == 'DELETE':
+        room.delete_stream(request.get_params(req))
         return JSONResponse({'success': 'ok'})
 
-	return JSONResponse({})
+    return JSONResponse({})
 
 
 @auth.login_required
 def view(req, room_name):
-    data = room.get_user_streams(req.user, room_name.strip())
-    return TemplateResponse(req, 'room.html', data)
+    if not room_name:
+        user_room = room.get_user_room(req.user)
+        return redirect('/room/{}'.format(user_room['name']))
+
+    room_owner = room.get_room_owner(room_name)
+    if room_owner is None:
+        raise Http404()
+
+    context = {'my_room': room_owner == req.user}
+    return TemplateResponse(req, 'room.html', context)

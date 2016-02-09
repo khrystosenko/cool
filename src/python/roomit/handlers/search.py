@@ -18,3 +18,6 @@ def get_games_like(text, limit):
 
 def get_game_ids(games):
 	return search.get_game_ids(games)
+
+def get_stream(stream_id):
+	return search.get_stream(stream_id)

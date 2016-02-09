@@ -106,3 +106,10 @@ def get_game_ids(games):
         result[item['name']] = item['id']
 
     return result
+
+def get_stream(params):
+    stream_id = params.get('stream_id')
+    if not stream_id:
+        return utils.validation_error('stream_id')
+
+    return search.get_stream(stream_id)

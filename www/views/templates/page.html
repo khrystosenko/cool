@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block additional_scripts %}
-<script type="text/javascript">checkDevice();</script>
+  <script type="text/javascript" src="{{ static('scripts/lib/base.handler.js') }}"></script>
+  <script type="text/javascript" src="{{ static('scripts/lib/stream.handler.js') }}"></script>
+  <script type="text/javascript">checkDevice();</script>
 	<script type="text/javascript" src="{{ static('scripts/page.js') }}"></script>
 	{% block add_scripts %}{% endblock %}
 {% endblock %}
@@ -19,6 +21,7 @@
                 <a href="/discover/"><li class="items item-1 active">discover</li></a>
                 <!-- <a href="#"><li class="items item-2">popular</li></a> -->
                 <a href="/room/"><li class="items item-3">Your room</li></a>
+                <div id="dummy_switcher"></div>
             </ul>
             <!-- <ul class="guest_menu_footer">
                 <ul id="drop-more" class="more">

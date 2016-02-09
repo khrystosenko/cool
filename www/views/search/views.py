@@ -23,3 +23,9 @@ def get_top_platforms(req):
 def get_games_like(req):
     resp = search.get_games_like(request.get_params(req))
     return JSONResponse(resp)
+
+
+@auth.login_required
+def get_stream(req):
+	resp = search.get_stream(request.get_params(req))
+	return JSONResponse(resp)

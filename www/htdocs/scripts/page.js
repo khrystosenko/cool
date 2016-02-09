@@ -13,27 +13,33 @@ function hideList(selector) {
       el.classList.remove('active');
       setTimeout(function () {
       document.getElementById('drop-more').style.display="none";
-	  }, 700);
+      }, 700);
     });
   };
 
 function hideShow(select){
-	var el = document.getElementById('more');
-	if (el.className == 'items item-4 active'){
-		hideList(select);
-	}
-	else {
-		Materialize.showStaggeredList(select);
-		$(select).find('li').each(function() {
-      	$(this).velocity(
-        { opacity: "0.5"});
+    var el = document.getElementById('more');
+    if (el.className == 'items item-4 active'){
+        hideList(select);
+    }
+    else {
+        Materialize.showStaggeredList(select);
+        $(select).find('li').each(function() {
+            $(this).velocity({ opacity: "0.5"});
         }); 
-		document.getElementById('drop-more').style.display="block";
-		el.classList.add('active');
-	}
+        document.getElementById('drop-more').style.display="block";
+        el.classList.add('active');
+    }
 }
 
- $(document).ready(function() {
+$(document).ready(function() {
+    handlers.streams = new StreamHandler();
 
-
+    handlers.streams.setSelectors({
+        switcher: '#dummy_switcher'
+    }).setEndpoints({
+        userStreams: '/me/streams/',
+        stream: '/search/stream/',
+        room: '/room/'
+    });
 });

@@ -17,6 +17,7 @@ urlpatterns = basepatterns + patterns('',
     url(r'^search/', include('views.search.urls', 'search')),
     url(r'^discover/', include('views.discover.urls', 'discover')),
     url(r'^prerelease/', include('views.prerelease.urls', 'prerelease')),
+    url(r'^me/', include('views.me.urls', 'me')),
 ) + patterns('views.views',
     url(r'^(?P<slug>[\w-]{1,36})$', 'get_static_ad', name='get_static_ad'),
 )

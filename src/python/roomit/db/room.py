@@ -45,7 +45,7 @@ def create_room(cursor, user_id, room_name):
 
 
 @dbcp.roomit_readonly
-def get_room(cursor, room_name):
+def get_room_owner(cursor, room_name):
     query = """ SELECT `user_id`
                 FROM `rooms`
                 WHERE BINARY name = %s
@@ -53,6 +53,18 @@ def get_room(cursor, room_name):
     cursor.execute(query, [room_name])
     return dbutils.get_one_or_none(cursor)
 
+
+@dbcp.roomit_readonly
+def get_user_room(cursor, user_id):
+    fields = ('name',)
+    query = """ SELECT `%s`
+                FROM rooms
+                WHERE user_id = %%s
+            """ % ('`, `'.join(fields),)
+
+    cursor.execute(query, [user_id])
+    return dbcp.tuple2dict(cursor.fetchall(), fields)
+    
 
 @dbcp.roomit_readonly
 def get_user_streams(cursor, user_id):
@@ -73,4 +85,7 @@ def get_user_streams(cursor, user_id):
 
     cursor.execute(query, [user_id])
     data = dbcp.tuple2dict(cursor.fetchall(), fields)
+    if isinstance(data, dict):
+        data = [data]
+        
     return data
