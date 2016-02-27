@@ -70,6 +70,11 @@ $(document).ready(function() {
     changeImageOnHover('.hoverable-image');
     setUpScrollable('.scrollable-link');
     imageWithFallback('.img-with-fallback');
+    echo.init({
+        offset: 100,
+        throttle: 250,
+        unload: false
+    });
 });
 
 function PopUpShow(popup_log, popup_content){

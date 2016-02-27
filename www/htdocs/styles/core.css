@@ -134,3 +134,7 @@ footer {
     display: block;
     margin: 0 auto;
 }
+
+img[data-echo] {
+  background: #878787 url('/img/spinner.gif') no-repeat center center;
+}

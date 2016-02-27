@@ -144,6 +144,9 @@ padding-bottom: 15px;
 	border: 0;
 	padding: 0;
 }
+.stream .card .card-image img {
+	height: 213px;
+}
 .card .card-image:before {
 	content:'';
 	display: none;
@@ -152,7 +155,6 @@ padding-bottom: 15px;
 	height: 100%;
 	z-index: 20000;
 	background: url('/img/stream_hover.png') 50% 50% no-repeat;
-
 }
 .card .card-image:hover:before{
 	display: block;
